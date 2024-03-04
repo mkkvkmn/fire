@@ -1,0 +1,19 @@
+﻿id,account,description,info,amount,class,category,sub_category
+0,,,,zero,pois,nollasummainen,
+1,,Asunto,,pos,varat,asunto,
+2,,Asunto,,neg,velat,asuntolaina,
+3,,Netflix,,any,menot,media,suoratoisto
+4,,Prisma,,any,menot,ruoka,ruoka
+5,,,HYVITYSKORKO,pos,tulot,passiiviset tulot,korkotulot
+6,varat,S-P,,any,varat,käteinen,s-pankki
+7,,sijoitukset,,any,varat,sijoitusvarallisuus,osakkeet
+8,,Spotify,,any,menot,media,musiikki
+9,,Puuilo,,neg,menot,muut menot,
+10,nnsr,,Salkku 1,any,varat,sijoitusvarallisuus,osinkosalkku
+11,nnsr,,Salkku 3,any,varat,sijoitusvarallisuus,kasvusalkku
+12,,ansiotulot,,any,tulot,ansiotulot,päivityö
+13,,lapaset,,any,menot,vaatteet,
+14,,muuta,,any,menot,muut menot,
+15,osingot,,,any,tulot,pääomatulot,osinkotulot
+16,,Oma tilisiirto,,any,pois,sisäinen tilisiirto,
+17,,yrityksen kuluja,,any,pois,yrityksen kulut,

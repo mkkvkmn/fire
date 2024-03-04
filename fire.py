@@ -4,32 +4,62 @@ import logging
 import argparse
 import ast
 import hashlib
+import sys
+import datetime
+import time
 
 import pandas as pd
 import chardet
+from tqdm import tqdm
 
+from ext_nordnet_portfolio import process_portfolio
+
+FILES_FOLDER = "./data/"
+# FILES_FOLDER = "../fire_data/"
 
 GLOB = {
-    "in_folder": "../fire_data/input",
-    "out_folder": "../fire_data/output",
-    "files_file": "../fire_data/config/files.csv",
-    "categories_file": "../fire_data/config/categories.csv",
+    "in_folder": FILES_FOLDER + "input",
+    "out_folder": FILES_FOLDER + "output",
+    "files_file": FILES_FOLDER + "config/files.csv",
+    "categories_file": FILES_FOLDER + "config/categories.csv",
+    "fixes_file": FILES_FOLDER + "config/fix.csv",
+    "splits_file": FILES_FOLDER + "config/splits.csv",
+    "default_owner": "mkk",
+    "debug": False,
+    "debug_folder": FILES_FOLDER + "output/debug",
+    "data_file": FILES_FOLDER + "output/data.csv",
+    "ext_nordnet_portfolio": True, #True / False
+    "ext_nordnet_portfolio_file": FILES_FOLDER + "extensions/nordnet/salkkuraportti.csv",
+    "ext_nordnet_portfolio_filename_done": "nnsr.csv",
 }
+
+
+def save_on_debug(df, file_name, append=False):
+    folder = GLOB['debug_folder']
+    file_path = os.path.join(folder, file_name)
+    if GLOB['debug']:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+        # append if append=True
+        mode = 'a' if append and os.path.exists(file_path) else 'w'
+        header = True if mode == 'w' else False
+
+        df.to_csv(file_path, mode=mode, index=False, header=header, encoding='utf-8-sig')
+        action = "Added rows to: " if append else "Saved: "
+        logging.info(f"{action} {file_path}")
+
+
+def print_df(df, exclude_cols_list=None):
+    pd.set_option('display.max_colwidth', 20)
+    if exclude_cols_list is not None:
+        df = df.drop(columns=exclude_cols_list)
+    print(df)
 
 
 def create_id(row):
     row_str = ''.join(map(str, row.values))
     return hashlib.sha256(row_str.encode()).hexdigest()
-
-
-def save_csv(df, target):
-    logging.debug(f"Saving {df} to {target}")
-    dir = os.path.dirname(target)
-
-    if not os.path.exists(dir):
-        os.makedirs(dir)
-
-    df.to_csv(target, index=False, encoding='utf-8-sig')
 
 
 def detect_encoding(file_path):
@@ -59,6 +89,7 @@ def collect_files(input_folder, config_file):
                 
                 file_info[file_path] = {
                     'file_name': file,
+                    'account': row['account'],
                     'encoding': detect_encoding(file_path),
                     'file_path': file_path,
                     'pattern': f"id: {row['id']} ({row['pattern']})",
@@ -71,8 +102,9 @@ def collect_files(input_folder, config_file):
                 break
 
         if not matched:
-            raise ValueError(f"No matching pattern found for file {file}")
+            raise ValueError(f"No matching pattern found for file {file}. Add it to 'files.csv'")
     
+    logging.info(f"Found: {len(file_info)} files")
     return file_info
 
 
@@ -82,81 +114,190 @@ def append_files(files):
     for file_path, props in files.items():
         try:
             if file_path.endswith('.csv'):
-                df = pd.read_csv(file_path, delimiter=props['delimiter'], dtype=str, encoding=props['encoding'])
+                df = pd.read_csv(file_path, delimiter=props['delimiter'], dtype=str, encoding=props['encoding'], engine='python')
             elif file_path.endswith('.xlsx'):
                 df = pd.read_excel(file_path, dtype=str)
             else:
-                raise ValueError(f"Unsupported file format for {file_path}")
+                logging.error(f"Unsupported file format for {file_path}")
+                sys.exit(1)
 
             # convert string to dictionary and rename columns
             column_mapping = ast.literal_eval(props['columns'])
             df.rename(columns=column_mapping, inplace=True)
 
-            # add and choose columns
-            df['account'] = props['file_name']
+            # choose cols to keep and add some
+            if 'account' not in df.columns:
+                df['account'] = props['account'] # only create if not in data
             df = df[['date', 'account', 'description', 'info', 'amount',]]
-            df['id'] = df.apply(create_id, axis=1)
+            df['source_file'] = props['file_name']
+            df['transaction_id'] = df.apply(create_id, axis=1)
 
-            target = os.path.join(GLOB['out_folder'], 'append', 'before_types.csv')
-            save_csv(df,target) # use this to see date formats
+            save_on_debug(df,'1_append_before_types.csv',True) # use this to see date formats
 
             # convert types
             df['amount'] = df['amount'].str.replace('\xa0', '').str.replace(',', '.').str.replace('−','-').astype(float)
             df['date'] = pd.to_datetime(df['date'], format=props['date_format'], dayfirst=props['day_first'])
             df['info'] = df['info'].fillna('')
 
-            target = os.path.join(GLOB['out_folder'], 'append', 'after_types.csv')
-            save_csv(df,target)
+            save_on_debug(df,'2_append_after_types.csv',True)
 
             df_list.append(df)
 
+        except KeyError as e:
+            logging.error(f"Append - KeyError in file {GLOB['file_path']}: {e}")
+            sys.exit(1)
         except Exception as e:
-            raise ValueError(f"Error processing file {file_path}: {e}")
+            logging.error(f"Append - Error processing file {file_path}: {e}")
+            sys.exit(1)
         
     df_all = pd.concat(df_list, ignore_index=True)
+    df_all = df_all.dropna(subset=['date', 'description'], how='all')
+
+    logging.info(f"Appended: {len(df_list)} files")
 
     return df_all
 
 
-def match_rule(row, rule):
-    # Function to check if a row matches a given rule
-    account_match = re.search(rule['account'], row['account'], re.IGNORECASE) if rule['account'] != '.*' else True
-    description_match = re.search(rule['description'], row['description'], re.IGNORECASE) if rule['description'] != '.*' else True
-    info_match = re.search(rule['info'], row['info'], re.IGNORECASE) if rule['info'] != '.*' else True
-    amount_match = float(row['amount']) > 0 if rule['amount'] == 'pos' else (float(row['amount']) < 0 if rule['amount'] == 'neg' else True)
+def validate_categories(df):
+    if df['id'].isnull().any():
+        raise ValueError(f"Empty 'id' value found. Please add id to each row in {GLOB['categories_file']}")
 
-    return account_match and description_match and info_match and amount_match
+    cols_to_replace = df.columns.drop('id')
+    df[cols_to_replace] = df[cols_to_replace].applymap(lambda x: '.*' if pd.isnull(x) or x in ['','*'] else x)
+
+    return df 
+
 
 def categorize_data(df, rules_df):
-
+    # add new columns for categorization if they don't exist
     for column in ['rule_id', 'class', 'category', 'sub_category']:
         if column not in df.columns:
             df[column] = pd.NA
 
-    for _, rule in rules_df.iterrows():
-        # Apply the rule to each row
-        for index, row in df.iterrows():
-            if match_rule(row, rule):
-                df.at[index, 'rule_id'] = rule['id']
-                df.at[index, 'class'] = rule['class']
-                df.at[index, 'category'] = rule['category']
-                df.at[index, 'sub_category'] = rule['sub_category']
+    # apply rules
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    message = f"{current_time} - INFO - Categorize "
+    for _, rule in tqdm(rules_df.iterrows(), total=rules_df.shape[0], desc=message, bar_format="{l_bar}{bar:10}{r_bar}{bar:-10b}"):
+        try:
+            # create a mask for the current rule
+            account_mask = df['account'].str.contains(rule['account'], case=False, na=False, regex=True) if rule['account'] != '.*' else True
+            description_mask = df['description'].str.contains(rule['description'], case=False, na=False, regex=True) if rule['description'] != '.*' else True
+            info_mask = df['info'].str.contains(rule['info'], case=False, na=False, regex=True) if rule['info'] != '.*' else True
+            amount_mask = (
+                df['amount'].astype(float) > 0 if rule['amount'] == 'pos' else (
+                    df['amount'].astype(float) < 0 if rule['amount'] == 'neg' else (
+                        df['amount'].astype(float) == 0 if rule['amount'] == 'zero' else True
+                    )
+                )
+            )
+        except TypeError as e:
+            logging.error(f"Categorize - TypeError in file {GLOB['fixes_file']}: {e}")
+            logging.error(f"No empty cells allowed in {GLOB['categories_file']} rule id: {rule['id']}")
+            sys.exit(1)
 
-    df = df[['id', 'date', 'account', 'description', 'info', 'amount', 'class' ,'category' ,'sub_category','rule_id']]
+        total_mask = account_mask & description_mask & info_mask & amount_mask
+
+        # categorize
+        df.loc[total_mask, 'rule_id'] = rule['id']
+        df.loc[total_mask, 'class'] = rule['class']
+        df.loc[total_mask, 'category'] = rule['category']
+        df.loc[total_mask, 'sub_category'] = rule['sub_category']
+
+    df = df[['transaction_id', 'date', 'account', 'description', 'info', 'amount', 'class', 'category', 'sub_category', 'rule_id', 'source_file']]
 
     return df
 
 
-def find_uncategorized(df):
-    return df[df['rule_id'].isna()]
+def categorize_data_loop(df,categories):
+    while True:
+
+        categories_validated = validate_categories(categories)
+        df = categorize_data(df, categories_validated).sort_values(by='description')
+        uncategorized_df = df[df['rule_id'].isna()]
+        
+        if uncategorized_df.empty:
+            logging.info(f"Categorize done")
+            return df
+        else:
+            print("\nCategories not found for:")
+            print(uncategorized_df[['date','account','description','info','amount']].head(25).to_string(index=False))
+            remaining = uncategorized_df.shape[0]
+            input(f"\nToDo: {remaining} rows, Update categories.csv and press enter to re-categorize... \n\n")
+            categories = pd.read_csv(GLOB['categories_file'])  # reload rules in case they have been updated
 
 
-def print_uncategorized_rows(df, limit=20):
-    print(df[['date','account','description','info','amount']].head(limit).to_string(index=False))
-    # print(uncategorized_df.head(limit))
+def apply_fixes(df, fix_file_path):
+    df_fixes = pd.read_csv(fix_file_path)
+    
+    for index, fix in df_fixes.iterrows():
+        try:
+            data_index = df[df['transaction_id'] == fix['transaction_id']].index
+
+            if not data_index.empty:
+                df.at[data_index[0], 'rule_id'] = fix['id']
+                df.at[data_index[0], 'class'] = fix['class']
+                df.at[data_index[0], 'category'] = fix['category']
+                df.at[data_index[0], 'sub_category'] = fix['sub_category']
+        except KeyError as e:
+            logging.error(f"Fix - KeyError in file {GLOB['fixes_file']}: {e}")
+            sys.exit(1)
+    
+    logging.info(f"Applied fixes")
+
+    return df
+
+
+def do_splits(df, splits_file_path):
+    splits_df = pd.read_csv(splits_file_path, parse_dates=['start', 'end'])
+    splits_df = splits_df.dropna(subset=['start'], how='all') #remove empty rows
+    
+    # ensure data types
+    splits_df['share'] = pd.to_numeric(splits_df['share'])
+    splits_df['start'] = pd.to_datetime(splits_df['start'])
+    splits_df['end'] = pd.to_datetime(splits_df['end'])
+
+    # add split columns
+    df = df.rename(columns={'amount': 'amount_orig'})
+    df['share'] = 1
+    df['amount'] = df['amount_orig']
+    df['owner'] = GLOB['default_owner']
+    df['split'] = False
+
+    split_dfs = []
+
+    for _, split in splits_df.iterrows():
+        mask = (
+            (df['account'] == split['account']) &
+            (df['date'] >= split['start']) &
+            (df['date'] <= split['end'])
+        )
+
+        temp_df = df[mask].copy()
+
+        try:
+            temp_df['amount'] = temp_df['amount_orig'] * split['share']
+            temp_df['share'] = split['share']
+            temp_df['owner'] = split['owner']
+        except TypeError as e:
+            logging.error(f"Split - TypeError row: {split}: {e}")
+            sys.exit(1)
+
+        split_dfs.append(temp_df)
+
+        # mark the original rows as split to exclude them later
+        df.loc[mask, 'split'] = True
+
+    original_df = df[~df.get('split', False)]
+    result_df = pd.concat([original_df] + split_dfs, ignore_index=True)
+
+    logging.info(f"Did splits")
+    return result_df
 
 
 def main():
+    start_time = time.time()
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    print(f"{current_time} - INFO - START")
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose logging')
@@ -164,45 +305,48 @@ def main():
 
     # logging
     if args.verbose:
-        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-    else:
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        GLOB['debug'] = True
+    else:
+        logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
+
+    # run nordnet portfolio extension
+    if GLOB['ext_nordnet_portfolio']:
+        source_file = GLOB['ext_nordnet_portfolio_file']
+        target_filename = GLOB['ext_nordnet_portfolio_filename_done']
+        target_file = os.path.join(GLOB['in_folder'], target_filename)
+        df_portfolio = process_portfolio(source_file)
+        df_portfolio.to_csv(target_file, encoding='utf-8-sig')
+        logging.info(f"Portfolio saved: {target_file}")
 
     # collect
-    try:
-        logging.debug("Collect files")
-        files = collect_files(GLOB['in_folder'], GLOB['files_file'])
-        logging.info(f"Found: {len(files)} files")
-    except ValueError as e:
-        logging.error(e)
+    files = collect_files(GLOB['in_folder'], GLOB['files_file'])
 
     # append
-    try:
-        df_all = append_files(files)
-    except ValueError as e:
-        logging.error(e)
-
+    df_appended = append_files(files)
 
     # categorize
     categories = pd.read_csv(GLOB['categories_file'])
-    df_categorized = categorize_data(df_all, categories)
-    print(df_categorized.columns)
+    df_categorized = categorize_data_loop(df_appended,categories)
+    save_on_debug(df_categorized,'3_categorized.csv')
 
-    while True:
+    # apply fixes
+    df_fixed = apply_fixes(df_categorized, GLOB['fixes_file'])
+    save_on_debug(df_fixed,'4_fixed.csv')
 
-        df_categorized = categorize_data(df_categorized, categories)
-        uncategorized_df = find_uncategorized(df_categorized)
-        
-        if uncategorized_df.empty:
-            print("All data has been categorized!")
-            break
-        else:
-            print_uncategorized_rows(uncategorized_df)
-            input("Update the rules and press enter to re-categorize... ")
-            categories = pd.read_csv(GLOB['categories_file'])  # Reload rules in case they have been updated
+    # split by owner
+    df_splits = do_splits(df_fixed, GLOB['splits_file'])
+    save_on_debug(df_splits,'5_splitted.csv')
 
-    target = os.path.join(GLOB['out_folder'], 'categories', 'categorized.csv')
-    save_csv(df_categorized,target)
+    # done
+    done_file = GLOB['data_file']
+    df_splits.to_csv(done_file, encoding='utf-8-sig')
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    print(f"{current_time} - INFO - Saved {done_file}")
+
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    elapsed_time = time.time() - start_time
+    print(f"{current_time} - INFO - DONE ({elapsed_time:.2f} s)")
 
 if __name__ == '__main__':
     main()
