@@ -109,12 +109,12 @@
 107,768e2d9672ac907b41b89922da766da76d3967ae3d0c873bc6dce8e89de30142,2023-06-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,1.0,-500.0,mkk,False
 108,1ff331cb3bdcf2266bc883147ddbfc8bb82b5307526884a7635102ac6c804cef,2023-01-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,1.0,-500.0,mkk,False
 109,6cdd0d83874080c392813ef197f83e79b0f24452b7d1c2aefb8f313db240c6a4,2024-02-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,1.0,-500.0,mkk,False
-110,546b7c0050ac30e830872e0491aa91921d7bdca5f275bfcb4d70a3c2b1c7c740,2023-07-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-500.0,mkk,False
-111,520cc734c8c1b5c330d122dfba9f48e25ae14871f70fcd205c688631d017797d,2023-08-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-500.0,mkk,False
-112,110665b62348c29bfdbb8acc52cec17d11e1ad73607d1ca82dd2b52a7b2d386d,2023-09-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-500.0,mkk,False
-113,555bcce022de2d5d975945df86fc89d4abeb0aef30b3a18dacd5008597835c41,2023-10-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-500.0,mkk,False
-114,6c8f9bab14c070025ba4ef48cc8f382bee63c5a34918f1208436ed63ececf944,2023-11-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-500.0,mkk,False
-115,56bab491b71d9b8ce3bdeb6427b6dc4326bbb986bc8fd376f14ee536c0d835fd,2023-12-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-500.0,mkk,False
+110,36a69152ab0b404923ff0c4f9a3b2e7f17c96e9b9383abc9d4f90af2f9695114,2023-07-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-1500.0,mkk,False
+111,3c8729b18d3972e83fc039edf0fd9fde5dae0263af9be5604c0be626b51f3539,2023-08-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-1500.0,mkk,False
+112,350f279aa8c3c2dc25e64de843b540b91418516109a09f08f69abd45b0c34be4,2023-09-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-1500.0,mkk,False
+113,ece98542b612a39bf0b7ab5c5ff34b5350d25deeaddd933c8f179a5522a10148,2023-10-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-1500.0,mkk,False
+114,237ea1afcd5c0a7fc7ef1e167dca2d33392e9ba5b026e15ebf2a771bde81fa3d,2023-11-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-1500.0,mkk,False
+115,8740da6b3aa8a9641a50fb2c14ed89efe9dc12a33cad82a9dc5fde9a20e4c57e,2023-12-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-1500.0,mkk,False
 116,c42cd106895232e660e9226f125497bfadc332a3da96e0e24c78b4c0eac68274,2023-03-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,1.0,-500.0,mkk,False
 117,75338ae5df8dbb8c4e5270b71914558d4f7e8f84d5680835d6f5f47f5c760345,2023-02-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,1.0,-500.0,mkk,False
 118,1ad184966ed7ba3590792a4a372f920e8255ea816d4beecf8e8a9aa75ad7ee54,2023-12-27,s-pankki,Puuilo,KORTTIOSTO,-19.9,menot,muut menot,.*,9,s-pankki_2023_07-2023_12.csv,1.0,-19.9,mkk,False
@@ -178,4 +178,4 @@
 176,e99b4ddfafccfa4ecaab1ca08931bff51105d299f885579db7042987017be9ab,2023-02-27,nnsr,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18489.97,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,18489.97,mkk,False
 177,f33f956996518521444699a4ade65da95f36471710d8594909b32013824be9b2,2023-01-31,menot,käteisellä lapaset,,-500.0,menot,vaatteet,.*,13,menot.csv,1.0,-500.0,mkk,False
 178,3967cbbdce05f7bdcaaf8ef27494bea8339ea3d3c81422d1f6b7281f240500cc,2024-02-28,menot,maksoin yrityksen kuluja käteisellä,,-50.0,pois,yrityksen kulut,.*,17,menot.csv,1.0,-50.0,mkk,False
-179,2709f1bec7e9d175f3b6d1a8846b91d0533cffbdede30318cf0ad001183ae276,2023-02-28,menot,muuta,,-200.0,menot,muut menot,.*,14,menot.csv,1.0,-200.0,mkk,False
+179,eed0adada9dc1d33e869936f7e0b980b57afa14c07d109ee84aeade94cbc1b5b,2023-02-28,menot,muuta,,-201.0,menot,muut menot,.*,14,menot.csv,1.0,-201.0,mkk,False
