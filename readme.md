@@ -3,12 +3,14 @@ This is a personal finance tracking thing made with python and Power BI.
 
 Instructions (in Finnish): https://mkkvkmn.com/oman-talouden-seuranta/
 
-# venv
-create: python -m venv venv
-activate: source venv/bin/activate
+# Install
+
+- create venv: python -m venv venv
+- activate: source venv/bin/activate
+- pip install -r requirements.txt
 
 # Run in Terminal
-Python3 fire.py or Python3 fire.py -v (verbose, gives more info and creates intermediate files for debugging)
+*Python3 fire.py* or *Python3 fire.py -v* (verbose, gives more info and creates intermediate files for debugging)
 
 # Settings
 ![alt text](https://github.com/mkkvkmn/fire/blob/main/assets/glob.png?raw=true)
@@ -27,15 +29,20 @@ Varat - assets
 Velat - liabilities
 Pois - anything you want to exclude
 
-## Special
-Kategoria - Category:
+## Categories
+Required (referenced in Power BI measures):
+
 - Ansiotulot (salary)
 - Pääomatulot (capital income)
 - Sijoitusvarallisuus (investments)
 - Sijoitusvelat (debts related to investments)
+- add more as you wish
 
-Ala-kategoria:
+## Sub-Categories
+Required (referenced in Power BI measures):
+
 - Osinkotulot (dividends)
+- add more as you wish
 
 # Power BI
 Included in source code.
