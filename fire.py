@@ -14,8 +14,8 @@ from tqdm import tqdm
 
 from ext_nordnet_portfolio import process_portfolio
 
-FILES_FOLDER = "./data/"
-# FILES_FOLDER = "../fire_data/"
+# FILES_FOLDER = "./data/"
+FILES_FOLDER = "../fire_data/"
 
 GLOB = {
     "in_folder": FILES_FOLDER + "input",
@@ -75,8 +75,9 @@ def collect_files(input_folder, config_file):
 
     df_file_props = pd.read_csv(config_file)
     file_info = {}
+    files_to_process = [file for file in os.listdir(input_folder) if '~' not in file] # ~ windows creates a copy of the file when it's open, exclude that
 
-    for file in os.listdir(input_folder):
+    for file in files_to_process:
         file_path = os.path.join(input_folder, file)
         
         # match file against patterns in the config
@@ -107,6 +108,16 @@ def collect_files(input_folder, config_file):
     logging.info(f"Found: {len(file_info)} files")
     return file_info
 
+def parse_date(date_str, formats, dayfirst):
+    formats_list = formats.split("|")
+    
+    for format in (formats_list): 
+        try:
+            dt = pd.to_datetime(date_str, format=format, dayfirst=dayfirst)
+            return dt.floor('D')
+        except ValueError:
+            continue
+    return pd.NaT
 
 def append_files(files):
     df_list = []
@@ -136,7 +147,8 @@ def append_files(files):
 
             # convert types
             df['amount'] = df['amount'].str.replace('\xa0', '').str.replace(',', '.').str.replace('−','-').astype(float)
-            df['date'] = pd.to_datetime(df['date'], format=props['date_format'], dayfirst=props['day_first'])
+            # df['date'] = pd.to_datetime(df['date'], format=props['date_format'], dayfirst=props['day_first'])
+            df['date'] = df['date'].apply(lambda x: parse_date(x, formats=props['date_format'], dayfirst=props['day_first']))
             df['info'] = df['info'].fillna('')
 
             save_on_debug(df,'2_append_after_types.csv',True)

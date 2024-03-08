@@ -7,3 +7,5 @@
 6,luottokortti,luottokortti,",",%Y-%m-%d %H:%M:%S,FALSE,"{'TransactionDate': 'date', 'Amount': 'amount', 'Text': 'description', 'Merchant Category':'info'}"
 7,osingot,osingot,\t,%Y-%m-%d,FALSE,"{'Kirjauspäivä': 'date', 'Summa': 'amount', 'Arvopaperi': 'description', 'Tapahtumatyyppi':'info'}"
 8,nnsr.csv,nnsr,",",%d.%m.%Y,TRUE,"{'date': 'date', 'market_value': 'amount', 'stock': 'description', 'account':'info'}"
+9,nordea,nordea,;,%Y/%m/%d,TRUE,"{'Kirjauspäivä': 'date', 'Määrä': 'amount', 'Otsikko': 'description', 'Maksaja':'info'}"
+10,penno,penno,;,%Y-%m-%d %H:%M:%S.%f|%Y-%m-%d %H:%M:%S,FALSE,"{'Päivämäärä': 'date', 'Summa': 'amount', 'Kategoria': 'description', 'Selite':'info'}"
