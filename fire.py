@@ -14,8 +14,8 @@ from tqdm import tqdm
 
 from ext_nordnet_portfolio import process_portfolio
 
-# FILES_FOLDER = "./data/"
-FILES_FOLDER = "../fire_data/"
+FILES_FOLDER = "./data/"
+# FILES_FOLDER = "../fire_data/"
 
 GLOB = {
     "in_folder": FILES_FOLDER + "input",
