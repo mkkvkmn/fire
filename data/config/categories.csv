@@ -17,3 +17,11 @@
 15,osingot,,,any,tulot,pääomatulot,osinkotulot
 16,,Oma tilisiirto,,any,pois,sisäinen tilisiirto,
 17,,yrityksen kuluja,,any,pois,yrityksen kulut,
+18,,Asuminen,,,menot,asuminen
+19,,Kahvittelu,,,menot,ruoka,välipalat
+20,,Liikenne,,,menot,liikkuminen
+21,,Palkka,,,tulot,ansiotulot
+22,,ruoka,,,menot,ruoka,ruoka
+23,,S-MARKET,,,menot,ruoka,ruoka
+24,,muut,,,menot,muut
+25,,viihde,,,menot,viihde
