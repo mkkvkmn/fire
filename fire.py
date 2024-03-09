@@ -147,7 +147,6 @@ def append_files(files):
 
             # convert types
             df['amount'] = df['amount'].str.replace('\xa0', '').str.replace(',', '.').str.replace('−','-').astype(float)
-            # df['date'] = pd.to_datetime(df['date'], format=props['date_format'], dayfirst=props['day_first'])
             df['date'] = df['date'].apply(lambda x: parse_date(x, formats=props['date_format'], dayfirst=props['day_first']))
             df['info'] = df['info'].fillna('')
 
