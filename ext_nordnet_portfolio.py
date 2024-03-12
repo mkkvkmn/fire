@@ -3,17 +3,8 @@ import logging
 
 import pandas as pd
 import numpy as np
-import chardet
 
-
-def detect_encoding(file_path):
-    with open(file_path, 'rb') as f:
-        rawdata = f.read()
-
-    result = chardet.detect(rawdata)
-
-    return result['encoding']
-
+from utils import save_on_debug, detect_encoding
 
 def process_portfolio(src_file_path):
     logging.info(f"..Start: Portfolio extension")
@@ -37,22 +28,26 @@ def process_portfolio(src_file_path):
 
     """
 
-    # Read in the CSV file
-    df = pd.read_csv(file_path, header=None, names=['transaction'], encoding=encodingtype)
+    # read csv, always single column, used a delimiter that does not match data
+    df = pd.read_csv(file_path, header=None, delimiter="|", names=['transaction'], encoding=encodingtype)
     logging.info(f"..Read file: {file_path}")
 
+    # identify and label rows in new columns
     # add account and fill
     df['account'] = ''
     df.loc[df['transaction'].str.contains(account_pattern, flags=re.IGNORECASE), 'account'] = 'account'
+    save_on_debug(df,'ext_nordnet_1_col_account.csv')
 
     # add label and set starting points
     df['label'] = ''
     df.loc[df['transaction'].str.contains(currency_pattern, flags=re.IGNORECASE), 'label'] = 'price'
     df.loc[df['transaction'].str.contains(cash_pattern, flags=re.IGNORECASE), 'label'] = 'cash'
+    save_on_debug(df,'ext_nordnet_2_col_label.csv')
 
     # add date and fill
     df['date'] = ''
     df['date'] = df['transaction'].str.extract(date_pattern).ffill()
+    save_on_debug(df,'ext_nordnet_3_col_date.csv')
 
     # Find the positions of the "price" and "cash" labels
     account_label_locations = df.index[df['account'] == 'account']
@@ -83,22 +78,27 @@ def process_portfolio(src_file_path):
     df['account'].replace('', np.nan, inplace=True)
     df['account'] = df['account'].ffill()
 
+    save_on_debug(df,'ext_nordnet_4_labels_filled.csv')
     logging.info(f"..Labels done")
 
-
-    # Add stock column
+    # add stock column
     df['stock'] = pd.Series(np.where(df['label'] == 'stock', df['transaction'], None)).ffill()
+    save_on_debug(df,'ext_nordnet_5_col_stock.csv')
 
-    # Filter out rows with empty labels
+    # filter out rows with empty labels
     df = df[df['label'] != '']
 
-    # Filter out stock lables (already a column)
+    # filter out stock lables (already a column)
     df = df[df['label'] != 'stock']
+    save_on_debug(df,'ext_nordnet_6_filtered.csv')
 
-    # Pivot the data so that labels and index are column headers
+    # pivot the data so that labels and index are column headers
     pivoted_df = df.pivot(index=['date','account','stock'], columns='label', values='transaction').reset_index()
 
-    # Split the "Price" column into "Price" and "Currency" columns
+    # make spaces standard
+    pivoted_df['price'] = pivoted_df['price'].apply(lambda x: re.sub(r'\s', ' ', str(x)) if pd.notnull(x) else x)
+
+    # split the "Price" column into "Price" and "Currency" columns
     pivoted_df[['price', 'currency']] = pivoted_df['price'].str.split(' ', n=1, expand=True)
 
     logging.info(f"..Done: Portfolio preprocess")
