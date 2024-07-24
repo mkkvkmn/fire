@@ -3,6 +3,7 @@ import os
 
 import chardet
 import pandas as pd
+import numpy as np
 
 from settings import GLOB
 
@@ -36,3 +37,9 @@ def save_on_debug(df, file_name, append=False):
         df.to_csv(file_path, mode=mode, index=False, header=header, encoding='utf-8-sig')
         action = "Added rows to: " if append else "Saved: "
         logging.info(f"{action} {file_path}")
+
+
+def has_content(value):
+    if isinstance(value, (int, float)):
+        return not pd.isna(value)
+    return value not in [None, '', np.nan]

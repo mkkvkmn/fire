@@ -13,7 +13,7 @@ import chardet
 from tqdm import tqdm
 
 from ext_nordnet_portfolio import process_portfolio
-from utils import save_on_debug, detect_encoding
+from utils import save_on_debug, detect_encoding, has_content
 from settings import GLOB
 
 
@@ -133,7 +133,8 @@ def validate_categories(df):
     if df['id'].isnull().any():
         raise ValueError(f"Empty 'id' value found. Please add id to each row in {GLOB['categories_file']}")
 
-    cols_to_replace = df.columns.drop('id')
+    cols_to_replace = df.columns.difference(['id', 'class', 'category', 'sub_category'])
+    # replace empty and * for source cols with .* (.* = regex, match any char)
     df[cols_to_replace] = df[cols_to_replace].applymap(lambda x: '.*' if pd.isnull(x) or x in ['','*'] else x)
 
     return df 
@@ -197,6 +198,7 @@ def categorize_data_loop(df,categories):
             categories = pd.read_csv(GLOB['categories_file'])  # reload rules in case they have been updated
 
 
+
 def apply_fixes(df, fix_file_path):
     df_fixes = pd.read_csv(fix_file_path)
     
@@ -205,10 +207,15 @@ def apply_fixes(df, fix_file_path):
             data_index = df[df['transaction_id'] == fix['transaction_id']].index
 
             if not data_index.empty:
-                df.at[data_index[0], 'rule_id'] = fix['id']
-                df.at[data_index[0], 'class'] = fix['class']
-                df.at[data_index[0], 'category'] = fix['category']
-                df.at[data_index[0], 'sub_category'] = fix['sub_category']
+                # assume user wants to replace the value using fix only if it's set in fix file, else use original
+                df.at[data_index[0], 'rule_id'] = fix['id'] if has_content(fix['id']) else df.at[data_index[0], 'rule_id']
+                df.at[data_index[0], 'date'] = fix['date'] if has_content(fix['date']) else df.at[data_index[0], 'date']
+                df.at[data_index[0], 'description'] = fix['description'] if has_content(fix['description']) else df.at[data_index[0], 'description']
+                df.at[data_index[0], 'info'] = fix['info'] if has_content(fix['info']) else df.at[data_index[0], 'info']
+                df.at[data_index[0], 'amount'] = fix['amount'] if has_content(fix['amount']) else df.at[data_index[0], 'amount']
+                df.at[data_index[0], 'class'] = fix['class'] if has_content(fix['class']) else df.at[data_index[0], 'class']
+                df.at[data_index[0], 'category'] = fix['category'] if has_content(fix['category']) else df.at[data_index[0], 'category']
+                df.at[data_index[0], 'sub_category'] = fix['sub_category'] if has_content(fix['sub_category']) else df.at[data_index[0], 'sub_category']
         except KeyError as e:
             logging.error(f"Fix - KeyError in file {GLOB['fixes_file']}: {e}")
             sys.exit(1)
