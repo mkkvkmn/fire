@@ -13,23 +13,23 @@
 11,57dc5e15e3a10dbb0864933b582d0fe21898b0db602a3038bb7e30ffd8483c43,2023-06-30,nnsr,Arbor Realty Trust,Salkku 1,8147.25,varat,sijoitusvarallisuus,osinkosalkku,10,nnsr.csv,1.0,8147.25,mkk,False
 12,50d5a8057b71e12c0d76eaf3a9811673d2217356fb05c72e70f842d49c78f902,2023-03-31,nnsr,Arbor Realty Trust,Salkku 1,6355.66,varat,sijoitusvarallisuus,osinkosalkku,10,nnsr.csv,1.0,6355.66,mkk,False
 13,dfb404c06cfb64376c51f0d467eb2eb1225cb5d47598f0dd66598081d00bbbd0,2023-04-30,nnsr,Arbor Realty Trust,Salkku 1,6245.23,varat,sijoitusvarallisuus,osinkosalkku,10,nnsr.csv,1.0,6245.23,mkk,False
-14,d2f92b9f96d0f49d59d5d6201d004d3933036905d0ea8835dbdeed30ff6a8603,2023-03-01,penno,Asuminen,Korko,-73.77,menot,asuminen,.*,18,penno.xlsx,1.0,-73.77,mkk,False
-15,c96319104643ab966da48b86c188449d9e7f419aa274bc2c866c98144e5837d9,2023-03-01,penno,Asuminen,Vastike,-165.9,menot,asuminen,.*,18,penno.xlsx,1.0,-165.9,mkk,False
-16,1cdbe119b3ab9ebcc6427b0e02e56300229b8536833f7c6aa8a13a90cb7627ab,2023-03-03,penno,Asuminen,Sähkö,-16.9,menot,asuminen,.*,18,penno.xlsx,1.0,-16.9,mkk,False
-17,85aba269e6bba1d8f47f8ee83bbd72710f95a4de90750e12f20d9aae48296cd7,2024-02-28,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-18,586397a1b063736e6d9b97ce5a34c6db953780250abf1f9d5d97d4fa8b4caf7f,2024-01-31,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-19,26d29db77b72ccf2d0eb0dd5b8c3384bf3ec6b173ca5819aca08361983234031,2023-12-31,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-20,4fcb2537445a1468193aecc5746f8e60b9808ad7f9c4a82e6485090e01908624,2023-11-30,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-21,44f909236771e4b0dfaceeeaf8e312e374d380bb3827dba298fa01198ca95c78,2023-10-31,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-22,923ac1325da12d28ac173af640ea3561aff539a515b23d0f111e474ab6b28585,2023-09-30,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-23,ec087aae975084d5bc1195ce4650004c46c73512562a4c0003d38776b48effca,2023-08-31,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-24,6a0583f31371ca5e16467c4c23438c975d0bbf229fe069ccf13ace036c0dfec4,2023-03-31,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-25,352d57d5f03e9e10d8bca7b9730c2dcaa79d3a6d825f87a6642f0ae49814a70e,2023-02-28,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-26,a4d1997964e5580baced7085f566f9221f7ad8a9c6909785b1e07ea7fba8853e,2023-06-30,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-27,e8ebbce8f8da75560327c56cd24ab2b39054d9b3ee5afb7f6947daf90d31cbe2,2023-05-31,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-28,7ebf2423269fd3603354f96e6fd996d1a55bccd5a0dcd0a609021c7554654015,2023-04-30,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-29,9c7fe04337a383f22acd2c1426ab4e030a03d7a76f3cff9ea2e5c770b7239afe,2023-01-31,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
-30,50c346f646b9b471bbafefd818a247745404e11cfddcd1d50728c1995a714c1f,2023-07-31,varat,Asunto,,100000.0,varat,asunto,.*,1,varat.csv,1.0,100000.0,mkk,False
+14,d2f92b9f96d0f49d59d5d6201d004d3933036905d0ea8835dbdeed30ff6a8603,2023-03-01,penno,Asuminen,Korko,-73.77,menot,asuminen,,18,penno.xlsx,1.0,-73.77,mkk,False
+15,c96319104643ab966da48b86c188449d9e7f419aa274bc2c866c98144e5837d9,2023-03-01,penno,Asuminen,Vastike,-165.9,menot,asuminen,,18,penno.xlsx,1.0,-165.9,mkk,False
+16,1cdbe119b3ab9ebcc6427b0e02e56300229b8536833f7c6aa8a13a90cb7627ab,2023-03-03,penno,Asuminen,Sähkö,-16.9,menot,asuminen,,18,penno.xlsx,1.0,-16.9,mkk,False
+17,85aba269e6bba1d8f47f8ee83bbd72710f95a4de90750e12f20d9aae48296cd7,2024-02-28,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+18,586397a1b063736e6d9b97ce5a34c6db953780250abf1f9d5d97d4fa8b4caf7f,2024-01-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+19,26d29db77b72ccf2d0eb0dd5b8c3384bf3ec6b173ca5819aca08361983234031,2023-12-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+20,4fcb2537445a1468193aecc5746f8e60b9808ad7f9c4a82e6485090e01908624,2023-11-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+21,44f909236771e4b0dfaceeeaf8e312e374d380bb3827dba298fa01198ca95c78,2023-10-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+22,923ac1325da12d28ac173af640ea3561aff539a515b23d0f111e474ab6b28585,2023-09-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+23,ec087aae975084d5bc1195ce4650004c46c73512562a4c0003d38776b48effca,2023-08-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+24,6a0583f31371ca5e16467c4c23438c975d0bbf229fe069ccf13ace036c0dfec4,2023-03-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+25,352d57d5f03e9e10d8bca7b9730c2dcaa79d3a6d825f87a6642f0ae49814a70e,2023-02-28,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+26,a4d1997964e5580baced7085f566f9221f7ad8a9c6909785b1e07ea7fba8853e,2023-06-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+27,e8ebbce8f8da75560327c56cd24ab2b39054d9b3ee5afb7f6947daf90d31cbe2,2023-05-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+28,7ebf2423269fd3603354f96e6fd996d1a55bccd5a0dcd0a609021c7554654015,2023-04-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+29,9c7fe04337a383f22acd2c1426ab4e030a03d7a76f3cff9ea2e5c770b7239afe,2023-01-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
+30,50c346f646b9b471bbafefd818a247745404e11cfddcd1d50728c1995a714c1f,2023-07-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,1.0,100000.0,mkk,False
 31,2a11f1a32ddfa5656e64318dae03ab1fec36c204cfe571524d3184ebb075eeb7,2023-10-31,nnsr,Bank Of Nova Scotia,Salkku 1,25456.68,varat,sijoitusvarallisuus,osinkosalkku,10,nnsr.csv,1.0,25456.68,mkk,False
 32,fdc9af768c6595a3385ece9ecb6fee061c2a79f4a813aabd0001ec2324bbf1c2,2023-05-31,nnsr,Bank Of Nova Scotia,Salkku 1,15819.42,varat,sijoitusvarallisuus,osinkosalkku,10,nnsr.csv,1.0,15819.42,mkk,False
 33,05d63d865a89428fb72f1b418d3bbfa09551be4ceb05b28b63ffd2cda140a794,2023-01-31,nnsr,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nnsr.csv,1.0,17428.91,mkk,False
@@ -59,14 +59,14 @@
 57,c70ab8c90188809097465f53471aced7e6e74c35acdded89765e8a9a4dfa3fb9,2023-05-31,nnsr,CubeSmart,Salkku 1,6654.11,varat,sijoitusvarallisuus,osinkosalkku,10,nnsr.csv,1.0,6654.11,mkk,False
 58,1031f17ea9a7a57845fd3761345aedb53f8f454d16ab394ae91360407ed448c5,2023-01-31,nnsr,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nnsr.csv,1.0,6738.83,mkk,False
 59,9c94a2360d619624c97d27af25d9215a4ae3206f064f73492d26e9a08653dfe6,2023-03-29,penno,Kahvittelu,Pulla,-3.5,menot,ruoka,välipalat,19,penno.xlsx,1.0,-3.5,mkk,False
-60,a1ddca52393d684f120b5322fe36696b752742366b0d7961a9877dcec0f9d133,2023-03-28,penno,Liikenne,Juna,-19.1,menot,liikkuminen,.*,20,penno.xlsx,1.0,-19.1,mkk,False
-61,fa828980d7f5ca3a8500938c670a07dc9ff0d3fe0d89cc071ab07fc87f22c008,2023-03-11,penno,Liikenne,Juna,-13.4,menot,liikkuminen,.*,20,penno.xlsx,1.0,-13.4,mkk,False
-62,af9e032184e9feef14885522c07030a8d180835c6605c17a81187478b9385600,2023-03-29,penno,Liikenne,Bussi,-3.1,menot,liikkuminen,.*,20,penno.xlsx,1.0,-3.1,mkk,False
+60,a1ddca52393d684f120b5322fe36696b752742366b0d7961a9877dcec0f9d133,2023-03-28,penno,Liikenne,Juna,-19.1,menot,liikkuminen,,20,penno.xlsx,1.0,-19.1,mkk,False
+61,fa828980d7f5ca3a8500938c670a07dc9ff0d3fe0d89cc071ab07fc87f22c008,2023-03-11,penno,Liikenne,Juna,-13.4,menot,liikkuminen,,20,penno.xlsx,1.0,-13.4,mkk,False
+62,af9e032184e9feef14885522c07030a8d180835c6605c17a81187478b9385600,2023-03-29,penno,Liikenne,Bussi,-3.1,menot,liikkuminen,,20,penno.xlsx,1.0,-3.1,mkk,False
 63,c54652c501176438d31170be8c8bdb8a7b5dc761332ab2cd241b5d7f5ae2c325,2023-01-31,nnsr,Likvidit varat,Salkku 3,1692.41,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,1692.41,mkk,False
 64,8f2e0a987d9ae071a815de0b328214302cf0a034efe75893909745f05dd46be0,2023-02-27,nnsr,Likvidit varat,Salkku 3,1692.41,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,1692.41,mkk,False
 65,8d62d2cad2558a4f5bf5403bfe1720b3535030a2fbfd305f2c606e50452c3f63,2023-03-31,nnsr,Likvidit varat,Salkku 3,1692.41,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,1692.41,mkk,False
 66,86664ba1df7611093a109b2c73e531d2f295ec95624d15289172ba395c76a845,2023-04-30,nnsr,Likvidit varat,Salkku 3,1692.41,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,1692.41,mkk,False
-67,c52ccb7e3b403fbacfd32bd4a01b1f8f175e5aa97ea0a0632188d85d0026ff1a,2023-03-14,penno,Muut,,-25.0,menot,muut,.*,24,penno.xlsx,1.0,-25.0,mkk,False
+67,c52ccb7e3b403fbacfd32bd4a01b1f8f175e5aa97ea0a0632188d85d0026ff1a,2023-03-14,penno,Muut,,-25.0,menot,muut,,24,penno.xlsx,1.0,-25.0,mkk,False
 68,7064b8289bdd37d62a05c9bae3721e7db926b4558025575798ebc7ab8bdef60c,2023-12-01,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,1.0,-11.65,mkk,False
 69,41ddb5cc33242a10641411ce19ee09f994cb6bfb4870c1a389f294cf7a29bab9,2023-08-03,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,1.0,-11.65,mkk,False
 70,5d4b214df82d83756d3293a203fa2379e064c392e68df0f1c57534e3f1dd0bc4,2023-02-04,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,1.0,-11.65,mkk,False
@@ -109,10 +109,10 @@
 107,49713493e893f0d16b22c3ac378e445b42e75b7a1a101173fec7d586e9db1766,2024-02-16,osingot,O,OSINKO,88.13,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,1.0,88.13,mkk,False
 108,afa3bcfd299ebfd39a3987df0bfa44c963740da5b7b570f926a0e0bd5d40c2ce,2024-02-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,1.0,-13.22,mkk,False
 109,d4850029eb6968e36b3e13487781b8d0aec2c708ba649fff4f1aa76f7b71fa8e,2023-01-16,osingot,O,ENNAKKOPIDÄTYS,-13.1,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,1.0,-13.1,mkk,False
-110,837c2facb05e5421f40204c506606b4b11e6e4616cba9a60be37beaf4f8249e0,2024-02-28,s-pankki,Oma tilisiirto,KORTTIOSTO,-500.0,pois,sisäinen tilisiirto,.*,16,s-pankki_2024_01-2024_12.csv,1.0,-500.0,mkk,False
+110,837c2facb05e5421f40204c506606b4b11e6e4616cba9a60be37beaf4f8249e0,2024-02-28,s-pankki,Oma tilisiirto,KORTTIOSTO,-500.0,pois,sisäinen tilisiirto,,16,s-pankki_2024_01-2024_12.csv,1.0,-500.0,mkk,False
 111,abb019f8d8ba9f31e3554bfbf2b7a1fab21bb3ffa6893ae376becf0298b9dc52,2023-12-29,s-pankki,P.Ohatta,HYVITYSKORKO,0.36,tulot,passiiviset tulot,korkotulot,5,s-pankki_2023_07-2023_12.csv,1.0,0.36,mkk,False
-112,d806e5d6ba08a1a1cc50d44a2ba0cc3d3365721a95143389e639d6b47830a739,2023-03-31,penno,Palkka,Matkakorvauksia,200.0,tulot,ansiotulot,.*,21,penno.xlsx,1.0,200.0,mkk,False
-113,459dfe3da3410943334eec5ec3a0354323fefa94e30404fa20782889586c7325,2023-03-30,penno,Palkka,,1000.0,tulot,ansiotulot,.*,21,penno.xlsx,1.0,1000.0,mkk,False
+112,d806e5d6ba08a1a1cc50d44a2ba0cc3d3365721a95143389e639d6b47830a739,2023-03-31,penno,Palkka,Matkakorvauksia,200.0,tulot,ansiotulot,,21,penno.xlsx,1.0,200.0,mkk,False
+113,459dfe3da3410943334eec5ec3a0354323fefa94e30404fa20782889586c7325,2023-03-30,penno,Palkka,,1000.0,tulot,ansiotulot,,21,penno.xlsx,1.0,1000.0,mkk,False
 114,b736036b5f63ed660a934f0e83a2b6c54051b15476e7448ed0eefc414f76e587,2023-04-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,1.0,-500.0,mkk,False
 115,9e75cbfa0780b48c93dfc4944764e925d73c1de60f0afc7b0d9ef22f47b9436c,2024-01-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,1.0,-500.0,mkk,False
 116,6cdd0d83874080c392813ef197f83e79b0f24452b7d1c2aefb8f313db240c6a4,2024-02-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,1.0,-500.0,mkk,False
@@ -127,7 +127,7 @@
 125,75338ae5df8dbb8c4e5270b71914558d4f7e8f84d5680835d6f5f47f5c760345,2023-02-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,1.0,-500.0,mkk,False
 126,ece98542b612a39bf0b7ab5c5ff34b5350d25deeaddd933c8f179a5522a10148,2023-10-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-1500.0,mkk,False
 127,3c8729b18d3972e83fc039edf0fd9fde5dae0263af9be5604c0be626b51f3539,2023-08-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,1.0,-1500.0,mkk,False
-128,1ad184966ed7ba3590792a4a372f920e8255ea816d4beecf8e8a9aa75ad7ee54,2023-12-27,s-pankki,Puuilo,KORTTIOSTO,-19.9,menot,muut menot,.*,9,s-pankki_2023_07-2023_12.csv,1.0,-19.9,mkk,False
+128,1ad184966ed7ba3590792a4a372f920e8255ea816d4beecf8e8a9aa75ad7ee54,2023-12-27,s-pankki,Puuilo,KORTTIOSTO,-19.9,menot,muut menot,,9,s-pankki_2023_07-2023_12.csv,1.0,-19.9,mkk,False
 129,fabed6dc7cfe3a593c990eb3dfd8f9ad4945e9d7e10796c6f090817eede0d1b1,2023-03-11,penno,Ruokakauppa,,-21.18,menot,ruoka,ruoka,22,penno.xlsx,1.0,-21.18,mkk,False
 130,b6dbed8094ac6179844b7772dcff09bbcb7f428a222b5d9a20029ad02cbc65c1,2023-03-14,penno,Ruokakauppa,,-33.9,menot,ruoka,ruoka,22,penno.xlsx,1.0,-33.9,mkk,False
 131,aa4b20917190401e20e2e9fc13d30faefa81b5b217256864d221abe70ca896d8,2023-03-28,penno,Ruokakauppa,,-2.74,menot,ruoka,ruoka,22,penno.xlsx,1.0,-2.74,mkk,False
@@ -158,8 +158,8 @@
 156,a97881ac20273d629d00970e10419b0f4cda73eb5ee017e9e31c61a623a50920,2023-02-05,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,1.0,-12.99,mkk,False
 157,f42f5dc69afcd8654da3436dcfba97da1f765fcc077499c359d871452f691824,2023-08-04,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,1.0,-12.99,mkk,False
 158,787d261fabb57f4ad8e800c9c196fe5f0018ca11b0547e35ab19dc2e90f7f843,2023-12-02,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,1.0,-12.99,mkk,False
-159,3833f1b9e6e3d415bae583cb47b76313e4591e4890db9711268bfc49b8f360a5,2023-03-15,penno,Viihde,SkyShowtime ,-3.49,menot,viihde,.*,25,penno.xlsx,1.0,-3.49,mkk,False
-160,ea4419870b3a48ae510f3e477fb87ebadfb45630b07e9af43201a8068a0867eb,2023-03-01,penno,Viihde,Netflix ,-15.99,menot,viihde,.*,25,penno.xlsx,1.0,-15.99,mkk,False
+159,3833f1b9e6e3d415bae583cb47b76313e4591e4890db9711268bfc49b8f360a5,2023-03-15,penno,Viihde,SkyShowtime ,-3.49,menot,viihde,,25,penno.xlsx,1.0,-3.49,mkk,False
+160,ea4419870b3a48ae510f3e477fb87ebadfb45630b07e9af43201a8068a0867eb,2023-03-01,penno,Viihde,Netflix ,-15.99,menot,viihde,,25,penno.xlsx,1.0,-15.99,mkk,False
 161,15d3053ac38fb984e4f03cee1accb1bca85b62c35cee95f14b1c95499ed2b756,2023-07-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,1.0,3000.0,mkk,False
 162,c256d867aa8df8a411fcf62f10aa9a22d4bc9bbc97e99bf44255db6cbfec11c5,2023-01-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,1.0,3000.0,mkk,False
 163,cdd11cbb48940141ab9d7dab4da6fea0561b14790343f52f676a24068bb97b01,2024-01-31,tulot,ansiotulot,,3500.0,tulot,ansiotulot,päivityö,12,tulot.csv,1.0,3500.0,mkk,False
@@ -174,24 +174,24 @@
 172,20b0a18db293e9373731dce23134eb7dc7c84f6da2ed9720a52336e2ad7fc24a,2023-10-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,1.0,3000.0,mkk,False
 173,5d7ce325c22ff0f391e843b32d7e77ebe214d9435cf91dbd41cf91aec338594a,2023-11-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,1.0,3000.0,mkk,False
 174,c3fcf2f33b8ccacbb25d412b338734663d9086f32192543e0f8bc467f9a74eb4,2023-12-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,1.0,3000.0,mkk,False
-175,06248df2ccd0afd613bb4e05b75305470042d7f85420916ddb3dd0b259fda526,2023-05-31,velat,asuntolaina,,-88000.0,velat,asuntolaina,.*,2,velat.csv,1.0,-88000.0,mkk,False
-176,c363fa8d5d43da4af505297dd2718466fc8dd20938c2b8730d6542f5838b9a20,2023-07-31,velat,asuntolaina,,-87000.0,velat,asuntolaina,.*,2,velat.csv,1.0,-87000.0,mkk,False
-177,f52ebef0fdc2d267602266281ca51d5419318bbe28bb515aa5cc134aa210a267,2023-08-31,velat,asuntolaina,,-86500.0,velat,asuntolaina,.*,2,velat.csv,1.0,-86500.0,mkk,False
-178,fc3c6d7b05d5ec8ac2e5b1f009ce9c741edb2a94e60615925e120b0c456825d2,2023-09-30,velat,asuntolaina,,-86000.0,velat,asuntolaina,.*,2,velat.csv,1.0,-86000.0,mkk,False
-179,7d57ac69dcb59d988c0edc7efdca030b213130efbfdfac181e115d966e60fce6,2023-10-31,velat,asuntolaina,,-85500.0,velat,asuntolaina,.*,2,velat.csv,1.0,-85500.0,mkk,False
-180,7125830483e103ccdbe3a0af10f9c490cb7051e99363357f1f1bfde6d0107835,2023-11-30,velat,asuntolaina,,-85000.0,velat,asuntolaina,.*,2,velat.csv,1.0,-85000.0,mkk,False
-181,fb651b0f24f6d196dd3cbf2314fc0f9d385904d8fc39bc7feca3c322c7ba5c8c,2023-12-31,velat,asuntolaina,,-84500.0,velat,asuntolaina,.*,2,velat.csv,1.0,-84500.0,mkk,False
-182,19b881d99d694d1ebc7aeb8fbae5ed50cd6cdbe79187d2b64a33c83f766aa55f,2023-06-30,velat,asuntolaina,,-87500.0,velat,asuntolaina,.*,2,velat.csv,1.0,-87500.0,mkk,False
-183,d959a14a59e3b7639a5e4edc95c0f466ce39d419595fc601f4061d2e1279b279,2023-04-30,velat,asuntolaina,,-88500.0,velat,asuntolaina,.*,2,velat.csv,1.0,-88500.0,mkk,False
-184,3ef6886f4fce83d7965da3a5dfe0281c72a36baddd34e47d8193b8742eb184b8,2024-02-28,velat,asuntolaina,,-83500.0,velat,asuntolaina,.*,2,velat.csv,1.0,-83500.0,mkk,False
-185,220f9fec8020a9857515efaf01f98a336c2a845cbc9b2830bf620a8b0f14155d,2023-02-28,velat,asuntolaina,,-89500.0,velat,asuntolaina,.*,2,velat.csv,1.0,-89500.0,mkk,False
-186,7575256b21545b5911dc622c54f6dd0348ecd44f03f6d7330e9e609fe9a5f463,2023-01-31,velat,asuntolaina,,-90000.0,velat,asuntolaina,.*,2,velat.csv,1.0,-90000.0,mkk,False
-187,d796d583d5435b09fbba55ccd40214eb086ab3f18e8d1a4a05bc0e823413d290,2024-01-31,velat,asuntolaina,,-84000.0,velat,asuntolaina,.*,2,velat.csv,1.0,-84000.0,mkk,False
-188,0b20df0b26903fa3b1ec81497164358feb9931c5df27fc10ca17534a68aed850,2023-03-31,velat,asuntolaina,,-89000.0,velat,asuntolaina,.*,2,velat.csv,1.0,-89000.0,mkk,False
+175,06248df2ccd0afd613bb4e05b75305470042d7f85420916ddb3dd0b259fda526,2023-05-31,velat,asuntolaina,,-88000.0,velat,asuntolaina,,2,velat.csv,1.0,-88000.0,mkk,False
+176,c363fa8d5d43da4af505297dd2718466fc8dd20938c2b8730d6542f5838b9a20,2023-07-31,velat,asuntolaina,,-87000.0,velat,asuntolaina,,2,velat.csv,1.0,-87000.0,mkk,False
+177,f52ebef0fdc2d267602266281ca51d5419318bbe28bb515aa5cc134aa210a267,2023-08-31,velat,asuntolaina,,-86500.0,velat,asuntolaina,,2,velat.csv,1.0,-86500.0,mkk,False
+178,fc3c6d7b05d5ec8ac2e5b1f009ce9c741edb2a94e60615925e120b0c456825d2,2023-09-30,velat,asuntolaina,,-86000.0,velat,asuntolaina,,2,velat.csv,1.0,-86000.0,mkk,False
+179,7d57ac69dcb59d988c0edc7efdca030b213130efbfdfac181e115d966e60fce6,2023-10-31,velat,asuntolaina,,-85500.0,velat,asuntolaina,,2,velat.csv,1.0,-85500.0,mkk,False
+180,7125830483e103ccdbe3a0af10f9c490cb7051e99363357f1f1bfde6d0107835,2023-11-30,velat,asuntolaina,,-85000.0,velat,asuntolaina,,2,velat.csv,1.0,-85000.0,mkk,False
+181,fb651b0f24f6d196dd3cbf2314fc0f9d385904d8fc39bc7feca3c322c7ba5c8c,2023-12-31,velat,asuntolaina,,-84500.0,velat,asuntolaina,,2,velat.csv,1.0,-84500.0,mkk,False
+182,19b881d99d694d1ebc7aeb8fbae5ed50cd6cdbe79187d2b64a33c83f766aa55f,2023-06-30,velat,asuntolaina,,-87500.0,velat,asuntolaina,,2,velat.csv,1.0,-87500.0,mkk,False
+183,d959a14a59e3b7639a5e4edc95c0f466ce39d419595fc601f4061d2e1279b279,2023-04-30,velat,asuntolaina,,-88500.0,velat,asuntolaina,,2,velat.csv,1.0,-88500.0,mkk,False
+184,3ef6886f4fce83d7965da3a5dfe0281c72a36baddd34e47d8193b8742eb184b8,2024-02-28,velat,asuntolaina,,-83500.0,velat,asuntolaina,,2,velat.csv,1.0,-83500.0,mkk,False
+185,220f9fec8020a9857515efaf01f98a336c2a845cbc9b2830bf620a8b0f14155d,2023-02-28,velat,asuntolaina,,-89500.0,velat,asuntolaina,,2,velat.csv,1.0,-89500.0,mkk,False
+186,7575256b21545b5911dc622c54f6dd0348ecd44f03f6d7330e9e609fe9a5f463,2023-01-31,velat,asuntolaina,,-90000.0,velat,asuntolaina,,2,velat.csv,1.0,-90000.0,mkk,False
+187,d796d583d5435b09fbba55ccd40214eb086ab3f18e8d1a4a05bc0e823413d290,2024-01-31,velat,asuntolaina,,-84000.0,velat,asuntolaina,,2,velat.csv,1.0,-84000.0,mkk,False
+188,0b20df0b26903fa3b1ec81497164358feb9931c5df27fc10ca17534a68aed850,2023-03-31,velat,asuntolaina,,-89000.0,velat,asuntolaina,,2,velat.csv,1.0,-89000.0,mkk,False
 189,12a5e0635894b5d5a02e95a846f77daee3dac7f10eca01334db243b7035c3d35,2023-03-31,nnsr,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18456.37,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,18456.37,mkk,False
 190,e99b4ddfafccfa4ecaab1ca08931bff51105d299f885579db7042987017be9ab,2023-02-27,nnsr,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18489.97,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,18489.97,mkk,False
 191,ab121cd6ff223a1efaae03c57e8b21e35212f09027788d7ce1f8701cd51f7211,2023-04-30,nnsr,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18504.26,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,18504.26,mkk,False
 192,07a037d045d8ec8d19438480cd2fe804038bc9f3efb719625946706f90cf0d01,2023-01-31,nnsr,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18313.61,varat,sijoitusvarallisuus,kasvusalkku,11,nnsr.csv,1.0,18313.61,mkk,False
-193,f33f956996518521444699a4ade65da95f36471710d8594909b32013824be9b2,2023-01-31,menot,käteisellä lapaset,,-500.0,menot,vaatteet,.*,13,menot.csv,1.0,-500.0,mkk,False
-194,3967cbbdce05f7bdcaaf8ef27494bea8339ea3d3c81422d1f6b7281f240500cc,2024-02-28,menot,maksoin yrityksen kuluja käteisellä,,-50.0,pois,yrityksen kulut,.*,17,menot.csv,1.0,-50.0,mkk,False
-195,eed0adada9dc1d33e869936f7e0b980b57afa14c07d109ee84aeade94cbc1b5b,2023-02-28,menot,muuta,,-201.0,menot,muut,.*,24,menot.csv,1.0,-201.0,mkk,False
+193,f33f956996518521444699a4ade65da95f36471710d8594909b32013824be9b2,2023-01-31,menot,käteisellä lapaset,,-500.0,menot,vaatteet,,13,menot.csv,1.0,-500.0,mkk,False
+194,3967cbbdce05f7bdcaaf8ef27494bea8339ea3d3c81422d1f6b7281f240500cc,2024-02-28,menot,maksoin yrityksen kuluja käteisellä,,-50.0,pois,yrityksen kulut,,17,menot.csv,1.0,-50.0,mkk,False
+195,eed0adada9dc1d33e869936f7e0b980b57afa14c07d109ee84aeade94cbc1b5b,2023-02-28,menot,muuta,,-201.0,menot,muut,,24,menot.csv,1.0,-201.0,mkk,False
