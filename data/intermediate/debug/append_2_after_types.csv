@@ -1,0 +1,15 @@
+date,account,description,info,amount,source_file,transaction_id
+2023-01-31,velat,asuntolaina,,-90000.0,velat.csv,7575256b21545b5911dc622c54f6dd0348ecd44f03f6d7330e9e609fe9a5f463
+2023-02-28,velat,asuntolaina,,-89500.0,velat.csv,220f9fec8020a9857515efaf01f98a336c2a845cbc9b2830bf620a8b0f14155d
+2023-03-31,velat,asuntolaina,,-89000.0,velat.csv,0b20df0b26903fa3b1ec81497164358feb9931c5df27fc10ca17534a68aed850
+2023-04-30,velat,asuntolaina,,-88500.0,velat.csv,d959a14a59e3b7639a5e4edc95c0f466ce39d419595fc601f4061d2e1279b279
+2023-05-31,velat,asuntolaina,,-88000.0,velat.csv,06248df2ccd0afd613bb4e05b75305470042d7f85420916ddb3dd0b259fda526
+2023-06-30,velat,asuntolaina,,-87500.0,velat.csv,19b881d99d694d1ebc7aeb8fbae5ed50cd6cdbe79187d2b64a33c83f766aa55f
+2023-07-31,velat,asuntolaina,,-87000.0,velat.csv,c363fa8d5d43da4af505297dd2718466fc8dd20938c2b8730d6542f5838b9a20
+2023-08-31,velat,asuntolaina,,-86500.0,velat.csv,f52ebef0fdc2d267602266281ca51d5419318bbe28bb515aa5cc134aa210a267
+2023-09-30,velat,asuntolaina,,-86000.0,velat.csv,fc3c6d7b05d5ec8ac2e5b1f009ce9c741edb2a94e60615925e120b0c456825d2
+2023-10-31,velat,asuntolaina,,-85500.0,velat.csv,7d57ac69dcb59d988c0edc7efdca030b213130efbfdfac181e115d966e60fce6
+2023-11-30,velat,asuntolaina,,-85000.0,velat.csv,7125830483e103ccdbe3a0af10f9c490cb7051e99363357f1f1bfde6d0107835
+2023-12-31,velat,asuntolaina,,-84500.0,velat.csv,fb651b0f24f6d196dd3cbf2314fc0f9d385904d8fc39bc7feca3c322c7ba5c8c
+2024-01-31,velat,asuntolaina,,-84000.0,velat.csv,d796d583d5435b09fbba55ccd40214eb086ab3f18e8d1a4a05bc0e823413d290
+2024-02-28,velat,asuntolaina,,-83500.0,velat.csv,3ef6886f4fce83d7965da3a5dfe0281c72a36baddd34e47d8193b8742eb184b8
