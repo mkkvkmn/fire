@@ -134,6 +134,7 @@ def apply_categorization(df: pd.DataFrame, rules_df: pd.DataFrame) -> pd.DataFra
                 "sub_category",
                 "rule_id",
                 "source_file",
+                "record_type",
             ]
         ]
 

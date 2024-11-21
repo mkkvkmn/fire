@@ -10,13 +10,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
 from config.settings import SETTINGS
 from utils.logger import setup_logging
+from utils.helpers import write_to_csv, clean_folder
+
 from data_processing.preprocessors.nordnet_portfolio import process_portfolio
-from source_file_reader.reader import collect_files, read_collected_files
+from source_file_reader.reader import collect_files, read_collected_files, read_csv_file
 from data_processing.loader import append_dataframes
 from data_processing.categorizer import categorize_data_loop
 from data_processing.splitter import split_data, create_splits_df
-from data_processing.fixer import apply_fixes, create_fixes_df
-from utils.helpers import write_to_csv, clean_folder
+from data_processing.fixer import apply_fixes
+from data_processing.target_setter import set_targets
 
 
 def main(debug):
@@ -32,7 +34,7 @@ def main(debug):
         clean_folder(SETTINGS["intermediate_folder"])
 
         # process nordnet portfolio if enabled
-        if SETTINGS["nordnet_portfolio"]:
+        if SETTINGS.get("use_nordnet_portfolio", False):
             process_portfolio()
 
         # collect files
@@ -52,12 +54,21 @@ def main(debug):
         df_splitted = split_data(df_categorized, df_splits)
 
         # apply fixes
-        df_fixes = create_fixes_df(SETTINGS["fixes_file"])
+        df_fixes = read_csv_file(SETTINGS["fixes_file"])
         df_fixed = apply_fixes(df_splitted, df_fixes)
 
+        # set targets if enabled
+        if SETTINGS.get("use_targets", False):
+            df_targets = read_csv_file(SETTINGS["targets_file"])
+            df_targets_monthly = set_targets(df_targets)
+            # append targets to actuals
+            df_final = pd.concat([df_fixed, df_targets_monthly], ignore_index=True)
+        else:
+            df_final = df_fixed
+
         # save final data with fixes
-        final_result_file = SETTINGS["final_result_file"]
-        write_to_csv(df_fixed, final_result_file)
+        write_to_csv(df_final, SETTINGS["final_result_file"])
+        logging.info("great success!")
 
     except Exception as e:
         logging.error(f"error - main: {e}")
@@ -65,7 +76,7 @@ def main(debug):
         return
 
     elapsed_time = time.time() - start_time
-    logging.info(f"fire done in {elapsed_time:.2f} seconds")
+    logging.info(f"done in {elapsed_time:.2f}s")
 
 
 if __name__ == "__main__":

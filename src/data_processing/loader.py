@@ -32,10 +32,26 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
             for old_col, new_col in column_mapping.items():
                 logging.debug(f"{old_col} -> {new_col}")
 
-            # choose cols to keep and add some
+            # add columns if not present
             if "account" not in df.columns:
-                df["account"] = props["account"]  # only create if not in data
-            df = df.loc[:, ["date", "account", "description", "info", "amount"]]
+                df["account"] = props["account"]
+            if "record_type" not in df.columns:
+                df["record_type"] = "Actual"
+
+            # select columns
+            df = df.loc[
+                :,
+                [
+                    "date",
+                    "account",
+                    "description",
+                    "info",
+                    "amount",
+                    "record_type",
+                ],
+            ]
+
+            # add source file and transaction id information to data
             df.loc[:, "source_file"] = props["file_name"]
             df.loc[:, "transaction_id"] = df.apply(create_id, axis=1)
 

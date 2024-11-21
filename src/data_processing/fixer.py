@@ -6,18 +6,6 @@ from config.settings import SETTINGS
 from utils.helpers import has_content, save_on_debug
 
 
-def create_fixes_df(file_path: str) -> pd.DataFrame:
-    """
-    creates a fixes dataframe from a file path.
-
-    :param file_path: path to the csv file containing the fix configuration.
-    :return: dataframe containing the fix configuration.
-    """
-    df_fixes = pd.read_csv(file_path)
-
-    return df_fixes
-
-
 def apply_fixes(df: pd.DataFrame, df_fixes: pd.DataFrame) -> pd.DataFrame:
     """
     applies fixes to the dataframe based on the fixes configuration file.

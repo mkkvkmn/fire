@@ -28,13 +28,15 @@ SETTINGS = {
     "categories_file": os.path.join(CONFIG_FOLDER, "data_processing/categories.csv"),
     "fixes_file": os.path.join(CONFIG_FOLDER, "data_processing/fixes.csv"),
     "splits_file": os.path.join(CONFIG_FOLDER, "data_processing/splits.csv"),
+    "use_targets": True,
+    "targets_file": os.path.join(CONFIG_FOLDER, "data_processing/targets.csv"),
     # debug
     "debug_folder": os.path.join(DATA_FOLDER, "intermediate/debug"),
     "debug_mode": False,
     "log_file": LOG_FILE,
     # preprocessors
     "preprocessors_folder": PREPROCESSORS_FOLDER,
-    "nordnet_portfolio": True,
+    "use_nordnet_portfolio": True,
     "nordnet_portfolio_file": os.path.join(
         PREPROCESSORS_FOLDER, "nordnet/nordnet_salkkuraportti.csv"
     ),
