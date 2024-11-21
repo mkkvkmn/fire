@@ -93,9 +93,11 @@ files_file: The path to the files configuration file. Default is "config/source_
 categories_file: The path to the categories configuration file. Default is "config/data_processing/categories.csv".
 fixes_file: The path to the fixes configuration file. Default is "config/data_processing/fixes.csv".
 splits_file: The path to the splits configuration file. Default is "config/data_processing/splits.csv".
+use_targets: Whether to use targets. Default is True.
+targets_file: The path to the targets configuration file. Default is "config/data_processing/targets.csv".
 debug_folder: The directory where debug files are stored. Default is "data/intermediate/debug".
 debug_mode: Whether to run the application in debug mode. Default is False.
-nordnet_portfolio: Whether to process the Nordnet portfolio. Default is True.
+use_nordnet_portfolio: Whether to process the Nordnet portfolio. Default is True.
 nordnet_portfolio_file: The path to the Nordnet portfolio file. Default is "data/source_files/for_preprocessors/nordnet/salkkuraportti.csv".
 
 # Important Notes
