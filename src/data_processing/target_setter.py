@@ -3,7 +3,7 @@ import logging
 import os
 
 from config.settings import SETTINGS
-from utils.helpers import save_on_debug, create_id
+from utils.helpers import save_on_debug
 
 
 def set_targets(df_targets: pd.DataFrame) -> pd.DataFrame:
