@@ -13,3 +13,13 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 31.12.2023,velat,asuntolaina,,-84500,Actual,velat.csv,5af712f5454b96cf083296671a82d441d4b102d181543d6dae87cf3cb23be38b
 31.1.2024,velat,asuntolaina,,-84000,Actual,velat.csv,d80529dd7e187ecd0d49cd47048a7c58822a7ddd0029c17060cabaf03ad25d1b
 28.2.2024,velat,asuntolaina,,-83500,Actual,velat.csv,013120c2925f085a250f70be5d4ee979b5294fbc380f59cbe24b7652bcec6684
+31.3.2024,velat,asuntolaina,,-83000,Actual,velat.csv,fb4dedcab4ec22d79865cc9557aea58976cfbb4e82592ac658069af1b0626d45
+30.4.2024,velat,asuntolaina,,-82500,Actual,velat.csv,bc04ef2de673f2b593dd2c1e2192f0ab264190d070d48bf3d45c634494f6e183
+31.5.2024,velat,asuntolaina,,-82000,Actual,velat.csv,373da6cd234761b2d80506109cffda14a66d8aeda0925efab2667d1a6f664d0b
+30.6.2024,velat,asuntolaina,,-81500,Actual,velat.csv,34434c80fbfb9b3df46c92f102430371dde82ffb7150961ea4f10c65591ebbd3
+31.7.2024,velat,asuntolaina,,-81000,Actual,velat.csv,eaf65219cf9bc1563ca453bc580fb581c44adcc5326a4d08e014bca824c572fe
+31.8.2024,velat,asuntolaina,,-80500,Actual,velat.csv,e974f2bb13978b7a6a6e0dba2660dc9540ae46a11842f73156ba5d26dba90578
+30.9.2024,velat,asuntolaina,,-80000,Actual,velat.csv,b289fdbef071c4a75d177b30ae3e710f42499424cad559a26bee662311b7b251
+31.10.2024,velat,asuntolaina,,-79500,Actual,velat.csv,1ad57707fc1153a46c6033650377ac72ed00b1e80f5dd345fe3c6c7c69ad070c
+30.11.2024,velat,asuntolaina,,-79000,Actual,velat.csv,b0e92ff525eedc0cc4b4fc4f61348d466cbfbe42084e68c40e1cb097aeea9f74
+31.12.2024,velat,asuntolaina,,-78500,Actual,velat.csv,63b59635175bedc748f67849dd9b8ba8ce4a4b2162f5203ca3ba62a72f9e1e98

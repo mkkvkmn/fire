@@ -38,6 +38,9 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2023-11-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,6879.18,Actual,nordnet_salkkuraportti_preprocessed.csv,18463095f8c15638556d1537511f78d89f13e6e09b4ebacb3108fe2b216f6353
 2023-11-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,27330.59,Actual,nordnet_salkkuraportti_preprocessed.csv,f97a9f89f8391bbdaaa5647444fd0e8d87b1d3b5e90d7c7541c9a7fa32fa0968
 2023-11-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,11323.45,Actual,nordnet_salkkuraportti_preprocessed.csv,e5899e3d691e69c68db801227bb770135878dacd8d7f9fc7c1492b29e1acda90
+2024-11-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,61ef8211598e021d42bf2d1f82bc5b71574ce769525d1fdcd9959c58a236bcb1
+2024-11-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,da39b28a553cb1c3707d536c8455e88d4540038054bce5e9591a2f42f0a5c33b
+2024-11-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,6aaf70ab4f2c63f77903ad928a2d965996d98ac07d40eb83c8cd0321337465e3
 2023-04-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,6245.23,Actual,nordnet_salkkuraportti_preprocessed.csv,81cc4bb45123aee0cb2ee6ebcf2c968a49dd5362e693487ae6a193ad55935e21
 2023-04-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,15858.1,Actual,nordnet_salkkuraportti_preprocessed.csv,75291b36b90a66566475939304d287466e29a870eb391b900c63450a0d3d564d
 2023-04-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6604.95,Actual,nordnet_salkkuraportti_preprocessed.csv,71b099c64470dcf0ae9219f3afbfeeb566bd37bb2fb499aab920626b5e773cef
@@ -46,9 +49,15 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2023-06-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8147.25,Actual,nordnet_salkkuraportti_preprocessed.csv,5346ab8439b2be8c1d0d4577b81b855d4800b90b80f322682fa6ee9904f23665
 2023-06-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,16046.62,Actual,nordnet_salkkuraportti_preprocessed.csv,64f7698968724f19439366d9fbb947d7f795e98aac84cfe8d39267aed66ea61c
 2023-06-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6547.12,Actual,nordnet_salkkuraportti_preprocessed.csv,bc3781a8466e28f23e44773515646baa21960b4cfa7e2d717744b1bb9d764c80
+2024-06-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,3635d38408085ec959405c564badc7104a353d584b2207bc5c097b33314d60d3
+2024-06-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,61b2cc10548d0c342214f2552c93e3dafd39585d38f83ee402a65610f3a7430f
+2024-06-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,de6362850ffdf1d4c85e3c6c0d3fc2ce17b2ed94835b0469fb62a3db2f8fca48
 2023-09-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8614.75,Actual,nordnet_salkkuraportti_preprocessed.csv,4e7c59828d9c15589cee5a9c2e4db1fb2fa9aee079f05a616258384e80802f8d
 2023-09-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,28192.33,Actual,nordnet_salkkuraportti_preprocessed.csv,6f4e5a814ba408709b9737e33d36d282a4333eeb875ea811e5648b1bccec4c2d
 2023-09-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,5770.41,Actual,nordnet_salkkuraportti_preprocessed.csv,9b95d2a00ec6119725c4fdbdd8033790b65b19e3cea4f51a75b074a641fca0f0
+2024-09-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,9c15f409506a36bdd05b372f6d8791556b01a41c66e17cf80559e2f953cc151b
+2024-09-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,8dd8f913d420d33a632c401066afefb2b93de7359afc72e16d928fdedd9bae6b
+2024-09-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,d6c1b959db85f3688f5830c8ce56c7ef2f8eb2798f6e33d9ffe1a119d932dd17
 2023-01-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,c7e7ba0a774f70cb96fa648d6cca27a6b2db6cbde6c9d027b571c41fd7034b9b
 2023-01-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,95b7cd90509cbe9f9505d912edca8a989b9c49b383e68a0d09f61b4c87858a22
 2023-01-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,98a101cc03a271c902715d8f0118be1205a75ce1ca99dc406a79ec780cb91447
@@ -60,23 +69,44 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2023-10-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,7155.15,Actual,nordnet_salkkuraportti_preprocessed.csv,51b36695d9412b4bcd2326ddf73e0ed203535179e037d89c89ccfd691c51314c
 2023-10-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,25456.68,Actual,nordnet_salkkuraportti_preprocessed.csv,dfe41de54cffa25fc93ccac3df21c39882df79d61705c2a2093970d809807fce
 2023-10-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,5158.22,Actual,nordnet_salkkuraportti_preprocessed.csv,78e039c246d7f0bb1a093a0b6284d2cf481dd04472aec07a4eea9fd39560cd17
+2024-10-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,c17ed029966b49b9fca7082fb0adea6a64e95837b85c8d156c6022c42f5ac67c
+2024-10-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,7b18f215f52a80ae41d43815094724af2ca3dde4b67c310a49d7ac777f31fd19
+2024-10-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,7aee62c234740d435f11ea0ccc34c3a6082c43adbfeb9f6c113d024dc06bf44d
 2023-12-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8249.99,Actual,nordnet_salkkuraportti_preprocessed.csv,a7c0205bb602d312b786e75184860c0c397c79a6012bf8b5febf863acf2975d3
 2023-12-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,29314.14,Actual,nordnet_salkkuraportti_preprocessed.csv,c0c7e1f5c88b8202e7005691493c02d58624ebde91be5529469855f23758d36b
 2023-12-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,13014.93,Actual,nordnet_salkkuraportti_preprocessed.csv,b95c0c530190d5a8421887a948904d9fff8ce36b2802c0accfd14fe11f65407c
+2024-12-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,382076ddf0f183869b8e3e3c858f58a53a534e35a18e8a9f9a1f90b85447b9e2
+2024-12-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,2ed71b14513df63504a75ad880079d5663362eb3310efb65b9d600b92d600337
+2024-12-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,0db2e370e05ff6e42a58fae50674c2e5c55555911b08655cdf865e4df51a9e71
 2023-03-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,6355.66,Actual,nordnet_salkkuraportti_preprocessed.csv,c1d5d4ddc4f451202826d8b0d3f7e0ab34a8a944da9c7c6f4921be758b9f7698
 2023-03-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,16251.22,Actual,nordnet_salkkuraportti_preprocessed.csv,4f6f16f990fabcadb9ba48b1f9826ebf97ffad282df55c1b819d9cc8e6b0d6e2
 2023-03-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6817.72,Actual,nordnet_salkkuraportti_preprocessed.csv,585557925e88470518e9977e6147079ddec63782395a38d5d6d8aa5a595b0b54
 2023-03-31,nordnet_salkkuraportti,Likvidit varat,Salkku 3,1692.41,Actual,nordnet_salkkuraportti_preprocessed.csv,b48c372d6541faf3784761ef011c79d14388f09c44a2573ea9dae8dce6222b38
 2023-03-31,nordnet_salkkuraportti,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18456.37,Actual,nordnet_salkkuraportti_preprocessed.csv,45bc57c93769ce626b7ffc77df1175e447f8051e7a0d8de5f97ee97a51d2b11b
+2024-03-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,293a7de3bea9a03c3cb8544230c043b392f1b402eff62faa48c49aa3a8fc7fb1
+2024-03-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,bc9e580e6fec67b8a90be3a1664a6aab8ce25d4d31dd2e4ded269ac1fd549879
+2024-03-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,d84b909bc4a14fe0db22cd19b38d9e1393353215e702659a3576d09147913aa7
 2023-05-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,7080.47,Actual,nordnet_salkkuraportti_preprocessed.csv,48e48b21f3b9a5dc3edf53e87f6bcc14afabdcb2f6b920bd0704567f909e386d
 2023-05-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,15819.42,Actual,nordnet_salkkuraportti_preprocessed.csv,b1c0efb8d604888bb12b9d790b12e428efdb78cd0a97f804352b9855daff8220
 2023-05-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6654.11,Actual,nordnet_salkkuraportti_preprocessed.csv,3540aefd675bef4970ffa11b111984546c13cc41e43bdf0d5680dad8a82132bc
+2024-05-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,bce086b76184c8283eaa7f7e0874d3bd24aa11d2e75efd642898d6c04d707d19
+2024-05-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,db04e04e9220336b05716d80bc1db77dc80d6c5390afba98b9cdc1dccb7cf9ff
+2024-05-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,5622c6201435e635e3428bbff09a5f48204f2ea38241bacd8038ded5dfb3aa9b
 2023-07-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,9227.57,Actual,nordnet_salkkuraportti_preprocessed.csv,6abb34ee21d9c4debfe81b2cea0c9b2bdd2f56644ff7774f2228b17061bebfa4
 2023-07-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,30456.51,Actual,nordnet_salkkuraportti_preprocessed.csv,26709d5246b8d22cb72877648ebbddef6bd57e7f80c7d8fae9defa3040f48ba4
 2023-07-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6309.6,Actual,nordnet_salkkuraportti_preprocessed.csv,a4e859680c71aaefa7dc80fc53b40ee8584b032270bb634d94131ec62790d606
+2024-07-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,5711955e38a3e95c9e86f5d629a239d7d1c7933a360c4a632349c77db5e96b79
+2024-07-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,91bc4e30d7913bae2505f765292888ff48eeacc6de6f0d8ddd6f26bf8600ca92
+2024-07-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,59f73aadfe5874a8c648433f3656d4cc6f59993ffafb2487d0f3ebda5ed23828
 2023-08-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8830.95,Actual,nordnet_salkkuraportti_preprocessed.csv,ee45cd3beb16fb33a55887baef19a186f541a0ccdb8b28fb61f3da444463f454
 2023-08-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,29098.41,Actual,nordnet_salkkuraportti_preprocessed.csv,2058fda3568ab4395d1866045b1fcebbd6750daa893d2875417066a6dfa3a994
 2023-08-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6154.36,Actual,nordnet_salkkuraportti_preprocessed.csv,d35498e25c4d51a2d578025e3d6cb0f6a03fbf113d9d6e4104ac3f74d0eb0817
+2024-08-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,5540294ccf81fceb635a0f5e6577014789e8847d988caff71184349745d50ccf
+2024-08-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,f5c7259afe9900eea8b3f4fa74fe4330969049b5c0432aec431aae0df5f8606b
+2024-08-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,ca83e315e80f40fcede6c395e5e7851c6e552a7365b963178f5dd5c37d1cbae5
+,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,Actual,nordnet_salkkuraportti_preprocessed.csv,e94c3fcc98db249cc3ba1597e7e078d1d87c9a385335c24ec26f585aa9c02d12
+,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,Actual,nordnet_salkkuraportti_preprocessed.csv,053a27db851768803657c9b82224928b1a02ae08619119c80031b9876c7e4f2c
+,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,Actual,nordnet_salkkuraportti_preprocessed.csv,40cdb35c12d6a07b5c505d2188dfeb6c94a828f83b96dcb57cd50c526a3c0801
 2023-06-16,osingot,O,ENNAKKOPIDÄTYS,-13.28,Actual,osingot-2023-2024.csv,1dfd612abdec49dc261a1617e6b2cb476880865a7ca5b6966446abf261c3d7e5
 2023-06-16,osingot,O,OSINKO,88.56,Actual,osingot-2023-2024.csv,0163b7d4b85aab11ba96e643ecdcaabecc3decb16617892ba6228e052f8e5f1f
 2023-05-16,osingot,O,ENNAKKOPIDÄTYS,-13.36,Actual,osingot-2023-2024.csv,5ee65c18e8e29e5d70cf03657387bfac02dd2113aaedc325b98f66cd851c1c52
@@ -93,6 +123,16 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2024-02-16,osingot,O,OSINKO,88.13,Actual,osingot-2023-2024.csv,138d3c5cae4347d1f51448be68c7678aef937e976b384ed1a4bae5483f593057
 2024-01-16,osingot,O,ENNAKKOPIDÄTYS,-13.1,Actual,osingot-2023-2024.csv,28356a2cc5b43516636fa2f83d78afcc4ff8afb216d94eff39890d0deb3cc0f8
 2024-01-16,osingot,O,OSINKO,87.35,Actual,osingot-2023-2024.csv,2c339b52aeab741bcc8ada5e3add1ed0f8cade11a80c1f8b3e3184e03cc930d3
+2024-06-16,osingot,O,ENNAKKOPIDÄTYS,-13.28,Actual,osingot-2023-2024.csv,498a3701770c29e43193b7a9c4bf997529f376143c9ba8e682f96eca48d954d5
+2024-06-16,osingot,O,OSINKO,88.56,Actual,osingot-2023-2024.csv,057cc59ca1b468a4f766a526375ab3cb45e063eb100462dd56093480d0d54f4f
+2024-05-16,osingot,O,ENNAKKOPIDÄTYS,-13.36,Actual,osingot-2023-2024.csv,9a426117de6134a7fc1ffab5663244e0fcfe1b274d4e1e390a02feede120649b
+2024-05-16,osingot,O,OSINKO,89.05,Actual,osingot-2023-2024.csv,2fadb60983c1ea921fed3f8318b2cb32dc1b52c55e1cc04f6d1b2615f7f24f69
+2024-04-17,osingot,O,ENNAKKOPIDÄTYS,-13.22,Actual,osingot-2023-2024.csv,015157bd917f17da6d7d07a4ecef3e42f7823af0e71a89a1ca5faca86e640333
+2024-04-17,osingot,O,OSINKO,88.11,Actual,osingot-2023-2024.csv,9160520dfdbb544f8b6efcc9050b73e2b810d21c4f3c85bb5a18f16537a9e347
+2024-03-16,osingot,O,ENNAKKOPIDÄTYS,-13.66,Actual,osingot-2023-2024.csv,7e4296585d582e80db73ea3d121e64e7c8b81558f950f0e9e17076ec684a948a
+2024-03-16,osingot,O,OSINKO,91.05,Actual,osingot-2023-2024.csv,79daf2fec9606432a0ea4059105394417585b247802c792c3b2a832c7fdc5541
+2024-02-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,Actual,osingot-2023-2024.csv,2aec10778bdf537f3657cfee3fcec7309e92018e33d01615fd4bee9af2992e05
+2024-02-16,osingot,O,OSINKO,88.13,Actual,osingot-2023-2024.csv,138d3c5cae4347d1f51448be68c7678aef937e976b384ed1a4bae5483f593057
 2023-03-31,penno,Palkka,Matkakorvauksia,200.0,Actual,penno.xlsx,34958e928d6af5086a674a868d9d96f72e5fe4169d008ba089cfa51334cfa00e
 2023-03-30,penno,Palkka,,1000.0,Actual,penno.xlsx,454df0c9f9cbbd470a6786956831f2365c3b9b41ab8e37bd71578076193eee4b
 2023-03-29,penno,Kahvittelu,Pulla,-3.5,Actual,penno.xlsx,687afa30a70a44470d6d8b5439be88d8115099c00aab7d0053a3fa51127327f9
@@ -124,7 +164,16 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2023-07-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,Actual,s-pankki_2023_07-2023_12.csv,e86a976078533dde734f42810ddfbdc3b7c093e5b8335337cc6e591f3b7caad9
 2024-02-28,s-pankki,Oma tilisiirto,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,702bb34834278aa6c4e20a2c390f91d6082d117064e053c773de49fbb761472d
 2024-02-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,e2aaba9e5cd203717eedf93862bcfc6c8a56d026fd458360100c5c4cb48d9758
-2024-01-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,558ea8c6f3b0a7a75e673a9a27a1a10e252babc4c23c1f3e6e03f47b69681694
+2024-03-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,4edb78970b9f6a809373e98716054b416d5647edd9d5402d3115299292c7a68a
+2024-04-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,0dd019179c0dbd57ff9fa328276b6182083da173bdc7bdc40ddc06719f2a69a0
+2024-05-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,0ddb30848086dd4d206e7b23b43d5f3f5181256f96433442fd3a618121995ee3
+2024-06-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,6a28d92ab02c9f5e8493686571ade59effd85e63388688ff9fae079d38a37265
+2024-07-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,02fdbb4054afbb7d45137c05f7ba74274176842abcbebb686b21cad25c2d13ae
+2024-08-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,c2e8e12291e7c3a8cef72ef55793054285d109568adf8368540d64b17e778f3a
+2024-09-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,b5d7171d77426edafe0768b429ffcd5ab7c2f8c317b95fedd8c74040a5aadecf
+2024-10-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,e35671aa2cc85665784fcdb6ab7a283f06ae15600a3c372c7e74d6b110489492
+2024-11-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,366ea1fa7e0122fafd9c41a46256b1589e758b867609e27283ec8539bc8e6d68
+2024-12-01,s-pankki,Prisma,KORTTIOSTO,-500.0,Actual,s-pankki_2024_01-2024_12.csv,19572cc3852a415a7a43f8836756b70f19072d1c2957114840252286080c5253
 2023-01-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,3a40150d6dd914fcb8704aec0c893148f625d156e2cbec829022423086cf93b4
 2023-02-28,tulot,ansiotulot,,3000.0,Actual,tulot.csv,7f4c16086b89cf9dd049bf8ac20d07f2101089adf90a7b64bdcd770d48bfdfdf
 2023-03-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,9bdcd381633be44ec22b6dab6e812bc7aa44965d1a3dcf1dc1fb6e739a1d6d52
@@ -139,6 +188,16 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2023-12-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,966a573b2ed1b0154ee0a77ed21c9ff929d819d4b3016d78dcf773be65c0f9fe
 2024-01-31,tulot,ansiotulot,,3500.0,Actual,tulot.csv,34b0dcb43a37d748293a8c0232244d9b2bab2db2eef28922efd9d23450271f07
 2024-02-28,tulot,ansiotulot,,3500.0,Actual,tulot.csv,a4b84b6608cd489607ec699f2d76ac38d81c999b3dc51b2c81d8e4add7393781
+2024-03-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,4ee489f207c605130025d846e5760f40f46dc8d0e334ff22017c7ba475fa807d
+2024-04-30,tulot,ansiotulot,,3000.0,Actual,tulot.csv,3e867d61cf643f5c65d68ef9440eeb4eb3d6ec5793c377e8c7290c4667ea25fc
+2024-05-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,ee2fbd489f0aab29d5ed1d7ad80aed9bb0a9f7b3622050a977c0a68e88350b05
+2024-06-30,tulot,ansiotulot,,3000.0,Actual,tulot.csv,0a1cc6df2464e3868a00b04174e96e2c3927b3607aa736be37d9e21ec3d4bc42
+2024-07-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,36aa423e608fc15ad4d2dd6f9b670492acabadecd8ac99ec681dedd5d1d53710
+2024-08-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,b000591235c79a01bd2ecb09632f9ad0a26011f933590fdd82ab6afbd9b46e8d
+2024-09-30,tulot,ansiotulot,,3000.0,Actual,tulot.csv,16c02c817131375cfeabe4a9e1ebed74913990b899bfde2e7e39c8de11905e2a
+2024-10-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,7ee46f79e55709594e8f47e6e73fc226b9319ee4e095971cec6ca5df038052da
+2024-11-30,tulot,ansiotulot,,3000.0,Actual,tulot.csv,0af2a9a16e633a8a0ae797a6a167172bcf37a0821ce97d40b00d8ebe06f83823
+2024-12-31,tulot,ansiotulot,,3000.0,Actual,tulot.csv,cd436638b21af4c45bc00ea48fc6140c41f5cb75e8305c1367917f3740fcf327
 2023-01-31,varat,Nordean sijoitukset,,10000.0,Actual,varat.csv,3b3007a6222f234fd9bf6aa73694b386cb44b9d7cde054f1236d5a89eaa396b6
 2023-01-31,varat,S-Pankin saldo,,7460.0,Actual,varat.csv,fd5819d24579513e379f49c4b4699f4ea8dec657f651b76a57988057a1095b25
 2023-01-31,varat,Asunto,,100000.0,Actual,varat.csv,4c3cb8860c1defa0bba70a494f94b2432dbade98e5037922a91256bcb0a788c4
@@ -181,6 +240,36 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2024-02-28,varat,Nordean sijoitukset,,22893.0,Actual,varat.csv,b60b5c40e54a19f4e72434abd3cabd2005319feda309aca121b6ad4231975c3b
 2024-02-28,varat,S-Pankin saldo,,2225.0,Actual,varat.csv,e1d9a12def2f252983d120827becc16e0e100d0a4c36f51e237baa2af734311a
 2024-02-28,varat,Asunto,,100000.0,Actual,varat.csv,c4b9259d92f6ea8dc43308e253c6a1449d9b1bf9fc1525c48f5b820d20bcb083
+2024-03-31,varat,Nordean sijoitukset,,12471.0,Actual,varat.csv,4ef1e0ae7728fee7b6ca0314514614b4f3973768470a2df89fb2abf2af59fd8e
+2024-03-31,varat,S-Pankin saldo,,3925.0,Actual,varat.csv,de0c1af71c53871931ccf9e7c75c34adf9c1de4a246b810f95b7a0c6237b2d6c
+2024-03-31,varat,Asunto,,100000.0,Actual,varat.csv,cae9bf7dda4c7720bfd6b7094b58d18d9db7f5002d0b4f673685b992d7edcdfb
+2024-04-30,varat,Nordean sijoitukset,,13954.0,Actual,varat.csv,3879a7abae788e3ca4a9b06742524b34ee6d4cb58415716c2df0e81d576348de
+2024-04-30,varat,S-Pankin saldo,,2851.0,Actual,varat.csv,2082b008129fbd54588310577d936af6f27a57c6824e300f7ffeb67f2fdca066
+2024-04-30,varat,Asunto,,100000.0,Actual,varat.csv,b542f6322669298b0ea726a58471870218c17bb36bab1f6e5706f11130dc8635
+2024-05-31,varat,Nordean sijoitukset,,15228.0,Actual,varat.csv,7242edcd9af4d14e27c386a7e1ac096317f4350aa8454c928fd33c5d0645eefe
+2024-05-31,varat,S-Pankin saldo,,201.0,Actual,varat.csv,d45523bf211211241a9fbe133cdf40d8e6e5585948b71ee295e07187555016d8
+2024-05-31,varat,Asunto,,100000.0,Actual,varat.csv,d83852ad3809e55c5f496f47351318e05f86726b8f8cd6c9b0164f4334ac6875
+2024-06-30,varat,Nordean sijoitukset,,16529.0,Actual,varat.csv,4f9ecc6351c01332dd9c0c64ff6df405f9c7346f1d7fa2c90777d32cee9b4dd4
+2024-06-30,varat,S-Pankin saldo,,447.0,Actual,varat.csv,3fba881c545ada773fcd2e8feb14eab5fd17bb9f619be6815c0734c49ecb51f5
+2024-06-30,varat,Asunto,,100000.0,Actual,varat.csv,7c014871c50b80e394742dc1c13ea69bddaefffee4d5938f985cb0fcd3da90d7
+2024-07-31,varat,Nordean sijoitukset,,18019.0,Actual,varat.csv,be5b398172b30b568a0d473c488522ca4f83fedad1fd4debb9bed04565c4ef33
+2024-07-31,varat,S-Pankin saldo,,6680.0,Actual,varat.csv,c861fee18981c74e493abba55259bccefe0a3636c1b402dbb2c7b4a84c8d73aa
+2024-07-31,varat,Asunto,,100000.0,Actual,varat.csv,71a8ee7de91064dad35ce913cf1f3a229cf26977145d8eeb4d9736e74b00cee0
+2024-08-31,varat,Nordean sijoitukset,,18713.0,Actual,varat.csv,89ba3fe06816e5da04a727d0d3653c21e7a9568c5211a9ab0a99c5a595e59e99
+2024-08-31,varat,S-Pankin saldo,,6533.0,Actual,varat.csv,8f392a4f30b0a2e39277d53ffc5f43d1cb7f4ceb5e367784f56369f44b9f2fa1
+2024-08-31,varat,Asunto,,100000.0,Actual,varat.csv,d38c71338ef430403edc7b937c7600707ca7582f5c5b3fed361b0adf5b234332
+2024-09-30,varat,Nordean sijoitukset,,20145.0,Actual,varat.csv,2bf7396071e23a97840c10316856a231c8a6333c1c5b02bbaa24ad2f65f30dcd
+2024-09-30,varat,S-Pankin saldo,,9611.0,Actual,varat.csv,40a542455cea1a62a50cffc20a7482ca1ace28241ecb2fefa974ddfdb60a728f
+2024-09-30,varat,Asunto,,100000.0,Actual,varat.csv,82c9379fe444a1c545cb9209f77fcc3abb54e67cbbc3e0a531845bae65eb0456
+2024-10-31,varat,Nordean sijoitukset,,21624.0,Actual,varat.csv,1888ed4a441fc1596bb6df0755365cd740b6b9a4615c92bee2bec540263a4db4
+2024-10-31,varat,S-Pankin saldo,,3103.0,Actual,varat.csv,8afab8f42964618446fe8def5a9d52892cc0bcf8dabb1a1045a01e3dd559a7d0
+2024-10-31,varat,Asunto,,100000.0,Actual,varat.csv,d53d387bdd977aba4565d055b766d90b5ebd2677e7db2703591083ae7f0ab428
+2024-11-30,varat,Nordean sijoitukset,,22934.0,Actual,varat.csv,f60918f304b04b6cd20eb1acbb43f97c020638bbf5885e834e04457ef99fd278
+2024-11-30,varat,S-Pankin saldo,,1705.0,Actual,varat.csv,9490c13c8d769a2b6d832ac0cae54d242e1d87891f3b7cee0aa8c3ccf0cadc0d
+2024-11-30,varat,Asunto,,100000.0,Actual,varat.csv,26928c792d6508f0c0e92191197ed556f74c5066136fe8716c1221eedd1437b7
+2024-12-31,varat,Nordean sijoitukset,,23593.0,Actual,varat.csv,6e89a2637eaaa2f3bfa65a8f70846e9fad2d36334d46003589a3e3d14dac3d7d
+2024-12-31,varat,S-Pankin saldo,,3011.0,Actual,varat.csv,4a6cb52b8232d02cf6ca60fbb9c6365506da35d2c9167710923314cfbf253c3a
+2024-12-31,varat,Asunto,,100000.0,Actual,varat.csv,2a46ffba67cb7ce71d7377c81ba748dc995a0bc105c62bd70d90d2f368c9bfdf
 2023-01-31,velat,asuntolaina,,-90000.0,Actual,velat.csv,43f6244f0adc498aafc5f9fce8b49f62f3e698c13f561bb05df8e65e55bafc5f
 2023-02-28,velat,asuntolaina,,-89500.0,Actual,velat.csv,9b8bc151871af73d27375fe55efb95b739579310d115d335f2cda8fb812368c2
 2023-03-31,velat,asuntolaina,,-89000.0,Actual,velat.csv,8c7abd552997b6fb000c0770a4b8e499fe434424e9356f79e83992018ab74e6b
@@ -195,3 +284,13 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2023-12-31,velat,asuntolaina,,-84500.0,Actual,velat.csv,5af712f5454b96cf083296671a82d441d4b102d181543d6dae87cf3cb23be38b
 2024-01-31,velat,asuntolaina,,-84000.0,Actual,velat.csv,d80529dd7e187ecd0d49cd47048a7c58822a7ddd0029c17060cabaf03ad25d1b
 2024-02-28,velat,asuntolaina,,-83500.0,Actual,velat.csv,013120c2925f085a250f70be5d4ee979b5294fbc380f59cbe24b7652bcec6684
+2024-03-31,velat,asuntolaina,,-83000.0,Actual,velat.csv,fb4dedcab4ec22d79865cc9557aea58976cfbb4e82592ac658069af1b0626d45
+2024-04-30,velat,asuntolaina,,-82500.0,Actual,velat.csv,bc04ef2de673f2b593dd2c1e2192f0ab264190d070d48bf3d45c634494f6e183
+2024-05-31,velat,asuntolaina,,-82000.0,Actual,velat.csv,373da6cd234761b2d80506109cffda14a66d8aeda0925efab2667d1a6f664d0b
+2024-06-30,velat,asuntolaina,,-81500.0,Actual,velat.csv,34434c80fbfb9b3df46c92f102430371dde82ffb7150961ea4f10c65591ebbd3
+2024-07-31,velat,asuntolaina,,-81000.0,Actual,velat.csv,eaf65219cf9bc1563ca453bc580fb581c44adcc5326a4d08e014bca824c572fe
+2024-08-31,velat,asuntolaina,,-80500.0,Actual,velat.csv,e974f2bb13978b7a6a6e0dba2660dc9540ae46a11842f73156ba5d26dba90578
+2024-09-30,velat,asuntolaina,,-80000.0,Actual,velat.csv,b289fdbef071c4a75d177b30ae3e710f42499424cad559a26bee662311b7b251
+2024-10-31,velat,asuntolaina,,-79500.0,Actual,velat.csv,1ad57707fc1153a46c6033650377ac72ed00b1e80f5dd345fe3c6c7c69ad070c
+2024-11-30,velat,asuntolaina,,-79000.0,Actual,velat.csv,b0e92ff525eedc0cc4b4fc4f61348d466cbfbe42084e68c40e1cb097aeea9f74
+2024-12-31,velat,asuntolaina,,-78500.0,Actual,velat.csv,63b59635175bedc748f67849dd9b8ba8ce4a4b2162f5203ca3ba62a72f9e1e98
