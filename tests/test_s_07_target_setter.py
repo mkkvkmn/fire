@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../src"
 
 import pytest
 import pandas as pd
-from data_processing.target_setter import set_targets
+from data_processing.s_07_target_setter import set_targets
 
 
 def test_set_targets():

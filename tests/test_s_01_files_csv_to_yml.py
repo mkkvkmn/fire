@@ -7,7 +7,7 @@ import pandas as pd
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 
-from source_file_reader.files_csv_to_yml import csv_to_yml
+from source_file_reader.s_01_files_csv_to_yml import csv_to_yml
 
 
 def test_csv_to_yml_valid():

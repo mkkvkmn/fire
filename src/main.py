@@ -12,14 +12,18 @@ from config.settings import SETTINGS
 from utils.logger import setup_logging
 from utils.helpers import write_to_csv, clean_folder
 
+from src.source_file_reader.s_01_files_csv_to_yml import csv_to_yml
+from src.source_file_reader.s_02_reader import (
+    collect_files,
+    read_collected_files,
+    read_csv_file,
+)
 from data_processing.preprocessors.nordnet_portfolio import process_portfolio
-from source_file_reader.reader import collect_files, read_collected_files, read_csv_file
-from data_processing.loader import append_dataframes
-from data_processing.categorizer import categorize_data_loop
-from data_processing.splitter import split_data, create_splits_df
-from data_processing.fixer import apply_fixes
-from data_processing.target_setter import set_targets
-from source_file_reader.files_csv_to_yml import csv_to_yml
+from src.data_processing.s_03_loader import append_dataframes
+from src.data_processing.s_04_categorizer import categorize_data_loop
+from src.data_processing.s_05_splitter import split_data, create_splits_df
+from src.data_processing.s_06_fixer import apply_fixes
+from src.data_processing.s_07_target_setter import set_targets
 
 
 def main(debug):
