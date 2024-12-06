@@ -3,13 +3,19 @@ import os
 import pandas as pd
 import yaml
 import ast
+from collections import OrderedDict
 
 
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar("tag:yaml.org,2002:str", data, style='"')
 
 
-yaml.add_representer(str, quoted_presenter)
+def ordered_dict_presenter(dumper, data):
+    return dumper.represent_dict(data.items())
+
+
+yaml.add_representer(str, quoted_presenter, Dumper=yaml.SafeDumper)
+yaml.add_representer(OrderedDict, ordered_dict_presenter, Dumper=yaml.SafeDumper)
 
 
 def csv_to_yml(df: pd.DataFrame, yml_directory: str):
@@ -38,19 +44,27 @@ def csv_to_yml(df: pd.DataFrame, yml_directory: str):
                 # reverse the mapping to find the keys for standard fields
                 reverse_columns = {v: k for k, v in columns.items()}
 
-                yml_data = {
-                    "pattern": row.get("pattern"),
-                    "account": row.get("account"),
-                    "delimiter": row.get("delimiter"),
-                    "date_format": row.get("date_format"),
-                    "day_first": str(row.get("day_first")),
-                    "columns": {
-                        "date": reverse_columns.get("date"),
-                        "amount": reverse_columns.get("amount"),
-                        "description": reverse_columns.get("description"),
-                        "info": reverse_columns.get("info"),
-                    },
-                }
+                yml_data = OrderedDict(
+                    [
+                        ("id", row.get("id")),
+                        ("pattern", row.get("pattern")),
+                        ("account", row.get("account")),
+                        ("delimiter", row.get("delimiter")),
+                        ("date_format", row.get("date_format")),
+                        ("day_first", str(row.get("day_first"))),
+                        (
+                            "columns",
+                            OrderedDict(
+                                [
+                                    ("date", reverse_columns.get("date")),
+                                    ("amount", reverse_columns.get("amount")),
+                                    ("description", reverse_columns.get("description")),
+                                    ("info", reverse_columns.get("info")),
+                                ]
+                            ),
+                        ),
+                    ]
+                )
 
                 # validate .yml
                 missing_fields = [
@@ -76,7 +90,11 @@ def csv_to_yml(df: pd.DataFrame, yml_directory: str):
                 # write the .yml file with quoted strings and correct handling of special characters
                 with open(yml_file_path, "w", encoding="utf-8") as yml_file:
                     yaml.dump(
-                        yml_data, yml_file, default_flow_style=False, allow_unicode=True
+                        yml_data,
+                        yml_file,
+                        default_flow_style=False,
+                        allow_unicode=True,
+                        Dumper=yaml.SafeDumper,
                     )
                 logging.info(f"created: {os.path.basename(yml_file_path)}")
     except Exception as e:
@@ -87,6 +105,7 @@ def csv_to_yml(df: pd.DataFrame, yml_directory: str):
 if __name__ == "__main__":
     # example usage
     data = {
+        "id": ["1"],
         "pattern": ["s-pankki"],
         "account": ["s-pankki"],
         "delimiter": [";"],

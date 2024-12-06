@@ -43,7 +43,9 @@ def main(debug):
             process_portfolio()
 
         # collect files
-        file_info = collect_files(SETTINGS["source_folder"], SETTINGS["files_file"])
+        file_info = collect_files(
+            SETTINGS["source_folder"], SETTINGS["files_file_folder"]
+        )
 
         # read files
         dataframes = read_collected_files(file_info)

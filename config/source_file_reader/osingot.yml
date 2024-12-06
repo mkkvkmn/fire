@@ -1,10 +1,11 @@
-account: osingot
-columns:
-  amount: Summa
-  date: "Kirjausp\xE4iv\xE4"
-  description: Arvopaperi
-  info: Tapahtumatyyppi
-date_format: '%Y-%m-%d'
-day_first: false
-delimiter: \t
-pattern: osingot
+"id": "7"
+"pattern": "osingot"
+"account": "osingot"
+"delimiter": "\\t"
+"date_format": "%Y-%m-%d"
+"day_first": "FALSE"
+"columns":
+  "date": "Kirjauspäivä"
+  "amount": "Summa"
+  "description": "Arvopaperi"
+  "info": "Tapahtumatyyppi"

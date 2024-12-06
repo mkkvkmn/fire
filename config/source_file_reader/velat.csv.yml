@@ -1,10 +1,11 @@
-account: velat
-columns:
-  amount: amount
-  date: date
-  description: description
-  info: info
-date_format: '%d.%m.%Y'
-day_first: true
-delimiter: ','
-pattern: velat.csv
+"id": "3"
+"pattern": "velat.csv"
+"account": "velat"
+"delimiter": ","
+"date_format": "%d.%m.%Y"
+"day_first": "TRUE"
+"columns":
+  "date": "date"
+  "amount": "amount"
+  "description": "description"
+  "info": "info"

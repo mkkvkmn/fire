@@ -22,10 +22,13 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
         try:
             df = data["dataframe"]
             props = data["props"]
+            column_mapping = props["columns"]
 
-            # convert string to dictionary and rename columns
-            column_mapping = ast.literal_eval(props["columns"])
-            df.rename(columns=column_mapping, inplace=True)
+            # reverse so that key is old col and value is new col
+            reverse_column_mapping = {v: k for k, v in column_mapping.items()}
+
+            # rename columns
+            df.rename(columns=reverse_column_mapping, inplace=True)
 
             # log column mappings
             logging.debug(f"{os.path.basename(file_path)} column mapping:")

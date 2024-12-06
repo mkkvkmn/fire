@@ -13,6 +13,7 @@ from source_file_reader.files_csv_to_yml import csv_to_yml
 def test_csv_to_yml_valid():
     # create a temporary DataFrame with valid data
     data = {
+        "id": ["1"],
         "pattern": ["s-pankki"],
         "account": ["s-pankki"],
         "delimiter": [";"],
@@ -34,6 +35,7 @@ def test_csv_to_yml_valid():
     # read the .yml file and check its contents
     with open(yml_file, "r", encoding="utf-8") as f:
         yml_data = f.read()
+        assert '"id": "1' in yml_data
         assert '"pattern": "s-pankki"' in yml_data
         assert '"account": "s-pankki"' in yml_data
         assert '"delimiter": ";"' in yml_data
@@ -51,6 +53,7 @@ def test_csv_to_yml_valid():
 def test_csv_to_yml_missing_columns():
     # create a temporary df with missing column info
     data = {
+        "id": ["1"],
         "pattern": ["s-pankki"],
         "account": ["s-pankki"],
         "delimiter": [";"],
@@ -70,6 +73,7 @@ def test_csv_to_yml_missing_columns():
 def test_csv_to_yml_missing_fields():
     # create a temporary DataFrame with missing fields
     data = {
+        "id": ["1"],
         "pattern": ["s-pankki"],
         "account": [None],
         "delimiter": [";"],

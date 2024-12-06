@@ -1,10 +1,11 @@
-account: varat
-columns:
-  amount: amount
-  date: date
-  description: description
-  info: info
-date_format: '%d.%m.%Y'
-day_first: true
-delimiter: ','
-pattern: varat.csv
+"id": "2"
+"pattern": "varat.csv"
+"account": "varat"
+"delimiter": ","
+"date_format": "%d.%m.%Y"
+"day_first": "TRUE"
+"columns":
+  "date": "date"
+  "amount": "amount"
+  "description": "description"
+  "info": "info"
