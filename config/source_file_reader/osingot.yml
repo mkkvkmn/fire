@@ -1,0 +1,10 @@
+account: osingot
+columns:
+  amount: Summa
+  date: "Kirjausp\xE4iv\xE4"
+  description: Arvopaperi
+  info: Tapahtumatyyppi
+date_format: '%Y-%m-%d'
+day_first: false
+delimiter: \t
+pattern: osingot

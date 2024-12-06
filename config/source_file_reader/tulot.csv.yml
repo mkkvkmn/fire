@@ -1,0 +1,10 @@
+account: tulot
+columns:
+  amount: amount
+  date: date
+  description: description
+  info: info
+date_format: '%d.%m.%Y'
+day_first: true
+delimiter: ','
+pattern: tulot.csv

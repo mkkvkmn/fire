@@ -1,0 +1,10 @@
+account: s-pankki
+columns:
+  amount: Summa
+  date: "Kirjausp\xE4iv\xE4"
+  description: Saajan nimi
+  info: Tapahtumalaji
+date_format: '%d.%m.%Y'
+day_first: true
+delimiter: ;
+pattern: s-pankki

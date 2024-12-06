@@ -24,6 +24,7 @@ SETTINGS = {
     "intermediate_folder": os.path.join(DATA_FOLDER, "intermediate"),
     "final_result_file": os.path.join(DATA_FOLDER, "final/final_data.csv"),
     # config
+    "files_file_folder": os.path.join(CONFIG_FOLDER, "source_file_reader"),
     "files_file": os.path.join(CONFIG_FOLDER, "source_file_reader/files.csv"),
     "categories_file": os.path.join(CONFIG_FOLDER, "data_processing/categories.csv"),
     "fixes_file": os.path.join(CONFIG_FOLDER, "data_processing/fixes.csv"),

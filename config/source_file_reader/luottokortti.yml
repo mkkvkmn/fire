@@ -1,0 +1,10 @@
+account: luottokortti
+columns:
+  amount: Amount
+  date: TransactionDate
+  description: Text
+  info: Merchant Category
+date_format: '%Y-%m-%d %H:%M:%S'
+day_first: false
+delimiter: ','
+pattern: luottokortti

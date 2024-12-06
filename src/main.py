@@ -19,6 +19,7 @@ from data_processing.categorizer import categorize_data_loop
 from data_processing.splitter import split_data, create_splits_df
 from data_processing.fixer import apply_fixes
 from data_processing.target_setter import set_targets
+from source_file_reader.files_csv_to_yml import csv_to_yml
 
 
 def main(debug):
@@ -32,6 +33,9 @@ def main(debug):
 
     try:
         clean_folder(SETTINGS["intermediate_folder"])
+
+        if os.path.exists(SETTINGS["files_file"]):
+            csv_to_yml(SETTINGS["files_file"], SETTINGS["files_file_folder"])
 
         # process nordnet portfolio if enabled
         if SETTINGS.get("use_nordnet_portfolio", False):
