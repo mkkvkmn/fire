@@ -102,6 +102,57 @@ def csv_to_yml(df: pd.DataFrame, yml_directory: str):
         raise
 
 
+def validate_yml_files(yml_directory: str):
+    """
+    validates all .yml files in the specified directory to ensure they have the required properties.
+
+    :param yml_directory: directory containing the .yml files.
+    """
+    required_properties = [
+        "id",
+        "pattern",
+        "account",
+        "delimiter",
+        "date_format",
+        "day_first",
+        "columns",
+    ]
+    required_columns = ["date", "amount", "description", "info"]
+
+    try:
+        for file_name in os.listdir(yml_directory):
+            if file_name.endswith(".yml"):
+                yml_file_path = os.path.join(yml_directory, file_name)
+                with open(yml_file_path, "r", encoding="utf-8") as yml_file:
+                    yml_data = yaml.safe_load(yml_file)
+
+                missing_properties = [
+                    prop for prop in required_properties if prop not in yml_data
+                ]
+                missing_columns = [
+                    col for col in required_columns if col not in yml_data["columns"]
+                ]
+
+                if missing_properties or missing_columns:
+                    error_message = (
+                        f"\nfile {os.path.basename(yml_file_path)} has errors:\n"
+                    )
+                    if missing_properties:
+                        error_message += (
+                            f"missing properties: {', '.join(missing_properties)}\n"
+                        )
+                    if missing_columns:
+                        error_message += (
+                            f"missing columns: {', '.join(missing_columns)}"
+                        )
+                    raise ValueError(error_message.strip())
+
+        logging.info("ok - all .yml files")
+    except Exception as e:
+        logging.error(f"error - validate_yml_files: {e}")
+        raise
+
+
 if __name__ == "__main__":
     # example usage
     data = {

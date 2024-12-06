@@ -12,7 +12,7 @@ from config.settings import SETTINGS
 from utils.logger import setup_logging
 from utils.helpers import write_to_csv, clean_folder
 
-from src.source_file_reader.s_01_files_csv_to_yml import csv_to_yml
+from src.source_file_reader.s_01_files_csv_to_yml import csv_to_yml, validate_yml_files
 from src.source_file_reader.s_02_reader import (
     collect_files,
     read_collected_files,
@@ -38,9 +38,13 @@ def main(debug):
     try:
         clean_folder(SETTINGS["intermediate_folder"])
 
+        # convert files.csv to yml
         if os.path.exists(SETTINGS["files_file"]):
             df_files_settings = read_csv_file(SETTINGS["files_file"])
             csv_to_yml(df_files_settings, SETTINGS["files_file_folder"])
+
+        # validate yml files
+        validate_yml_files(SETTINGS["files_file_folder"])
 
         # process nordnet portfolio if enabled
         if SETTINGS.get("use_nordnet_portfolio", False):
