@@ -35,7 +35,8 @@ def main(debug):
         clean_folder(SETTINGS["intermediate_folder"])
 
         if os.path.exists(SETTINGS["files_file"]):
-            csv_to_yml(SETTINGS["files_file"], SETTINGS["files_file_folder"])
+            df_files_settings = read_csv_file(SETTINGS["files_file"])
+            csv_to_yml(df_files_settings, SETTINGS["files_file_folder"])
 
         # process nordnet portfolio if enabled
         if SETTINGS.get("use_nordnet_portfolio", False):

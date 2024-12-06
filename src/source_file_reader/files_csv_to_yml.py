@@ -5,20 +5,24 @@ import yaml
 import ast
 
 
-def csv_to_yml(csv_file_path: str, yml_directory: str):
+def quoted_presenter(dumper, data):
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data, style='"')
+
+
+yaml.add_representer(str, quoted_presenter)
+
+
+def csv_to_yml(df: pd.DataFrame, yml_directory: str):
     """
     converts each row in the csv file to a .yml file if it does not already exist.
 
-    :param csv_file_path: path to the csv file.
+    :param df: dataframe containing the csv data.
     :param yml_directory: directory to save the .yml files.
     """
 
-    logging.info("read files.csv and create .yml files")
+    logging.info("create .yml files from files.csv")
 
     try:
-        # read the csv file
-        df = pd.read_csv(csv_file_path)
-
         # ensure the yml directory exists
         os.makedirs(yml_directory, exist_ok=True)
 
@@ -39,7 +43,7 @@ def csv_to_yml(csv_file_path: str, yml_directory: str):
                     "account": row.get("account"),
                     "delimiter": row.get("delimiter"),
                     "date_format": row.get("date_format"),
-                    "day_first": row.get("day_first"),
+                    "day_first": str(row.get("day_first")),
                     "columns": {
                         "date": reverse_columns.get("date"),
                         "amount": reverse_columns.get("amount"),
@@ -69,10 +73,28 @@ def csv_to_yml(csv_file_path: str, yml_directory: str):
                     error_message += "\nadd the missing columns or fields to files.csv"
                     raise ValueError(error_message.strip())
 
-                # write the .yml file
-                with open(yml_file_path, "w") as yml_file:
-                    yaml.dump(yml_data, yml_file, default_flow_style=False)
-                logging.info(f"Created {yml_file_path}")
+                # write the .yml file with quoted strings and correct handling of special characters
+                with open(yml_file_path, "w", encoding="utf-8") as yml_file:
+                    yaml.dump(
+                        yml_data, yml_file, default_flow_style=False, allow_unicode=True
+                    )
+                logging.info(f"created: {os.path.basename(yml_file_path)}")
     except Exception as e:
         logging.error(f"error - csv_to_yml: {e}")
         raise
+
+
+if __name__ == "__main__":
+    # example usage
+    data = {
+        "pattern": ["s-pankki"],
+        "account": ["s-pankki"],
+        "delimiter": [";"],
+        "date_format": ["%d.%m.%Y"],
+        "day_first": [True],
+        "columns": [
+            "{'TransactionDate': 'date', 'Amount': 'amount', 'Text': 'description', 'Merchant Category': 'info'}"
+        ],
+    }
+    df = pd.DataFrame(data)
+    csv_to_yml(df, "src/source_file_reader")
