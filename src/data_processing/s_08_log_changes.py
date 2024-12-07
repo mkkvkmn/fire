@@ -16,12 +16,6 @@ def log_categorization_changes(
     :param output_dir: directory to save the changes.
     """
     try:
-        # ensure relevant columns are present in both dataframes
-        for col in ["class", "category", "sub_category"]:
-            if col not in df_new.columns:
-                df_new[col] = "__NA__"
-            if col not in df_current.columns:
-                df_current[col] = "__NA__"
 
         # merge df_new with df_current on transaction_row_id
         merged_df = df_current.merge(
