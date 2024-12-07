@@ -25,6 +25,7 @@ from src.data_processing.s_05_splitter import split_data, create_splits_df
 from src.data_processing.s_06_fixer import apply_fixes
 from src.data_processing.s_07_target_setter import set_targets
 from src.data_processing.s_08_log_changes import log_categorization_changes
+from src.data_processing.s_09_validate import validate_unique_id
 
 
 def main(debug):
@@ -87,6 +88,9 @@ def main(debug):
         log_categorization_changes(
             df_final, df_current, SETTINGS["data_changes_folder"]
         )
+
+        # validation
+        validate_unique_id(df_final, SETTINGS["duplicates_folder"])
 
         # save final data with fixes
         write_to_csv(df_final, SETTINGS["final_result_file"])

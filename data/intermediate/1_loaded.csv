@@ -131,8 +131,8 @@ date,account,description,info,amount,record_type,source_file,transaction_id
 2024-04-17,osingot,O,OSINKO,88.11,Actual,osingot-2023-2024.csv,9160520dfdbb544f8b6efcc9050b73e2b810d21c4f3c85bb5a18f16537a9e347
 2024-03-16,osingot,O,ENNAKKOPIDÄTYS,-13.66,Actual,osingot-2023-2024.csv,7e4296585d582e80db73ea3d121e64e7c8b81558f950f0e9e17076ec684a948a
 2024-03-16,osingot,O,OSINKO,91.05,Actual,osingot-2023-2024.csv,79daf2fec9606432a0ea4059105394417585b247802c792c3b2a832c7fdc5541
-2024-02-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,Actual,osingot-2023-2024.csv,2aec10778bdf537f3657cfee3fcec7309e92018e33d01615fd4bee9af2992e05
-2024-02-16,osingot,O,OSINKO,88.13,Actual,osingot-2023-2024.csv,138d3c5cae4347d1f51448be68c7678aef937e976b384ed1a4bae5483f593057
+2024-07-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,Actual,osingot-2023-2024.csv,0384fa1eba25f94a2c10956f2ee952c851dd3d033b6faa4a12a3e18be292a45f
+2024-07-16,osingot,O,OSINKO,88.13,Actual,osingot-2023-2024.csv,0134db823424c1a6ce395d0e100f253f82e4f39e4fb5815e3280e6a1bd563c29
 2023-03-31,penno,Palkka,Matkakorvauksia,200.0,Actual,penno.xlsx,34958e928d6af5086a674a868d9d96f72e5fe4169d008ba089cfa51334cfa00e
 2023-03-30,penno,Palkka,,1000.0,Actual,penno.xlsx,454df0c9f9cbbd470a6786956831f2365c3b9b41ab8e37bd71578076193eee4b
 2023-03-29,penno,Kahvittelu,Pulla,-3.5,Actual,penno.xlsx,687afa30a70a44470d6d8b5439be88d8115099c00aab7d0053a3fa51127327f9

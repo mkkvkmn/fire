@@ -46,7 +46,9 @@ Säästötavoite 1,2023-01-01,2024-12-31,mkk,500,menot,,
     assert "transaction_row_id" in df_monthly_targets.columns
 
     # assert that the values are correctly set
-    assert df_monthly_targets.loc[0, "transaction_id"] == "Säästötavoite 1_202301_mkk"
+    assert (
+        df_monthly_targets.loc[0, "transaction_id"] == "Säästötavoite 1_202301_mkk_500"
+    )
     assert df_monthly_targets.loc[0, "date"] == pd.to_datetime("2023-01-31")
     assert df_monthly_targets.loc[0, "account"] == "Target"
     assert df_monthly_targets.loc[0, "description"] == "Säästötavoite 1"
@@ -62,7 +64,8 @@ Säästötavoite 1,2023-01-01,2024-12-31,mkk,500,menot,,
     assert df_monthly_targets.loc[0, "owner"] == "mkk"
     assert df_monthly_targets.loc[0, "split"] == False
     assert (
-        df_monthly_targets.loc[0, "transaction_row_id"] == "Säästötavoite 1_202301_mkk"
+        df_monthly_targets.loc[0, "transaction_row_id"]
+        == "Säästötavoite 1_202301_mkk_500"
     )
 
 
