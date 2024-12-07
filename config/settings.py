@@ -22,6 +22,9 @@ SETTINGS = {
     # data
     "source_folder": os.path.join(DATA_FOLDER, "source_files"),
     "intermediate_folder": os.path.join(DATA_FOLDER, "intermediate"),
+    "data_changes_folder": os.path.join(
+        DATA_FOLDER, "intermediate/categorization_changes"
+    ),
     "final_result_file": os.path.join(DATA_FOLDER, "final/final_data.csv"),
     # config
     "files_file_folder": os.path.join(CONFIG_FOLDER, "source_file_reader"),

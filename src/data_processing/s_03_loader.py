@@ -36,9 +36,6 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
             for old_col, new_col in column_mapping.items():
                 logging.debug(f"{old_col} -> {new_col}")
 
-            # log dataframe columns after renaming
-            logging.info(f"columns after renaming: {df.columns.tolist()}")
-
             # add columns if not present
             if "account" not in df.columns:
                 df["account"] = props["account"]

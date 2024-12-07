@@ -24,6 +24,7 @@ from src.data_processing.s_04_categorizer import categorize_data_loop
 from src.data_processing.s_05_splitter import split_data, create_splits_df
 from src.data_processing.s_06_fixer import apply_fixes
 from src.data_processing.s_07_target_setter import set_targets
+from src.data_processing.s_08_log_changes import log_categorization_changes
 
 
 def main(debug):
@@ -80,6 +81,12 @@ def main(debug):
             df_final = pd.concat([df_fixed, df_targets_monthly], ignore_index=True)
         else:
             df_final = df_fixed
+
+        # log data changes
+        df_current = read_csv_file(SETTINGS["final_result_file"])
+        log_categorization_changes(
+            df_final, df_current, SETTINGS["data_changes_folder"]
+        )
 
         # save final data with fixes
         write_to_csv(df_final, SETTINGS["final_result_file"])

@@ -30,7 +30,7 @@ def set_targets(df_targets: pd.DataFrame) -> pd.DataFrame:
             monthly_dates = pd.date_range(start=start_date, end=end_date, freq="M")
 
             for date in monthly_dates:
-                id = f"{target_name}_{date.strftime('%Y%m')}_{owner}"
+                id = f"{target_name}_{date.strftime('%Y%m')}_{owner}_{monthly_amount}"
 
                 target_rows.append(
                     {
