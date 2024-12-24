@@ -1,4 +1,113 @@
-/* Add your custom styles here */
+/* root variables */
+:root {
+    --dark: #0a0d15;
+    --light: #d4cfc6;
+}
+
+/* global styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: arial, sans-serif;
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+/* main container styles */
+.main-container {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* kpi card styles */
+.kpi-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.kpi-card {
+    flex: 1 1 calc(25% - 1rem); /* 4 cards per row */
+    min-width: 150px;
+    text-align: center;
+    background-color: var(--dark);
+    color: var(--light);
+    border: 1px solid var(--light);
+}
+
+.kpi-card .card-header {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+.kpi-card .card-body {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+/* responsive styles */
+@media (max-width: 1200px) {
+    .kpi-card {
+        flex: 1 1 calc(33.33% - 1rem); /* 3 cards per row */
+    }
+}
+
+@media (max-width: 900px) {
+    .kpi-card {
+        flex: 1 1 calc(50% - 1rem); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 600px) {
+    .kpi-card {
+        flex: 1 1 100%; /* 1 card per row */
+    }
+}
+
+/* tab styles */
+.dash-tabs {
+    background-color: var(--dark);
+    border: 1px solid var(--light);
+}
+
+.dash-tabs .tab {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+    border: 1px solid var(--light) !important;
+}
+
+.dash-tabs .tab--selected {
+    background-color: var(--light) !important;
+    color: var(--dark) !important;
+}
+
+/* date picker styles */
+.DatePickerRangeInput {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+    border: 1px solid var(--light) !important;
+}
+
+.DatePickerRangeInput input {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+    border: 1px solid var(--light) !important;
+}
+
+.DatePickerRangeInput .DateInput_input {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+    border: 1px solid var(--light) !important;
+}
+
+.DatePickerRangeInput .DateInput_input__focused {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+    border: 1px solid var(--light) !important;
+}
+
+.DatePickerRangeInput .DateInput_input__disabled {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+    border: 1px solid var(--light) !important;
 }

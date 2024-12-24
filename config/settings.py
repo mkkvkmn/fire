@@ -45,4 +45,16 @@ SETTINGS = {
     "nordnet_portfolio_file": os.path.join(
         PREPROCESSORS_FOLDER, "nordnet/nordnet_salkkuraportti.csv"
     ),
+    # visualization
+    "use_native_visualization": True,
+    "category_mappings": {
+        "income": "tulot",
+        "costs": "menot",
+        "assets": "varat",
+        "liabilities": "velat",
+        "investments": "sijoitukset",
+        "dividends": "osingot",
+    },
+    # language
+    "language": "en",
 }

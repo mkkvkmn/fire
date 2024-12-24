@@ -72,6 +72,8 @@ Python3 fire.py --debug
 run
 ```
 
+python3 src/visualization/app.py
+
 # Settings
 
 The application settings are configured in the settings.py file. Below is an explanation of each setting:
