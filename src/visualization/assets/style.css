@@ -2,6 +2,8 @@
 :root {
     --dark: #0a0d15;
     --light: #d4cfc6;
+    --other: #5543db;
+    --other_dark: #5a5963;
 }
 
 /* global styles */
@@ -82,32 +84,69 @@ body {
 }
 
 /* date picker styles */
-.DatePickerRangeInput {
+.DateRangePickerInput {
     background-color: var(--dark) !important;
     color: var(--light) !important;
     border: 1px solid var(--light) !important;
 }
 
-.DatePickerRangeInput input {
+.DateInput_input {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+    border: none !important;
+}
+
+/* chart styles */
+.plotly-graph-div {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+}
+
+.plotly-graph-div .xtick, .plotly-graph-div .ytick, .plotly-graph-div .legendtext {
+    fill: var(--light) !important;
+}
+
+.plotly-graph-div .modebar {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+}
+
+.plotly-graph-div .modebar-group {
+    border: 1px solid var(--light) !important;
+}
+
+/* dropdown styles */
+.dropdown-container .Select-control {
     background-color: var(--dark) !important;
     color: var(--light) !important;
     border: 1px solid var(--light) !important;
 }
 
-.DatePickerRangeInput .DateInput_input {
-    background-color: var(--dark) !important;
+.dropdown-container .Select-placeholder {
     color: var(--light) !important;
-    border: 1px solid var(--light) !important;
 }
 
-.DatePickerRangeInput .DateInput_input__focused {
+.dropdown-container .Select-menu {
     background-color: var(--dark) !important;
     color: var(--light) !important;
-    border: 1px solid var(--light) !important;
 }
 
-.DatePickerRangeInput .DateInput_input__disabled {
+.dropdown-container .Select-option {
     background-color: var(--dark) !important;
     color: var(--light) !important;
-    border: 1px solid var(--light) !important;
+}
+
+.dropdown-container .Select-option.is-focused {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+}
+
+.dropdown-container .Select-option.is-selected {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+}
+
+.dropdown-container .Select-control .Select-value-label {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
 }
