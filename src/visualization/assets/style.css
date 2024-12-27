@@ -26,6 +26,7 @@ body {
     flex-wrap: wrap;
     gap: 1rem;
     margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 
 .kpi-card {
@@ -149,4 +150,14 @@ body {
 .dropdown-container .Select-control .Select-value-label {
     background-color: var(--dark) !important;
     color: var(--light) !important;
+}
+
+/* graph container styles */
+.graph-container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart {
+    margin-bottom: 2rem;
 }

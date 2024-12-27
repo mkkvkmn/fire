@@ -1,23 +1,39 @@
 from dash.dependencies import Input, Output
 import pandas as pd
+import logging
 from config.settings import SETTINGS
+from src.utils.logger import setup_logging
+from src.visualization.utils.utils_figs import format_value
+
+setup_logging()
 
 
 def register_overview_kpi_callbacks(app):
     def update_kpi(data, category):
         """
         computes the total for the specified category from the filtered data.
+
+        parameters:
+        - data: json-encoded data from the filtered-data store.
+        - category: the category for which to compute the total.
+
+        returns:
+        - the total amount for the specified category.
         """
         if not data:
             return 0
 
-        # convert data to dataframe
-        date_filtered = pd.DataFrame(data)
+        try:
+            # convert data to dataframe
+            date_filtered = pd.DataFrame(data)
 
-        # compute total for the specified category
-        total = date_filtered[date_filtered["class"] == category]["amount"].sum()
+            # compute total for the specified category
+            total = date_filtered[date_filtered["class"] == category]["amount"].sum()
 
-        return total
+            return total
+        except Exception as e:
+            logging.error(f"error - update_kpi {category}: {e}")
+            return 0
 
     @app.callback(
         [
@@ -26,30 +42,46 @@ def register_overview_kpi_callbacks(app):
             Output("kpi-savings", "children"),
             Output("kpi-savings-pct", "children"),
         ],
-        [
-            Input("filtered-data", "data"),
-        ],
+        [Input("filtered-data", "data")],
     )
     def update_kpis(data):
-        income_category = SETTINGS["category_mappings"]["income"]
-        costs_category = SETTINGS["category_mappings"]["costs"]
+        """
+        updates the kpi values based on the filtered data.
 
-        total_income = update_kpi(data, income_category)
-        total_costs = update_kpi(data, costs_category) * -1
+        parameters:
+        - data: json-encoded data from the filtered-data store.
 
-        # calculate savings and savings percentage
-        savings = total_income - total_costs
-        savings_pct = (savings / total_income) * 100 if total_income != 0 else 0
+        returns:
+        - a tuple containing formatted strings for income, costs, savings, and savings percentage.
+        """
+        try:
+            income_category = SETTINGS["category_mappings"]["income"]
+            costs_category = SETTINGS["category_mappings"]["costs"]
 
-        # format for display
-        total_income_display = f"{total_income:,.2f}"
-        total_costs_display = f"{total_costs:,.2f}"
-        total_savings_display = f"{savings:,.2f}"
-        total_savings_pct_display = f"{savings_pct:,.2f} %"
+            total_income = update_kpi(data, income_category)
+            total_costs = update_kpi(data, costs_category) * -1
 
-        return (
-            total_income_display,
-            total_costs_display,
-            total_savings_display,
-            total_savings_pct_display,
-        )
+            # calculate savings and savings percentage
+            savings = total_income - total_costs
+            savings_pct = (savings / total_income) * 100 if total_income != 0 else 0
+
+            # format for display
+            total_income_display = format_value(total_income)
+            total_costs_display = format_value(total_costs)
+            total_savings_display = format_value(savings)
+            total_savings_pct_display = f"{int(savings_pct)} %"
+
+            return (
+                total_income_display,
+                total_costs_display,
+                total_savings_display,
+                total_savings_pct_display,
+            )
+        except Exception as e:
+            logging.error(f"error - update_kpis: {e}")
+            return (
+                format_value(0),
+                format_value(0),
+                format_value(0),
+                "0 %",
+            )

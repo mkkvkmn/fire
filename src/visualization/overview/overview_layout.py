@@ -11,8 +11,6 @@ def get_overview_layout():
     lang = SETTINGS["language"]
     income_label = translations[lang]["income"]
     costs_label = translations[lang]["costs"]
-    total_income_label = translations[lang]["total_income"]
-    total_costs_label = translations[lang]["total_costs"]
     savings_label = translations[lang]["savings"]
     savings_pct_label = translations[lang]["savings_pct"]
     overview_label = translations[lang]["overview"]
@@ -25,11 +23,10 @@ def get_overview_layout():
                 [
                     dbc.Card(
                         [
-                            dbc.CardHeader(income_label, className="text-white"),
                             dbc.CardBody(
                                 [
                                     html.H4(id="kpi-income", className="card-title"),
-                                    html.P(total_income_label, className="card-text"),
+                                    html.P(income_label, className="card-text"),
                                 ]
                             ),
                         ],
@@ -37,11 +34,10 @@ def get_overview_layout():
                     ),
                     dbc.Card(
                         [
-                            dbc.CardHeader(costs_label, className="text-white"),
                             dbc.CardBody(
                                 [
                                     html.H4(id="kpi-costs", className="card-title"),
-                                    html.P(total_costs_label, className="card-text"),
+                                    html.P(costs_label, className="card-text"),
                                 ]
                             ),
                         ],
@@ -49,11 +45,10 @@ def get_overview_layout():
                     ),
                     dbc.Card(
                         [
-                            dbc.CardHeader(savings_label, className="text-white"),
                             dbc.CardBody(
                                 [
                                     html.H4(id="kpi-savings", className="card-title"),
-                                    html.P("Total Savings", className="card-text"),
+                                    html.P(savings_label, className="card-text"),
                                 ]
                             ),
                         ],
@@ -61,13 +56,12 @@ def get_overview_layout():
                     ),
                     dbc.Card(
                         [
-                            dbc.CardHeader(savings_pct_label, className="text-white"),
                             dbc.CardBody(
                                 [
                                     html.H4(
                                         id="kpi-savings-pct", className="card-title"
                                     ),
-                                    html.P("Savings Percentage", className="card-text"),
+                                    html.P(savings_pct_label, className="card-text"),
                                 ]
                             ),
                         ],
@@ -93,7 +87,13 @@ def get_overview_layout():
                 ],
                 className="dropdown-container",
             ),
-            # bar chart for income and costs
-            dcc.Graph(id="income-costs-bar-chart"),
+            # graph container
+            html.Div(
+                [
+                    html.Div(dcc.Graph(id="income-costs-bar-chart"), className="chart"),
+                    html.Div(dcc.Graph(id="assets-bar-chart"), className="chart"),
+                ],
+                className="graph-container",
+            ),
         ]
     )

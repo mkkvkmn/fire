@@ -28,7 +28,7 @@ def pre_aggregate_data(df):
     """
     pre-aggregates the data by different granularities.
     """
-    print(df.columns)
+    # convert to datetime
     df["date"] = pd.to_datetime(df["date"], errors="coerce")
     df = df.dropna(subset=["date"])
 

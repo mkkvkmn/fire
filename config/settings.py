@@ -47,6 +47,7 @@ SETTINGS = {
     ),
     # visualization
     "use_native_visualization": True,
+    "thousand_separator": " ",
     "category_mappings": {
         "income": "tulot",
         "costs": "menot",
@@ -56,5 +57,5 @@ SETTINGS = {
         "dividends": "osingot",
     },
     # language
-    "language": "en",
+    "language": "fi",
 }
