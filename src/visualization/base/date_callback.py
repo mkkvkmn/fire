@@ -1,9 +1,9 @@
 from dash.dependencies import Input, Output
 import pandas as pd
 from dash import no_update
+from src.visualization.utils.utils_data import filter_data_by_date, pre_aggregate_data
 from src.visualization.data_loader import load_data
 
-# load pre-aggregated data
 aggregated_data = load_data()
 
 

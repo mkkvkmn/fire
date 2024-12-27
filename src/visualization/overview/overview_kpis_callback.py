@@ -3,7 +3,7 @@ import pandas as pd
 from config.settings import SETTINGS
 
 
-def register_kpi_callbacks(app):
+def register_overview_kpi_callbacks(app):
     def update_kpi(data, category):
         """
         computes the total for the specified category from the filtered data.
@@ -11,7 +11,7 @@ def register_kpi_callbacks(app):
         if not data:
             return 0
 
-        # convert data to DataFrame
+        # convert data to dataframe
         date_filtered = pd.DataFrame(data)
 
         # compute total for the specified category

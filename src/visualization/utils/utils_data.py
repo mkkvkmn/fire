@@ -1,4 +1,5 @@
 import pandas as pd
+import plotly.express as px
 
 
 def filter_data_by_date(df, start_date, end_date):
@@ -27,6 +28,7 @@ def pre_aggregate_data(df):
     """
     pre-aggregates the data by different granularities.
     """
+    print(df.columns)
     df["date"] = pd.to_datetime(df["date"], errors="coerce")
     df = df.dropna(subset=["date"])
 

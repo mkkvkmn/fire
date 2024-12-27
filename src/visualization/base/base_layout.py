@@ -1,6 +1,6 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-from src.visualization.layouts.tabs import get_tabs_layout
+from src.visualization.base.tabs_layout import get_tabs_layout
 import datetime
 
 

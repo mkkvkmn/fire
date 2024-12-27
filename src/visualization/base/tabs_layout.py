@@ -1,5 +1,5 @@
 from dash import dcc, html
-from src.visualization.layouts.overview import get_overview_layout
+from src.visualization.overview.overview_layout import get_overview_layout
 from config.settings import SETTINGS
 from config.translations import translations
 
@@ -23,14 +23,14 @@ def get_tabs_layout():
                         selected_className="tab--selected",
                     ),
                     dcc.Tab(
-                        label="Tab 2",
-                        children=html.Div("Content for Tab 2"),
+                        label="tab 2",
+                        children=html.Div("content for tab 2"),
                         className="tab",
                         selected_className="tab--selected",
                     ),
                     dcc.Tab(
-                        label="Tab 3",
-                        children=html.Div("Content for Tab 3"),
+                        label="tab 3",
+                        children=html.Div("content for tab 3"),
                         className="tab",
                         selected_className="tab--selected",
                     ),

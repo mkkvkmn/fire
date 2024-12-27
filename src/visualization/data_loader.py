@@ -1,6 +1,6 @@
 import pandas as pd
 from config.settings import SETTINGS
-from src.visualization.utils import pre_aggregate_data
+from src.visualization.utils.utils_data import pre_aggregate_data
 
 
 def load_data():
