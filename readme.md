@@ -50,7 +50,7 @@ pip install -r requirements.txt
 # Tests
 
 ```shell
-pytest tests
+pytest data_pipeline/tests
 ```
 
 # Run in Terminal
