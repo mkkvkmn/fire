@@ -54,6 +54,9 @@ def create_bar_chart(data, x, y, color, title, desired_classes):
         separatethousands=True,
     )
 
+    # fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
+
     # format hover text
     hovertemplate = (
         f"%{{x}}<br>{currency_prefix}%{{y:,.0f}}{currency_suffix}<extra></extra>"
