@@ -35,6 +35,10 @@ def log_categorization_changes(
                 ),
                 axis=1,
             )
+
+            logging.info(
+                "log_categorization_changes: new unique id created, it's normal only after migration from v1 to v2"
+            )
         else:
             raise ValueError(
                 "\n log_categorization_changes:"
@@ -42,76 +46,83 @@ def log_categorization_changes(
                 "\nplease ensure 'transaction_id' and 'owner' are present."
             )
 
-    try:
+    else:
 
-        # merge df_new with df_current on transaction_row_id
-        merged_df = df_current.merge(
-            df_new, on="transaction_row_id", suffixes=("_current", "_new"), how="left"
-        )
+        try:
 
-        # fill NaN values with a placeholder to ensure correct comparison
-        merged_df = merged_df.fillna("")
+            # merge df_new with df_current on transaction_row_id
+            merged_df = df_current.merge(
+                df_new,
+                on="transaction_row_id",
+                suffixes=("_current", "_new"),
+                how="left",
+            )
 
-        # compare the relevant columns
-        changes = merged_df[
-            (merged_df["class_current"] != merged_df["class_new"])
-            | (merged_df["category_current"] != merged_df["category_new"])
-            | (merged_df["sub_category_current"] != merged_df["sub_category_new"])
-        ][
-            [
-                "transaction_row_id",
-                "class_current",
-                "class_new",
-                "category_current",
-                "category_new",
-                "sub_category_current",
-                "sub_category_new",
+            # fill NaN values with a placeholder to ensure correct comparison
+            merged_df = merged_df.fillna("")
+
+            # compare the relevant columns
+            changes = merged_df[
+                (merged_df["class_current"] != merged_df["class_new"])
+                | (merged_df["category_current"] != merged_df["category_new"])
+                | (merged_df["sub_category_current"] != merged_df["sub_category_new"])
+            ][
+                [
+                    "transaction_row_id",
+                    "class_current",
+                    "class_new",
+                    "category_current",
+                    "category_new",
+                    "sub_category_current",
+                    "sub_category_new",
+                ]
             ]
-        ]
 
-        # save changes with a timestamp
-        os.makedirs(output_dir, exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        changes_file_path = os.path.join(output_dir, f"changes_{timestamp}.csv")
+            # save changes with a timestamp
+            os.makedirs(output_dir, exist_ok=True)
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            changes_file_path = os.path.join(output_dir, f"changes_{timestamp}.csv")
 
-        # save to file and log to console
-        if not changes.empty:
-            changes.to_csv(changes_file_path, index=False)
+            # save to file and log to console
+            if not changes.empty:
+                changes.to_csv(changes_file_path, index=False)
 
-            logging.warning(f"! \ncategorization changes found: {len(changes)}")
+                logging.warning(f"! \ncategorization changes found: {len(changes)}")
 
-            # back up current data
-            backup_file = os.path.join(
-                SETTINGS["final_result_folder"],
-                "backup",
-                f"final_data_{timestamp}.csv",
-            )
+                # back up current data
+                backup_file = os.path.join(
+                    SETTINGS["final_result_folder"],
+                    "backup",
+                    f"final_data_{timestamp}.csv",
+                )
 
-            write_to_csv(
-                df_current,
-                backup_file,
-            )
+                write_to_csv(
+                    df_current,
+                    backup_file,
+                )
 
-            logging.warning(
-                "! \nbackup of the final data was created at:"
-                + f"\n{backup_file}"
-                + f"\nplease review changes from file: \n{changes_file_path}"
-            )
+                logging.warning(
+                    "! \nbackup of the final data was created at:"
+                    + f"\n{backup_file}"
+                    + f"\nplease review changes from file: \n{changes_file_path}"
+                )
 
-            user_input = input("accept changes? (y/n): ").strip().lower()
+                user_input = input("\naccept changes? (y/n): ").strip().lower()
 
-            if user_input == "y":
-                logging.info("changes: accepted")
-                pass
+                if user_input == "y":
+                    logging.info("changes: accepted")
+                    pass
+                else:
+                    raise ValueError(
+                        "changes to data not accepted, interrupting pipeline"
+                    )
+
             else:
-                raise ValueError("changes to data not accepted, interrupting pipeline")
+                logging.info("changes: none")
 
-        else:
-            logging.info("changes: none")
-
-    except Exception as e:
-        logging.error(f"error - log_categorization_changes: {e}")
-        raise
+        except Exception as e:
+            logging.error(f"error - log_categorization_changes: {e}")
+            raise
 
 
 if __name__ == "__main__":
