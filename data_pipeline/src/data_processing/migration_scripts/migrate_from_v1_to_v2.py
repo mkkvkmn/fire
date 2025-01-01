@@ -127,13 +127,6 @@ def copy_config_from_repository(repository_config_dir, new_base_dir):
     # create config and source_file_reader dirs if they don't exist.
     os.makedirs(os.path.join(new_config_dir, "source_file_reader"), exist_ok=True)
 
-    # copy settings.py
-    if os.path.exists(src_settings):
-        shutil.copy2(src_settings, dst_settings)
-        logging.debug(f"copied settings.py from {src_settings} to {dst_settings}")
-    else:
-        logging.warning(f"settings.py not found at {src_settings}")
-
     # copy __init__.py
     if os.path.exists(src_init):
         shutil.copy2(src_init, dst_init)

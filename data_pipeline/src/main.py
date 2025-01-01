@@ -80,6 +80,7 @@ def main(debug):
 
         # set targets if enabled
         if SETTINGS.get("use_targets", False):
+            logging.info("use targets: enabled")
             df_targets = read_csv_file(SETTINGS["targets_file"])
             df_targets_monthly = set_targets(df_targets)
             # append targets to actuals
