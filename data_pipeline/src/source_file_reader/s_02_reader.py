@@ -127,7 +127,7 @@ def collect_files(input_folder: str, yml_directory: str) -> dict:
 
             if not matched:
                 raise ValueError(
-                    f"no pattern found for {file}. add it to the yml configuration files"
+                    f"no pattern found for {file}. add .yml file to configuration files"
                 )
 
         logging.info(f"found files: {len(file_info)}")

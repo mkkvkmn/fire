@@ -13,7 +13,7 @@ def log_categorization_changes(
 ):
     """
     compares df_new against final_data.csv and logs changes in "class", "category", and "sub_category" by transaction_row_id.
-    saves changes to intermediate/categorization_changes.csv and logs changes to the console.
+    saves changes to intermediate/df_categorization_changes.csv and logs changes to the console.
 
     :param df_new: the final dataframe from the pipeline.
     :param df_current: path to the final_data.csv file.
@@ -42,7 +42,7 @@ def log_categorization_changes(
         else:
             raise ValueError(
                 "\n log_categorization_changes:"
-                "\nmissing 'transaction_row_id' and insufficient columns to create it. "
+                "\nmissing 'transaction_row_id' and insufficient columns to create it"
                 "\nplease ensure 'transaction_id' and 'owner' are present."
             )
 
@@ -62,13 +62,21 @@ def log_categorization_changes(
             merged_df = merged_df.fillna("")
 
             # compare the relevant columns
-            changes = merged_df[
+            df_changes = merged_df[
                 (merged_df["class_current"] != merged_df["class_new"])
                 | (merged_df["category_current"] != merged_df["category_new"])
                 | (merged_df["sub_category_current"] != merged_df["sub_category_new"])
             ][
                 [
                     "transaction_row_id",
+                    "date_current",
+                    "description_current",
+                    "info_current",
+                    "amount_current",
+                    "rule_id_current",
+                    "rule_id_new",
+                    "owner_current",
+                    "owner_new",
                     "class_current",
                     "class_new",
                     "category_current",
@@ -78,16 +86,11 @@ def log_categorization_changes(
                 ]
             ]
 
-            # save changes with a timestamp
-            os.makedirs(output_dir, exist_ok=True)
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            changes_file_path = os.path.join(output_dir, f"changes_{timestamp}.csv")
-
             # save to file and log to console
-            if not changes.empty:
-                changes.to_csv(changes_file_path, index=False)
+            if not df_changes.empty:
 
-                logging.warning(f"! \ncategorization changes found: {len(changes)}")
+                os.makedirs(output_dir, exist_ok=True)
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
                 # back up current data
                 backup_file = os.path.join(
@@ -96,16 +99,69 @@ def log_categorization_changes(
                     f"final_data_{timestamp}.csv",
                 )
 
+                logging.info(
+                    "due to categorization changes a backup of the final data is created:"
+                    + f"\n{backup_file}"
+                )
+
                 write_to_csv(
                     df_current,
                     backup_file,
                 )
 
-                logging.warning(
-                    "! \nbackup of the final data was created at:"
-                    + f"\n{backup_file}"
-                    + f"\nplease review changes from file: \n{changes_file_path}"
-                )
+                # log categorization changes
+                df_categorization_changes = df_changes[
+                    df_changes["class_new"] != ""
+                ].copy()
+                if not df_categorization_changes.empty:
+                    categorization_changes_file_path = os.path.join(
+                        output_dir, f"changes_{timestamp}.csv"
+                    )
+
+                    df_categorization_changes.to_csv(
+                        categorization_changes_file_path, index=False
+                    )
+                    logging.warning(
+                        f"! \ncategorization changes found: {len(df_changes)}"
+                        + "\nplease review categorization changes from file:"
+                        + f"\n{categorization_changes_file_path}"
+                    )
+
+                # log id changes
+                df_id_changes = df_changes[df_changes["class_new"] == ""].copy()
+                if not df_id_changes.empty:
+                    id_changes_file_path = os.path.join(
+                        output_dir, f"id_changes_{timestamp}.csv"
+                    )
+                    df_id_changes_columns = [
+                        "transaction_row_id",
+                        "date_current",
+                        "description_current",
+                        "info_current",
+                        "amount_current",
+                        "rule_id_current",
+                        "owner_current",
+                        "class_current",
+                        "category_current",
+                        "sub_category_current",
+                    ]
+
+                    df_id_changes = df_id_changes[df_id_changes_columns]
+
+                    df_id_changes["change_description"] = (
+                        "This row is created with new id. No comparison can be done."
+                    )
+                    df_id_changes["change_reason"] = (
+                        "This happens when owner or any source data field information changes i.e. amount or description"
+                    )
+
+                    df_id_changes.to_csv(id_changes_file_path, index=False)
+                    logging.warning(
+                        f"! \nid changes found: {len(df_id_changes)}"
+                        + "\nthis happens when owner or any source data field information changes i.e. amount or description"
+                        + "\nplease review records with id change from file:"
+                        + f"\n{id_changes_file_path}"
+                    )
 
                 user_input = input("\naccept changes? (y/n): ").strip().lower()
 
