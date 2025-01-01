@@ -15,7 +15,7 @@ def create_id(row):
     :param row: the row for which to create the id.
     :return: the created id.
     """
-    row_str = "".join(map(str, row.values))
+    row_str = "".join(map(str, row.values)).lower()
     return hashlib.sha256(row_str.encode()).hexdigest()
 
 
