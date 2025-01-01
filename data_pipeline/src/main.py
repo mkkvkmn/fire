@@ -27,7 +27,7 @@ from data_pipeline.src.data_processing.s_05_splitter import split_data, create_s
 from data_pipeline.src.data_processing.s_06_fixer import apply_fixes
 from data_pipeline.src.data_processing.s_07_target_setter import set_targets
 from data_pipeline.src.data_processing.s_08_log_changes import (
-    log_categorization_changes,
+    log_categorization_and_id_changes,
 )
 from data_pipeline.src.data_processing.s_09_validate import validate_unique_id
 
@@ -90,7 +90,7 @@ def main(debug):
 
         # log data changes
         df_current = read_csv_file(SETTINGS["final_result_file"])
-        log_categorization_changes(
+        log_categorization_and_id_changes(
             df_final, df_current, SETTINGS["data_changes_folder"]
         )
 
