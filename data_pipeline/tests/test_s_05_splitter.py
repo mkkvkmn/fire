@@ -8,7 +8,7 @@ from data_pipeline.src.data_processing.s_05_splitter import split_data, create_s
 
 def test_create_splits_df():
     # create a temporary splits.csv file for testing
-    splits_csv = "tests/data/splits.csv"
+    splits_csv = "data_pipeline/tests/data/splits.csv"
     splits_data = """start,end,account,share,owner
 2023-06-01,2024-12-31,nordnet_salkkuraportti,0.5,mkk
 2023-06-01,2024-12-31,nordnet_salkkuraportti,0.5,mrs. mkk

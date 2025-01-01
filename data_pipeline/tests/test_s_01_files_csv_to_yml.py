@@ -22,10 +22,10 @@ def test_csv_to_yml_valid():
     df = pd.DataFrame(data)
 
     # run the csv_to_yml function
-    csv_to_yml(df, "tests/data")
+    csv_to_yml(df, "data_pipeline/tests/data")
 
     # check if the .yml file is created
-    yml_file = "tests/data/s-pankki.yml"
+    yml_file = "data_pipeline/tests/data/s-pankki.yml"
     assert os.path.exists(yml_file)
 
     # read the .yml file and check its contents
@@ -63,7 +63,7 @@ def test_csv_to_yml_missing_columns():
 
     # run the csv_to_yml function and check for ValueError
     with pytest.raises(ValueError, match=r"missing columns:.*info"):
-        csv_to_yml(df, "tests/data")
+        csv_to_yml(df, "data_pipeline/tests/data")
 
 
 def test_csv_to_yml_missing_fields():
@@ -83,7 +83,7 @@ def test_csv_to_yml_missing_fields():
 
     # run the csv_to_yml function and check for ValueError
     with pytest.raises(ValueError, match=r"missing fields:.*account"):
-        csv_to_yml(df, "tests/data")
+        csv_to_yml(df, "data_pipeline/tests/data")
 
 
 if __name__ == "__main__":

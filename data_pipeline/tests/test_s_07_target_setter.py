@@ -8,7 +8,7 @@ from data_pipeline.src.data_processing.s_07_target_setter import set_targets
 
 def test_set_targets():
     # create a temporary targets.csv file for testing
-    targets_csv = "tests/data/targets.csv"
+    targets_csv = "data_pipeline/tests/data/targets.csv"
     targets_data = """target_name,start,end,owner,monthly_target_amount,class,category,sub_category
 Säästötavoite 1,2023-01-01,2024-12-31,mkk,500,menot,,
 """

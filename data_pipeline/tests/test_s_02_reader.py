@@ -65,7 +65,7 @@ def test_read_yaml_file():
 
     # test reading a non-existent YAML file
     with pytest.raises(Exception):
-        read_yaml_file("tests/data/non_existent.yml")
+        read_yaml_file("data_pipeline/tests/data/non_existent.yml")
 
     # cleanup: remove the generated YAML file
     os.remove(yaml_file)
