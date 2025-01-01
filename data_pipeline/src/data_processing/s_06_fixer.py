@@ -64,7 +64,7 @@ def apply_fixes(df: pd.DataFrame, df_fixes: pd.DataFrame) -> pd.DataFrame:
                     )
                     logging.debug("applied fixes using transaction_id")
             except KeyError as e:
-                logging.error(f"Fix - KeyError in file {SETTINGS['fixes_file']}: {e}")
+                logging.error(f"fix - KeyError in file {SETTINGS['fixes_file']}: {e}")
                 raise
 
         # fix using transaction_row_id - transaction_row_id contains the owner information so it will fix only the row with the same transaction_row_id
@@ -116,7 +116,7 @@ def apply_fixes(df: pd.DataFrame, df_fixes: pd.DataFrame) -> pd.DataFrame:
                     )
                     logging.debug("applied fixes using transaction_row_id")
             except KeyError as e:
-                logging.error(f"Fix - KeyError in file {SETTINGS['fixes_file']}: {e}")
+                logging.error(f"fix - KeyError in file {SETTINGS['fixes_file']}: {e}")
                 raise
 
         logging.info("fixes ok")

@@ -26,6 +26,7 @@ SETTINGS = {
         DATA_FOLDER, "intermediate/categorization_changes"
     ),
     "duplicates_folder": os.path.join(DATA_FOLDER, "intermediate/duplicates"),
+    "final_result_folder": os.path.join(DATA_FOLDER, "final"),
     "final_result_file": os.path.join(DATA_FOLDER, "final/final_data.csv"),
     # config
     "files_file_folder": os.path.join(CONFIG_FOLDER, "source_file_reader"),
@@ -33,7 +34,7 @@ SETTINGS = {
     "categories_file": os.path.join(CONFIG_FOLDER, "data_processing/categories.csv"),
     "fixes_file": os.path.join(CONFIG_FOLDER, "data_processing/fixes.csv"),
     "splits_file": os.path.join(CONFIG_FOLDER, "data_processing/splits.csv"),
-    "use_targets": True,
+    "use_targets": False,
     "targets_file": os.path.join(CONFIG_FOLDER, "data_processing/targets.csv"),
     # debug
     "debug_folder": os.path.join(DATA_FOLDER, "intermediate/debug"),
