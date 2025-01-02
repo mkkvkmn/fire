@@ -37,7 +37,7 @@ def add_transaction_row_id(df: pd.DataFrame) -> pd.DataFrame:
 def log_id_changes(df_changes: pd.DataFrame, output_dir: str, timestamp: str):
     df_changes = df_changes[df_changes["class_new"] == ""].copy()
     if not df_changes.empty:
-        id_changes_file_path = os.path.join(output_dir, f"id_changes_{timestamp}.csv")
+        changes_file_path = os.path.join(output_dir, f"id_changes_{timestamp}.csv")
         df_changes_columns = [
             "transaction_row_id",
             "date_current",
@@ -60,28 +60,27 @@ def log_id_changes(df_changes: pd.DataFrame, output_dir: str, timestamp: str):
             "This happens when owner or any source data field information changes i.e. amount or description"
         )
 
-        df_changes.to_csv(id_changes_file_path, index=False)
+        df_changes.to_csv(changes_file_path, index=False)
         logging.warning(
             f"! \nid changes found: {len(df_changes)}"
             + "\nthis happens when owner or any source data field information changes i.e. amount or description"
             + "\nplease review records with id change from file:"
-            + f"\n{id_changes_file_path}"
+            + f"\n{changes_file_path}"
         )
 
 
 def log_category_changes(df_changes: pd.DataFrame, output_dir: str, timestamp: str):
     df_changes = df_changes[df_changes["class_new"] != ""].copy()
     if not df_changes.empty:
-        id_changes_file_path = os.path.join(
+        changes_file_path = os.path.join(
             output_dir, f"category_changes_{timestamp}.csv"
         )
 
-        df_changes.to_csv(id_changes_file_path, index=False)
+        df_changes.to_csv(changes_file_path, index=False)
         logging.warning(
-            f"! \nid changes found: {len(df_changes)}"
-            + "\nthis happens when owner or any source data field information changes i.e. amount or description"
-            + "\nplease review records with id change from file:"
-            + f"\n{id_changes_file_path}"
+            f"! \ncategory changes found: {len(df_changes)}"
+            + "\nplease review records with category changes from file:"
+            + f"\n{changes_file_path}"
         )
 
 
