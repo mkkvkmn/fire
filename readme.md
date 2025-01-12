@@ -2,22 +2,13 @@
 
 This is a personal finance tracking application made with Python and Power BI.
 
-Instructions (in Finnish): [Oman Talouden Seuranta](https://mkkvkmn.com/oman-talouden-seuranta/)
+It eats .csv and .xlsx files and outputs reports.
 
-## Table of Contents
+## Migrations
 
-- [Install](#install)
-- [Tests](#tests)
-- [Run in Terminal](#run-in-terminal)
-- [Settings](#settings)
-- [Important Notes](#important-notes)
-  - [Classes (Luokat)](#classes-luokat)
-  - [Categories](#categories)
-  - [Sub-Categories](#sub-categories)
-- [Power BI](#power-bi)
-- [Contribution Guidelines](#contribution-guidelines)
-- [License](#license)
-- [Contact](#contact)
+If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pipeline/src/data_processing/migration_scripts/readme.md) for instructions on automatically or manually migrating your data.
+
+! important: Version 2.0 will recalculate id fields for your data. This will break `fixes.csv` and you need to manually find the new id for each fix.
 
 ## Install
 
@@ -47,97 +38,89 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-# Tests
+## Config
 
-```shell
-pytest data_pipeline/tests
-```
+### Settings
 
-# Run in Terminal
+The application settings are configured in the [settings.py](config/settings.py) file.
 
-Run the application:
+You can overwrite some settings with environment variables. Add .env file to repository root.
 
-```shell
-Python3 fire.py
-```
+Example .env file contents:
 
-Run the application in debug mode (gives more info and creates intermediate files for debugging)
-Use -d or --debug:
+DATA_FOLDER = "../my_data/data"
+CONFIG_FOLDER = "../my_data/config"
+LOG_FILE="./logs/logs.log"
+DEFAULT_OWNER = "mkk"
+USE_TARGETS = True
 
-```shell
-Python3 fire.py --debug
-```
+### Source File Reader
 
-```shell
-run
-```
+We need to tell the data pipeline how each source file is read. To do this the data_pipeline uses .yml files.
 
-# Settings
+If you have a files.csv, it will be converted into .yml files when you run the data_pipeline for the first time. Files.csv is depracated in v 2.0.
 
-The application settings are configured in the settings.py file. Below is an explanation of each setting:
+Let's say you have a source file called credit_card_transactions.csv, an example .yml looks like this:
 
-LOG_LEVEL: The logging level for the application. Default is logging.WARNING.
-LOG_FILE: The path to the log file. Default is ../../logs/app.log.
-PROJECT_ROOT: The root directory of the project.
-DATA_FOLDER: The directory where data files are stored.
-PREPROCESSORS_FOLDER: The directory where preprocessor files are stored.
-CONFIG_FOLDER: The directory where configuration files are stored.
+"id": "11"
+"pattern": "credit_card"
+"account": "credit_card_visa"
+"delimiter": ","
+"date_format": "%Y-%m-%d %H:%M:%S"
+"day_first": "FALSE"
+"columns":
+  "date": "TransactionDate"
+  "amount": "Amount"
+  "description": "Text"
+  "info": "Merchant Category"
 
-## SETTINGS Dictionary
+.yml files are not defined for each file but for each pattern. Meaning you can use the example .yml file from above to read
 
-default_owner: The default owner for transactions. Default is "mkk".
-source_folder: The directory where source files are stored. Default is "data/source_files".
-intermediate_folder: The directory where intermediate files are stored. Default is "data/intermediate".
-final_result_file: The path to the final result file. Default is "data/final/final_data.csv".
-files_file: The path to the files configuration file. Default is "config/source_file_reader/files.csv".
-categories_file: The path to the categories configuration file. Default is "config/data_processing/categories.csv".
-fixes_file: The path to the fixes configuration file. Default is "config/data_processing/fixes.csv".
-splits_file: The path to the splits configuration file. Default is "config/data_processing/splits.csv".
-use_targets: Whether to use targets. Default is True.
-targets_file: The path to the targets configuration file. Default is "config/data_processing/targets.csv".
-debug_folder: The directory where debug files are stored. Default is "data/intermediate/debug".
-debug_mode: Whether to run the application in debug mode. Default is False.
-use_nordnet_portfolio: Whether to process the Nordnet portfolio. Default is True.
-nordnet_portfolio_file: The path to the Nordnet portfolio file. Default is "data/source_files/for_preprocessors/nordnet/salkkuraportti.csv".
+credit_card_1.csv
+credit_card_2.csv
+etc.
 
-# Important Notes
+### Data Processing
 
-For the Power BI report to work, following classes, categories and subcategories should be used with categories.csv file.
+Data processing happens using config files.
 
-These are referenced in the related Power BI file. Using something else means that the Power BI file requires changes too.
+- categories.csv -> assign class, category and sub_category for you data
+- fixes.csv -> overwrite assigned category, useful forexample if you buy a tv from the store where by default you get groceries
+- splits.csv -> you can split data by owner, useful for multiperson households
+- targets.csv -> set monthly targets for income or costs class / category / sub_category 
 
-## Classes (Luokat)
+## Data Pipeline
 
-Available: Tulot, Menot, Varat, Velat, Pois
+[Data pipeline documentation and user guide](data_pipeline/readme.md)
 
-Tulot - income
-Menot - costs
-Varat - assets
-Velat - liabilities
-Pois - anything you want to exclude
+## Logic Backend
 
-## Categories
+Coming someday...
 
-Required (referenced in Power BI measures):
+## UI
 
-- Ansiotulot (salary)
-- Pääomatulot (capital income)
-- Sijoitusvarallisuus (investments)
-- Sijoitusvelat (debts related to investments)
-- add more as you wish
+Coming someday...
 
-## Sub-Categories
+For now, just use the Power BI file included (only Finnish for now, sorry).
 
-Required (referenced in Power BI measures):
+## Power BI
 
-- Osinkotulot (dividends)
-- add more as you wish
-
-# Power BI
-
-Included in source code.
+[.pbix](x_stuff/pbi/fire.pbix) Included in source code.
 
 ![alt text](https://github.com/mkkvkmn/fire/blob/main/assets/fire.png?raw=true)
+
+Contents:
+
+- Landing page (Etusivu)
+- Overview (Yhteenveto)
+- Income (Tulot)
+- Costs (Menot)
+- Dividends (Osingot)
+- Assets & Liabilities (Varat & Velat)
+- FiRe (FiRe)
+- Targets (Tavoitteet)
+- Transactions (Tapahtumat)
+- Validation (Tarkistus)
 
 # Contribution Guidelines
 
