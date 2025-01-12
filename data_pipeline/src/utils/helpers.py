@@ -36,9 +36,6 @@ def create_id(row: pd.Series) -> str:
         r"[\s\-\,\.\+\!\@\#\$\%\^\&\*\(\)\=\{\}\[\]\|\:\;\"\'\<\>\?\/\\]", "", row_str
     )
 
-    print(formatted_values)
-    print(row_str)
-
     return row_str
 
 
