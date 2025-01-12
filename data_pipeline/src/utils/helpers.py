@@ -4,19 +4,42 @@ import chardet
 import numpy as np
 import pandas as pd
 import hashlib
+import re
 
 from config.settings import SETTINGS
 
 
-def create_id(row):
+def create_id(row: pd.Series) -> str:
     """
-    creates a unique id for a row.
+    creates a unique ID for a row by concatenating its values into a string,
+    replacing common special characters with underscores.
 
-    :param row: the row for which to create the id.
-    :return: the created id.
+    :param row: The row for which to create the ID (expects a dictionary).
+    :return: The created ID as a concatenated string.
     """
-    row_str = "".join(map(str, row.values)).lower()
-    return hashlib.sha256(row_str.encode()).hexdigest()
+    formatted_values = []
+    for key, value in row.items():
+        if pd.isna(value):
+            formatted_values.append("")
+        elif isinstance(value, str):
+            formatted_values.append(value)
+        elif isinstance(value, pd.Timestamp):
+            formatted_values.append(value.strftime("%Y%m%d"))
+        else:
+            formatted_values.append(str(value))
+
+    # concatenate row values into a single string separated by '__'
+    row_str = "__".join(formatted_values).lower()
+
+    # replace spaces and common special characters
+    row_str = re.sub(
+        r"[\s\-\,\.\+\!\@\#\$\%\^\&\*\(\)\=\{\}\[\]\|\:\;\"\'\<\>\?\/\\]", "", row_str
+    )
+
+    print(formatted_values)
+    print(row_str)
+
+    return row_str
 
 
 def save_on_debug(df, file_path):

@@ -48,7 +48,17 @@ def split_data(df: pd.DataFrame, splits_df: pd.DataFrame) -> pd.DataFrame:
         df["amount"] = df["amount_orig"]
         df["owner"] = SETTINGS["default_owner"]
         df["split"] = False
-        df["transaction_row_id"] = df["transaction_id"]
+        df["transaction_row_id"] = df.apply(
+            lambda row: create_id(
+                pd.Series(
+                    {
+                        "transaction_id": row["transaction_id"],
+                        "owner": row["owner"],
+                    }
+                )
+            ),
+            axis=1,
+        )
 
         split_dfs = []
 

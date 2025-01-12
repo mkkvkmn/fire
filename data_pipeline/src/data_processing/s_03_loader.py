@@ -61,9 +61,8 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
                 required_columns,
             ]
 
-            # add source file and transaction id information to data
+            # add source file
             df.loc[:, "source_file"] = props["file_name"]
-            df.loc[:, "transaction_id"] = df.apply(create_id, axis=1)
 
             save_on_debug(
                 df, os.path.join(SETTINGS["debug_folder"], "append_1_before_types.csv")
@@ -84,6 +83,9 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
                 )
             )
             df["info"] = df["info"].fillna("")
+
+            # add transaction id information to data
+            df.loc[:, "transaction_id"] = df.apply(create_id, axis=1)
 
             save_on_debug(
                 df, os.path.join(SETTINGS["debug_folder"], "append_2_after_types.csv")
