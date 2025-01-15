@@ -54,7 +54,7 @@ etc.
 
 ## Data Processing
 
-Data processing is done using config files.
+In [config/data_processing](./data_processing/) we tell the data pipeline how are data should be categorized.
 
 - categories.csv -> assign class, category and sub_category for you data
 - fixes.csv -> overwrite assigned category, useful forexample if you buy a tv from the store where by default you get groceries
@@ -63,7 +63,7 @@ Data processing is done using config files.
 
 ## Important Notes for Power BI
 
-For the Power BI report to work, following classes, categories and subcategories should be used within categories.csv file.
+For the Power BI report to work, following classes, categories and subcategories should be used in categories.csv file.
 
 These are referenced in the related Power BI file. Using something else means that the Power BI file requires changes too.
 
