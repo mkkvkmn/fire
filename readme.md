@@ -60,7 +60,7 @@ CONFIG_FOLDER = "../my_data/config"\
 DEFAULT_OWNER = "mkk"\
 USE_TARGETS = True\
 USE_NORDNET_PORTFOLIO = True\
-LOG_FILE="./logs/logs.log"\
+LOG_FILE="./logs/logs.log"
 
 ### Source File Reader
 
@@ -70,17 +70,17 @@ If you have a files.csv from V1, it will be converted into .yml files when you r
 
 Let's say you have a source file called credit_card_transactions.csv, an example .yml looks like this:
 
-"id": "11"
-"pattern": "credit_card"
-"account": "credit_card_visa"
-"delimiter": ","
-"date_format": "%Y-%m-%d %H:%M:%S"
-"day_first": "FALSE"
-"columns":
-"date": "TransactionDate"
-"amount": "Amount"
-"description": "Text"
-"info": "Merchant Category"
+"id": "11"\
+"pattern": "credit_card"\
+"account": "credit_card_visa"\
+"delimiter": ","\
+"date_format": "%Y-%m-%d %H:%M:%S"\
+"day_first": "FALSE"\
+"columns":\
+  "date": "TransactionDate"\
+  "amount": "Amount"\
+  "description": "Text"\
+  "info": "Merchant Category"
 
 .yml files are not defined for each file but for each pattern. Meaning you can use the example .yml file from above to read
 
