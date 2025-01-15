@@ -70,7 +70,7 @@ data
 └── <source_file_2.csv>
 ```
 
-To use your new data,
+To use your new data, see [.env](../../../#env) file.
 
 # Important
 

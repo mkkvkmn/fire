@@ -53,11 +53,11 @@ These are referenced in the related Power BI file. Using something else means th
 
 Available: Tulot, Menot, Varat, Velat, Pois
 
-Tulot - income
-Menot - costs
-Varat - assets
-Velat - liabilities
-Pois - anything you want to exclude
+- Tulot - income
+- Menot - costs
+- Varat - assets
+- Velat - liabilities
+- Pois - anything you want to exclude
 
 ### Categories
 
