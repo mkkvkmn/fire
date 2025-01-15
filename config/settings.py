@@ -12,10 +12,10 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 # these can be overridden with environment variables (.env file)
 DATA_FOLDER = os.getenv("DATA_FOLDER", os.path.join(PROJECT_ROOT, "data"))
 CONFIG_FOLDER = os.getenv("CONFIG_FOLDER", os.path.join(PROJECT_ROOT, "config"))
-LOG_FILE = os.getenv("LOG_FILE", None)
 DEFAULT_OWNER = os.getenv("DEFAULT_OWNER", "mkk")
 USE_TARGETS = os.getenv("USE_TARGETS", "True").lower() == "true"
 USE_NORDNET_PORTFOLIO = os.getenv("USE_NORDNET_PORTFOLIO", "True").lower() == "true"
+LOG_FILE = os.getenv("LOG_FILE", None)
 
 # other settings
 PREPROCESSORS_FOLDER = os.path.join(DATA_FOLDER, "source_files/for_preprocessors")

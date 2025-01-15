@@ -4,6 +4,13 @@ This is a personal finance tracking application made with Python and Power BI.
 
 It eats .csv and .xlsx files and outputs reports.
 
+## What You Get
+
+- Overall understanding of you finances as a Power BI report
+  - Income, costs, assets & liabilities, dividend income, fire estimate
+- Ability to set and track targets
+- Multiperson household support
+
 ## Migrations
 
 If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pipeline/src/data_processing/migration_scripts/readme.md) for instructions on automatically or manually migrating your data.
@@ -50,16 +57,16 @@ Example .env file contents:
 
 DATA_FOLDER = "../my_data/data"
 CONFIG_FOLDER = "../my_data/config"
-LOG_FILE="./logs/logs.log"
 DEFAULT_OWNER = "mkk"
 USE_TARGETS = True
 USE_NORDNET_PORTFOLIO = True
+LOG_FILE="./logs/logs.log"
 
 ### Source File Reader
 
 We need to tell the data pipeline how each source file is read. To do this the data_pipeline uses .yml files.
 
-If you have a files.csv, it will be converted into .yml files when you run the data_pipeline for the first time. Files.csv is depracated in v 2.0.
+If you have a files.csv from V1, it will be converted into .yml files when you run the data_pipeline for the first time. Files.csv is depracated in v 2.0.
 
 Let's say you have a source file called credit_card_transactions.csv, an example .yml looks like this:
 
@@ -106,22 +113,7 @@ For now, just use the Power BI file included (only Finnish for now, sorry).
 
 ## Power BI
 
-[.pbix](x_stuff/pbi/fire.pbix) Included in source code.
-
-![alt text](https://github.com/mkkvkmn/fire/blob/main/assets/fire.png?raw=true)
-
-Contents:
-
-- Landing page (Etusivu)
-- Overview (Yhteenveto)
-- Income (Tulot)
-- Costs (Menot)
-- Dividends (Osingot)
-- Assets & Liabilities (Varat & Velat)
-- FiRe (FiRe)
-- Targets (Tavoitteet)
-- Transactions (Tapahtumat)
-- Validation (Tarkistus)
+[Power BI](x_stuff/pbi/) is included in source code.
 
 # Contribution Guidelines
 

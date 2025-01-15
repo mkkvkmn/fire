@@ -1,8 +1,4 @@
-# FiRe - Financial Independence, Retire Early
-
-This is a personal finance tracking application made with Python and Power BI.
-
-Instructions (in Finnish): [Oman Talouden Seuranta](https://mkkvkmn.com/oman-talouden-seuranta/)
+# FiRe - Data Pipeline
 
 ## Migrations
 
@@ -12,18 +8,19 @@ If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pi
 
 ## How Does it Work?
 
-1. Files.csv is converted to .yml files. Only useful if migrating from v1 to v2
+1. First run after migrating v1 to v2: files.csv is converted to .yml files (if you haven't used v1, forget this)
 2. Source files are read using .yml config files. Config files define date format and used columns etc.
 3. All source file data is loaded into an appended data frame.
 4. Data records are categorized using config file categories.csv.
 5. Data records are splitted between owners using config file splits.csv
-6. Data record fixed are applied using config file fixes.csv
-7. Target data records are added if USE_TARGETS = True
-8. Data categorization and id changes are logged - these need to be approved when running the pipeline. Useful for not making errors.
-9. Data duplicates are validated - are they purposeful or mistakes? Again you need to approve them.
-10. [Final data](data/final/final_data.csv) can be analyzed with Power BI
+6. An id is added for each row, it's not unique but can be used for fixes
+7. Data record fixed are applied using config file fixes.csv
+8. Target data records are added if USE_TARGETS = True
+9. Data categorization and id changes are logged - these need to be approved when running the pipeline. Useful for not making errors.
+10. Data duplicates are validated - are they purposeful or mistakes? Again you need to approve them.
+11. [Final data](data/final/final_data.csv) can be analyzed with [Power BI](../x_stuff/pbi)
 
-## Tests
+## Run Tests in Terminal
 
 Run in root directory:
 
@@ -31,7 +28,7 @@ Run in root directory:
 pytest data_pipeline/tests
 ```
 
-## Run in Terminal
+## Run Data Pipeline in Terminal
 
 Run the application from root directory:
 
@@ -44,10 +41,6 @@ Use -d or --debug:
 
 ```shell
 Python3 fire.py --debug
-```
-
-```shell
-run
 ```
 
 ## Important Notes
