@@ -53,6 +53,7 @@ CONFIG_FOLDER = "../my_data/config"
 LOG_FILE="./logs/logs.log"
 DEFAULT_OWNER = "mkk"
 USE_TARGETS = True
+USE_NORDNET_PORTFOLIO = True
 
 ### Source File Reader
 
@@ -69,10 +70,10 @@ Let's say you have a source file called credit_card_transactions.csv, an example
 "date_format": "%Y-%m-%d %H:%M:%S"
 "day_first": "FALSE"
 "columns":
-  "date": "TransactionDate"
-  "amount": "Amount"
-  "description": "Text"
-  "info": "Merchant Category"
+"date": "TransactionDate"
+"amount": "Amount"
+"description": "Text"
+"info": "Merchant Category"
 
 .yml files are not defined for each file but for each pattern. Meaning you can use the example .yml file from above to read
 
@@ -87,7 +88,7 @@ Data processing happens using config files.
 - categories.csv -> assign class, category and sub_category for you data
 - fixes.csv -> overwrite assigned category, useful forexample if you buy a tv from the store where by default you get groceries
 - splits.csv -> you can split data by owner, useful for multiperson households
-- targets.csv -> set monthly targets for income or costs class / category / sub_category 
+- targets.csv -> set monthly targets for income or costs class / category / sub_category
 
 ## Data Pipeline
 

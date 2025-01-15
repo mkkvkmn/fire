@@ -6,7 +6,7 @@ import os
 from pprint import pformat
 
 from config.settings import SETTINGS
-from data_pipeline.src.utils.helpers import save_on_debug, create_id, parse_date
+from data_pipeline.src.utils.helpers import save_on_debug, parse_date
 
 
 def append_dataframes(dataframes: dict) -> pd.DataFrame:
@@ -39,8 +39,8 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
             # add columns if not present
             if "account" not in df.columns:
                 df["account"] = props["account"]
-            if "record_type" not in df.columns:
-                df["record_type"] = "Actual"
+            if "row_type" not in df.columns:
+                df["row_type"] = "Actual"
 
             # check if required columns are present
             required_columns = [
@@ -49,7 +49,7 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
                 "description",
                 "info",
                 "amount",
-                "record_type",
+                "row_type",
             ]
             missing_columns = [col for col in required_columns if col not in df.columns]
             if missing_columns:
@@ -65,7 +65,8 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
             df.loc[:, "source_file"] = props["file_name"]
 
             save_on_debug(
-                df, os.path.join(SETTINGS["debug_folder"], "append_1_before_types.csv")
+                df,
+                os.path.join(SETTINGS["debug_folder"], "3_append_1_before_types.csv"),
             )
 
             # convert types
@@ -84,11 +85,8 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
             )
             df["info"] = df["info"].fillna("")
 
-            # add transaction id information to data
-            df.loc[:, "transaction_id"] = df.apply(create_id, axis=1)
-
             save_on_debug(
-                df, os.path.join(SETTINGS["debug_folder"], "append_2_after_types.csv")
+                df, os.path.join(SETTINGS["debug_folder"], "3_append_2_after_types.csv")
             )
 
             df_list.append(df)
@@ -111,7 +109,7 @@ def append_dataframes(dataframes: dict) -> pd.DataFrame:
 
     save_on_debug(
         df_all,
-        os.path.join(SETTINGS["intermediate_folder"], "1_loaded.csv"),
+        os.path.join(SETTINGS["intermediate_folder"], "3_loaded.csv"),
     )
 
     return df_all

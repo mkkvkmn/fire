@@ -23,12 +23,13 @@ from data_pipeline.src.data_processing.preprocessors.nordnet_portfolio import (
 from data_pipeline.src.data_processing.s_03_loader import append_dataframes
 from data_pipeline.src.data_processing.s_04_categorizer import categorize_data_loop
 from data_pipeline.src.data_processing.s_05_splitter import split_data, create_splits_df
-from data_pipeline.src.data_processing.s_06_fixer import apply_fixes
-from data_pipeline.src.data_processing.s_07_target_setter import set_targets
-from data_pipeline.src.data_processing.s_08_log_changes import (
+from data_pipeline.src.data_processing.s_06_add_id import add_not_unique_id
+from data_pipeline.src.data_processing.s_07_fixer import apply_fixes
+from data_pipeline.src.data_processing.s_08_target_setter import set_targets
+from data_pipeline.src.data_processing.s_09_log_changes import (
     log_categorization_and_id_changes,
 )
-from data_pipeline.src.data_processing.s_09_validate import validate_unique_id
+from data_pipeline.src.data_processing.s_10_validate import validate_not_unique_id
 
 
 def main(debug):
@@ -73,9 +74,12 @@ def main(debug):
         df_splits = create_splits_df(SETTINGS["splits_file"])
         df_splitted = split_data(df_categorized, df_splits)
 
+        # add id
+        df_with_id = add_not_unique_id(df_splitted)
+
         # apply fixes
         df_fixes = read_csv_file(SETTINGS["fixes_file"])
-        df_fixed = apply_fixes(df_splitted, df_fixes)
+        df_fixed = apply_fixes(df_with_id, df_fixes)
 
         # set targets if enabled
         if SETTINGS.get("use_targets", False):
@@ -85,6 +89,7 @@ def main(debug):
             # append targets to actuals
             df_final = pd.concat([df_fixed, df_targets_monthly], ignore_index=True)
         else:
+            logging.info("use targets: disabled")
             df_final = df_fixed
 
         # log data changes
@@ -94,7 +99,7 @@ def main(debug):
         )
 
         # validation
-        validate_unique_id(df_final, SETTINGS["duplicates_folder"])
+        validate_not_unique_id(df_final, SETTINGS["duplicates_folder"])
 
         # save final data with fixes
         write_to_csv(df_final, SETTINGS["final_result_file"])

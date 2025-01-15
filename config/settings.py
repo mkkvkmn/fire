@@ -14,7 +14,8 @@ DATA_FOLDER = os.getenv("DATA_FOLDER", os.path.join(PROJECT_ROOT, "data"))
 CONFIG_FOLDER = os.getenv("CONFIG_FOLDER", os.path.join(PROJECT_ROOT, "config"))
 LOG_FILE = os.getenv("LOG_FILE", None)
 DEFAULT_OWNER = os.getenv("DEFAULT_OWNER", "mkk")
-USE_TARGETS = os.getenv("USE_TARGETS", "False").lower() == "true"
+USE_TARGETS = os.getenv("USE_TARGETS", "True").lower() == "true"
+USE_NORDNET_PORTFOLIO = os.getenv("USE_NORDNET_PORTFOLIO", "True").lower() == "true"
 
 # other settings
 PREPROCESSORS_FOLDER = os.path.join(DATA_FOLDER, "source_files/for_preprocessors")
@@ -44,7 +45,7 @@ SETTINGS = {
     "log_file": LOG_FILE,
     # preprocessors
     "preprocessors_folder": PREPROCESSORS_FOLDER,
-    "use_nordnet_portfolio": True,
+    "use_nordnet_portfolio": USE_NORDNET_PORTFOLIO,
     "nordnet_portfolio_file": os.path.join(
         PREPROCESSORS_FOLDER, "nordnet/nordnet_salkkuraportti.csv"
     ),

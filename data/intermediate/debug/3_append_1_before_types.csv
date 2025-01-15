@@ -1,4 +1,4 @@
-date,account,description,info,amount,record_type,source_file
+date,account,description,info,amount,row_type,source_file
 31.1.2023,velat,asuntolaina,,-90000,Actual,velat.csv
 28.2.2023,velat,asuntolaina,,-89500,Actual,velat.csv
 31.3.2023,velat,asuntolaina,,-89000,Actual,velat.csv

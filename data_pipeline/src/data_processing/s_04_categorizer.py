@@ -123,7 +123,6 @@ def apply_categorization(df: pd.DataFrame, rules_df: pd.DataFrame) -> pd.DataFra
 
         df = df[
             [
-                "transaction_id",
                 "date",
                 "account",
                 "description",
@@ -134,7 +133,7 @@ def apply_categorization(df: pd.DataFrame, rules_df: pd.DataFrame) -> pd.DataFra
                 "sub_category",
                 "rule_id",
                 "source_file",
-                "record_type",
+                "row_type",
             ]
         ]
 
@@ -179,7 +178,7 @@ def categorize_data_loop(df: pd.DataFrame, categories_file: str) -> pd.DataFrame
             logging.info("all data categorized ok")
             save_on_debug(
                 df,
-                os.path.join(SETTINGS["intermediate_folder"], "2_categorized.csv"),
+                os.path.join(SETTINGS["intermediate_folder"], "4_categorized.csv"),
             )
             return df
         else:

@@ -3,10 +3,19 @@ import logging
 import chardet
 import numpy as np
 import pandas as pd
-import hashlib
 import re
 
 from config.settings import SETTINGS
+
+
+def clean_string(value: str) -> str:
+    # replace spaces and common special characters, but not double underscores
+    cleaned_value = re.sub(
+        r"(?<!_)_(?!_)|[\s\ \–\-\,\.\+\!\@\#\$\%\^\&\*\(\)\=\{\}\[\]\|\:\;\"\'\<\>\?\/\\]",
+        "",
+        value,
+    )
+    return cleaned_value
 
 
 def create_id(row: pd.Series) -> str:
@@ -32,11 +41,9 @@ def create_id(row: pd.Series) -> str:
     row_str = "__".join(formatted_values).lower()
 
     # replace spaces and common special characters
-    row_str = re.sub(
-        r"[\s\-\,\.\+\!\@\#\$\%\^\&\*\(\)\=\{\}\[\]\|\:\;\"\'\<\>\?\/\\]", "", row_str
-    )
+    cleaned_row_str = clean_string(row_str)
 
-    return row_str
+    return cleaned_row_str
 
 
 def save_on_debug(df, file_path):

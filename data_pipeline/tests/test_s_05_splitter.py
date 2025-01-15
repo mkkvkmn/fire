@@ -53,6 +53,7 @@ def test_split_data():
             "description": ["Arbor Realty Trust", "Arbor Realty Trust"],
             "info": ["Salkku 1", "Salkku 1"],
             "amount": [7080.47, 6879.18],
+            "row_type": ["Actual", "Actual"],
             "class": ["varat", "varat"],
             "category": ["sijoitusvarallisuus", "sijoitusvarallisuus"],
             "sub_category": ["osinkosalkku", "osinkosalkku"],
@@ -80,7 +81,6 @@ def test_split_data():
     assert "amount" in split_df.columns
     assert "owner" in split_df.columns
     assert "split" in split_df.columns
-    assert "transaction_row_id" in split_df.columns
 
     # assert that the values are not split as the split dates are in the future
     assert split_df.loc[0, "share"] == 1.0

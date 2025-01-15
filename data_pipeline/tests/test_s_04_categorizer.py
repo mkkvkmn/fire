@@ -23,7 +23,7 @@ def test_categorize_data():
             ],
             "amount": [-11.65, -12.99],
             "source_file": ["luottokortti.xlsx", "luottokortti.xlsx"],
-            "record_type": ["Actual", "Actual"],
+            "row_type": ["Actual", "Actual"],
         }
     )
 
@@ -58,13 +58,13 @@ def test_categorize_data():
     assert categorized_df.loc[0, "category"] == "media"
     assert categorized_df.loc[0, "sub_category"] == "suoratoisto"
     assert categorized_df.loc[0, "rule_id"] == "3"
-    assert categorized_df.loc[0, "record_type"] == "Actual"
+    assert categorized_df.loc[0, "row_type"] == "Actual"
 
     assert categorized_df.loc[1, "class"] == "menot"
     assert categorized_df.loc[1, "category"] == "media"
     assert categorized_df.loc[1, "sub_category"] == "musiikki"
     assert categorized_df.loc[1, "rule_id"] == "8"
-    assert categorized_df.loc[1, "record_type"] == "Actual"
+    assert categorized_df.loc[1, "row_type"] == "Actual"
 
 
 if __name__ == "__main__":

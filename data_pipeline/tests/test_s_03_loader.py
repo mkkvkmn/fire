@@ -69,9 +69,8 @@ def test_append_dataframes_valid():
     assert "description" in df_all.columns
     assert "info" in df_all.columns
     assert "amount" in df_all.columns
-    assert "record_type" in df_all.columns
+    assert "row_type" in df_all.columns
     assert "source_file" in df_all.columns
-    assert "transaction_id" in df_all.columns
 
 
 def test_append_dataframes_missing_columns():

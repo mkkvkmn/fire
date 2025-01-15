@@ -3,7 +3,7 @@ import logging
 import os
 
 from config.settings import SETTINGS
-from data_pipeline.src.utils.helpers import create_id, save_on_debug
+from data_pipeline.src.utils.helpers import save_on_debug
 
 
 def create_splits_df(file_path: str) -> pd.DataFrame:
@@ -34,7 +34,14 @@ def split_data(df: pd.DataFrame, splits_df: pd.DataFrame) -> pd.DataFrame:
     """
     try:
         # check for required columns in the input dataframe
-        required_columns = ["transaction_id", "date", "account", "amount"]
+        required_columns = [
+            "date",
+            "account",
+            "description",
+            "info",
+            "amount",
+            "row_type",
+        ]
         for col in required_columns:
             if col not in df.columns:
                 raise KeyError(f"split_data - missing column: {col}")
@@ -43,22 +50,11 @@ def split_data(df: pd.DataFrame, splits_df: pd.DataFrame) -> pd.DataFrame:
         df["date"] = pd.to_datetime(df["date"])
 
         # add split columns
-        df = df.rename(columns={"amount": "amount_orig"})
+        df = df.rename(columns={"amount": "amount_original"})
         df["share"] = 1
-        df["amount"] = df["amount_orig"]
+        df["amount"] = df["amount_original"]
         df["owner"] = SETTINGS["default_owner"]
         df["split"] = False
-        df["transaction_row_id"] = df.apply(
-            lambda row: create_id(
-                pd.Series(
-                    {
-                        "transaction_id": row["transaction_id"],
-                        "owner": row["owner"],
-                    }
-                )
-            ),
-            axis=1,
-        )
 
         split_dfs = []
 
@@ -75,20 +71,9 @@ def split_data(df: pd.DataFrame, splits_df: pd.DataFrame) -> pd.DataFrame:
 
             try:
                 # adjust the amount and add the owner
-                temp_df["amount"] = temp_df["amount_orig"] * split["share"]
+                temp_df["amount"] = temp_df["amount_original"] * split["share"]
                 temp_df["share"] = split["share"]
                 temp_df["owner"] = split["owner"]
-                temp_df["transaction_row_id"] = temp_df.apply(
-                    lambda row: create_id(
-                        pd.Series(
-                            {
-                                "transaction_id": row["transaction_id"],
-                                "owner": split["owner"],
-                            }
-                        )
-                    ),
-                    axis=1,
-                )
                 temp_df["split"] = True  # set the split column to True for split rows
             except TypeError as e:
                 logging.error(f"TypeError - split_data: {split}: {e}")
@@ -106,7 +91,7 @@ def split_data(df: pd.DataFrame, splits_df: pd.DataFrame) -> pd.DataFrame:
         logging.info("splits ok")
         save_on_debug(
             result_df,
-            os.path.join(SETTINGS["intermediate_folder"], "3_splitted.csv"),
+            os.path.join(SETTINGS["intermediate_folder"], "5_splitted.csv"),
         )
         return result_df
     except Exception as e:
