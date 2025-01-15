@@ -51,7 +51,11 @@ pip install -r requirements.txt
 
 The application settings are configured in the [settings.py](config/settings.py) file.
 
-You can overwrite some settings with environment variables. Add .env file to repository root.
+#### .env
+
+You can overwrite settings with environment variables.
+
+- Add .env file to repository root
 
 Example .env file contents:
 

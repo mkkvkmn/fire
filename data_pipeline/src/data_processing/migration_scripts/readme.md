@@ -70,6 +70,8 @@ data
 └── <source_file_2.csv>
 ```
 
+To use your new data,
+
 # Important
 
 Version 2.0 will recalculate id fields for your data. This will break `fixes.csv` and you need to manually find the new id for each fix.
