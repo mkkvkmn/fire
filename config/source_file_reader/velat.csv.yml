@@ -1,0 +1,11 @@
+"id": "3"
+"pattern": "velat.csv"
+"account": "velat"
+"delimiter": ","
+"date_format": "%d.%m.%Y"
+"day_first": "TRUE"
+"columns":
+  "date": "date"
+  "amount": "amount"
+  "description": "description"
+  "info": "info"

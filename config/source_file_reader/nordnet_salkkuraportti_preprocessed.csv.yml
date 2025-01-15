@@ -1,0 +1,11 @@
+"id": "8"
+"pattern": "nordnet_salkkuraportti_preprocessed.csv"
+"account": "nordnet_salkkuraportti"
+"delimiter": ","
+"date_format": "%d.%m.%Y"
+"day_first": "TRUE"
+"columns":
+  "date": "date"
+  "amount": "market_value"
+  "description": "stock"
+  "info": "account"

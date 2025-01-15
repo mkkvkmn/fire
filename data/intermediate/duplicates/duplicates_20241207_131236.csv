@@ -1,0 +1,5 @@
+transaction_id,date,account,description,info,amount_orig,class,category,sub_category,rule_id,source_file,record_type,share,amount,owner,split,transaction_row_id
+2aec10778bdf537f3657cfee3fcec7309e92018e33d01615fd4bee9af2992e05,2024-02-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual,1.0,-13.22,mkk,False,2aec10778bdf537f3657cfee3fcec7309e92018e33d01615fd4bee9af2992e05
+138d3c5cae4347d1f51448be68c7678aef937e976b384ed1a4bae5483f593057,2024-02-16,osingot,O,OSINKO,88.13,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual,1.0,88.13,mkk,False,138d3c5cae4347d1f51448be68c7678aef937e976b384ed1a4bae5483f593057
+2aec10778bdf537f3657cfee3fcec7309e92018e33d01615fd4bee9af2992e05,2024-02-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual,1.0,-13.22,mkk,False,2aec10778bdf537f3657cfee3fcec7309e92018e33d01615fd4bee9af2992e05
+138d3c5cae4347d1f51448be68c7678aef937e976b384ed1a4bae5483f593057,2024-02-16,osingot,O,OSINKO,88.13,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual,1.0,88.13,mkk,False,138d3c5cae4347d1f51448be68c7678aef937e976b384ed1a4bae5483f593057

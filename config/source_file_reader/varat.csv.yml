@@ -1,0 +1,11 @@
+"id": "2"
+"pattern": "varat.csv"
+"account": "varat"
+"delimiter": ","
+"date_format": "%d.%m.%Y"
+"day_first": "TRUE"
+"columns":
+  "date": "date"
+  "amount": "amount"
+  "description": "description"
+  "info": "info"

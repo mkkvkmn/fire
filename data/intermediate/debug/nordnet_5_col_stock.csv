@@ -1,0 +1,910 @@
+transaction,account,label,date,stock
+Omistukset,,,,
+AOT,,,,
+Salkku 1,Salkku 1,,,
+31.1.2023,Salkku 1,,31.1.2023,
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.1.2023,
+Markk.hinta,Salkku 1,,31.1.2023,
+Hank.hinta,Salkku 1,,31.1.2023,
+Määrä,Salkku 1,,31.1.2023,
+Markkina-arvo EUR,Salkku 1,,31.1.2023,
+Toteutum.tulos,Salkku 1,,31.1.2023,
+Osuus,Salkku 1,,31.1.2023,
+Arbor Realty Trust,Salkku 1,stock,31.1.2023,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,31.1.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.1.2023,Arbor Realty Trust
+600,Salkku 1,qty,31.1.2023,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,31.1.2023,Arbor Realty Trust
+"−40,32",Salkku 1,change,31.1.2023,Arbor Realty Trust
+"1,98%",Salkku 1,share,31.1.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.1.2023,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,31.1.2023,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.1.2023,Bank Of Nova Scotia
+350,Salkku 1,qty,31.1.2023,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,31.1.2023,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,31.1.2023,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,31.1.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.1.2023,CubeSmart
+"45,79 USD",Salkku 1,price,31.1.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,31.1.2023,CubeSmart
+160,Salkku 1,qty,31.1.2023,CubeSmart
+"6 738,83",Salkku 1,market_value,31.1.2023,CubeSmart
+"+2 372,59",Salkku 1,change,31.1.2023,CubeSmart
+"1,62%",Salkku 1,share,31.1.2023,CubeSmart
+AOT,Salkku 1,,31.1.2023,CubeSmart
+Salkku 3,Salkku 3,,31.1.2023,CubeSmart
+31.1.2023,Salkku 3,,31.1.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 3,,31.1.2023,CubeSmart
+Markk.hinta,Salkku 3,,31.1.2023,CubeSmart
+Hank.hinta,Salkku 3,,31.1.2023,CubeSmart
+Määrä,Salkku 3,,31.1.2023,CubeSmart
+Markkina-arvo EUR,Salkku 3,,31.1.2023,CubeSmart
+Toteutum.tulos,Salkku 3,,31.1.2023,CubeSmart
+Osuus,Salkku 3,,31.1.2023,CubeSmart
+iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,stock,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"71,82 EUR",Salkku 3,price,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"72,46",Salkku 3,purchase_price,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+255,Salkku 3,qty,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"18 313,61",Salkku 3,market_value,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"−164,81",Salkku 3,change,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"91,54%",Salkku 3,share,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Rahastot,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Markk.hinta,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Hank.hinta,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Määrä,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Markkina-arvo EUR,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Toteutum.tulos,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Osuus,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Muut sijoitukset,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Saldo,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Osuus,Salkku 3,,31.1.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Likvidit varat,Salkku 3,stock,31.1.2023,Likvidit varat
+"1 692,41",Salkku 3,market_value,31.1.2023,Likvidit varat
+"8,46%",Salkku 3,share,31.1.2023,Likvidit varat
+Yhteensä,Salkku 3,,31.1.2023,Likvidit varat
+"20 006,02",Salkku 3,,31.1.2023,Likvidit varat
+"−164,81",Salkku 3,,31.1.2023,Likvidit varat
+"100,00%",Salkku 3,,31.1.2023,Likvidit varat
+Omistukset,Salkku 3,,31.1.2023,Likvidit varat
+AOT,Salkku 3,,31.1.2023,Likvidit varat
+Salkku 1,Salkku 1,,31.1.2023,Likvidit varat
+27.2.2023,Salkku 1,,27.2.2023,Likvidit varat
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,27.2.2023,Likvidit varat
+Markk.hinta,Salkku 1,,27.2.2023,Likvidit varat
+Hank.hinta,Salkku 1,,27.2.2023,Likvidit varat
+Määrä,Salkku 1,,27.2.2023,Likvidit varat
+Markkina-arvo EUR,Salkku 1,,27.2.2023,Likvidit varat
+Toteutum.tulos,Salkku 1,,27.2.2023,Likvidit varat
+Osuus,Salkku 1,,27.2.2023,Likvidit varat
+Arbor Realty Trust,Salkku 1,stock,27.2.2023,Arbor Realty Trust
+"15,13 USD",Salkku 1,price,27.2.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,27.2.2023,Arbor Realty Trust
+600,Salkku 1,qty,27.2.2023,Arbor Realty Trust
+"8 552,46",Salkku 1,market_value,27.2.2023,Arbor Realty Trust
+"+272,56",Salkku 1,change,27.2.2023,Arbor Realty Trust
+"2,08%",Salkku 1,share,27.2.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,27.2.2023,Bank Of Nova Scotia
+"71,53 CAD",Salkku 1,price,27.2.2023,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,27.2.2023,Bank Of Nova Scotia
+350,Salkku 1,qty,27.2.2023,Bank Of Nova Scotia
+"17 372,94",Salkku 1,market_value,27.2.2023,Bank Of Nova Scotia
+"+4 745,33",Salkku 1,change,27.2.2023,Bank Of Nova Scotia
+"4,23%",Salkku 1,share,27.2.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,27.2.2023,CubeSmart
+"46,67 USD",Salkku 1,price,27.2.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,27.2.2023,CubeSmart
+160,Salkku 1,qty,27.2.2023,CubeSmart
+"7 034,91",Salkku 1,market_value,27.2.2023,CubeSmart
+"+2 668,67",Salkku 1,change,27.2.2023,CubeSmart
+"1,71%",Salkku 1,share,27.2.2023,CubeSmart
+AOT,Salkku 1,,27.2.2023,CubeSmart
+Salkku 3,Salkku 3,,27.2.2023,CubeSmart
+27.2.2023,Salkku 3,,27.2.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 3,,27.2.2023,CubeSmart
+Markk.hinta,Salkku 3,,27.2.2023,CubeSmart
+Hank.hinta,Salkku 3,,27.2.2023,CubeSmart
+Määrä,Salkku 3,,27.2.2023,CubeSmart
+Markkina-arvo EUR,Salkku 3,,27.2.2023,CubeSmart
+Toteutum.tulos,Salkku 3,,27.2.2023,CubeSmart
+Osuus,Salkku 3,,27.2.2023,CubeSmart
+iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,stock,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"72,51 EUR",Salkku 3,price,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"72,46",Salkku 3,purchase_price,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+255,Salkku 3,qty,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"18 489,97",Salkku 3,market_value,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"+11,55",Salkku 3,change,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"91,61%",Salkku 3,share,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Rahastot,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Markk.hinta,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Hank.hinta,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Määrä,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Markkina-arvo EUR,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Toteutum.tulos,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Osuus,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Muut sijoitukset,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Saldo,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Osuus,Salkku 3,,27.2.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Likvidit varat,Salkku 3,stock,27.2.2023,Likvidit varat
+"1 692,41",Salkku 3,market_value,27.2.2023,Likvidit varat
+"8,39%",Salkku 3,share,27.2.2023,Likvidit varat
+Yhteensä,Salkku 3,,27.2.2023,Likvidit varat
+"20 182,38",Salkku 3,,27.2.2023,Likvidit varat
+"+11,55",Salkku 3,,27.2.2023,Likvidit varat
+"100,00%",Salkku 3,,27.2.2023,Likvidit varat
+Omistukset,Salkku 3,,27.2.2023,Likvidit varat
+AOT,Salkku 3,,27.2.2023,Likvidit varat
+Salkku 1,Salkku 1,,27.2.2023,Likvidit varat
+31.3.2023,Salkku 1,,31.3.2023,Likvidit varat
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.3.2023,Likvidit varat
+Markk.hinta,Salkku 1,,31.3.2023,Likvidit varat
+Hank.hinta,Salkku 1,,31.3.2023,Likvidit varat
+Määrä,Salkku 1,,31.3.2023,Likvidit varat
+Markkina-arvo EUR,Salkku 1,,31.3.2023,Likvidit varat
+Toteutum.tulos,Salkku 1,,31.3.2023,Likvidit varat
+Osuus,Salkku 1,,31.3.2023,Likvidit varat
+Arbor Realty Trust,Salkku 1,stock,31.3.2023,Arbor Realty Trust
+"11,49 USD",Salkku 1,price,31.3.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.3.2023,Arbor Realty Trust
+600,Salkku 1,qty,31.3.2023,Arbor Realty Trust
+"6 355,66",Salkku 1,market_value,31.3.2023,Arbor Realty Trust
+"−1 924,24",Salkku 1,change,31.3.2023,Arbor Realty Trust
+"1,58%",Salkku 1,share,31.3.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.3.2023,Bank Of Nova Scotia
+"68,07 CAD",Salkku 1,price,31.3.2023,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.3.2023,Bank Of Nova Scotia
+350,Salkku 1,qty,31.3.2023,Bank Of Nova Scotia
+"16 251,22",Salkku 1,market_value,31.3.2023,Bank Of Nova Scotia
+"+3 623,61",Salkku 1,change,31.3.2023,Bank Of Nova Scotia
+"4,05%",Salkku 1,share,31.3.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.3.2023,CubeSmart
+"46,22 USD",Salkku 1,price,31.3.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,31.3.2023,CubeSmart
+160,Salkku 1,qty,31.3.2023,CubeSmart
+"6 817,72",Salkku 1,market_value,31.3.2023,CubeSmart
+"+2 451,48",Salkku 1,change,31.3.2023,CubeSmart
+"1,70%",Salkku 1,share,31.3.2023,CubeSmart
+AOT,Salkku 1,,31.3.2023,CubeSmart
+Salkku 3,Salkku 3,,31.3.2023,CubeSmart
+31.3.2023,Salkku 3,,31.3.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 3,,31.3.2023,CubeSmart
+Markk.hinta,Salkku 3,,31.3.2023,CubeSmart
+Hank.hinta,Salkku 3,,31.3.2023,CubeSmart
+Määrä,Salkku 3,,31.3.2023,CubeSmart
+Markkina-arvo EUR,Salkku 3,,31.3.2023,CubeSmart
+Toteutum.tulos,Salkku 3,,31.3.2023,CubeSmart
+Osuus,Salkku 3,,31.3.2023,CubeSmart
+iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,stock,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"72,38 EUR",Salkku 3,price,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"72,46",Salkku 3,purchase_price,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+255,Salkku 3,qty,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"18 456,37",Salkku 3,market_value,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"−22,05",Salkku 3,change,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"91,60%",Salkku 3,share,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Rahastot,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Markk.hinta,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Hank.hinta,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Määrä,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Markkina-arvo EUR,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Toteutum.tulos,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Osuus,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Muut sijoitukset,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Saldo,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Osuus,Salkku 3,,31.3.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Likvidit varat,Salkku 3,stock,31.3.2023,Likvidit varat
+"1 692,41",Salkku 3,market_value,31.3.2023,Likvidit varat
+"8,40%",Salkku 3,share,31.3.2023,Likvidit varat
+Yhteensä,Salkku 3,,31.3.2023,Likvidit varat
+"20 148,78",Salkku 3,,31.3.2023,Likvidit varat
+"−22,05",Salkku 3,,31.3.2023,Likvidit varat
+"100,00",Salkku 3,,31.3.2023,Likvidit varat
+Omistukset,Salkku 3,,31.3.2023,Likvidit varat
+AOT,Salkku 3,,31.3.2023,Likvidit varat
+Salkku 1,Salkku 1,,31.3.2023,Likvidit varat
+30.4.2023,Salkku 1,,30.4.2023,Likvidit varat
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,30.4.2023,Likvidit varat
+Markk.hinta,Salkku 1,,30.4.2023,Likvidit varat
+Hank.hinta,Salkku 1,,30.4.2023,Likvidit varat
+Määrä,Salkku 1,,30.4.2023,Likvidit varat
+Markkina-arvo EUR,Salkku 1,,30.4.2023,Likvidit varat
+Toteutum.tulos,Salkku 1,,30.4.2023,Likvidit varat
+Osuus,Salkku 1,,30.4.2023,Likvidit varat
+Arbor Realty Trust,Salkku 1,stock,30.4.2023,Arbor Realty Trust
+"11,47 USD",Salkku 1,price,30.4.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,30.4.2023,Arbor Realty Trust
+600,Salkku 1,qty,30.4.2023,Arbor Realty Trust
+"6 245,23",Salkku 1,market_value,30.4.2023,Arbor Realty Trust
+"−2 034,67",Salkku 1,change,30.4.2023,Arbor Realty Trust
+"1,50%",Salkku 1,share,30.4.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,30.4.2023,Bank Of Nova Scotia
+"67,63 CAD",Salkku 1,price,30.4.2023,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,30.4.2023,Bank Of Nova Scotia
+350,Salkku 1,qty,30.4.2023,Bank Of Nova Scotia
+"15 858,10",Salkku 1,market_value,30.4.2023,Bank Of Nova Scotia
+"+3 230,49",Salkku 1,change,30.4.2023,Bank Of Nova Scotia
+"3,81%",Salkku 1,share,30.4.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,30.4.2023,CubeSmart
+"45,49 USD",Salkku 1,price,30.4.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,30.4.2023,CubeSmart
+160,Salkku 1,qty,30.4.2023,CubeSmart
+"6 604,95",Salkku 1,market_value,30.4.2023,CubeSmart
+"+2 238,71",Salkku 1,change,30.4.2023,CubeSmart
+"1,59%",Salkku 1,share,30.4.2023,CubeSmart
+AOT,Salkku 1,,30.4.2023,CubeSmart
+Salkku 3,Salkku 3,,30.4.2023,CubeSmart
+30.4.2023,Salkku 3,,30.4.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 3,,30.4.2023,CubeSmart
+Markk.hinta,Salkku 3,,30.4.2023,CubeSmart
+Hank.hinta,Salkku 3,,30.4.2023,CubeSmart
+Määrä,Salkku 3,,30.4.2023,CubeSmart
+Markkina-arvo EUR,Salkku 3,,30.4.2023,CubeSmart
+Toteutum.tulos,Salkku 3,,30.4.2023,CubeSmart
+Osuus,Salkku 3,,30.4.2023,CubeSmart
+iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,stock,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"72,57 EUR",Salkku 3,price,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"72,46",Salkku 3,purchase_price,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+255,Salkku 3,qty,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"18 504,26",Salkku 3,market_value,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"+25,84",Salkku 3,change,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+"91,62%",Salkku 3,share,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Rahastot,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Markk.hinta,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Hank.hinta,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Määrä,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Markkina-arvo EUR,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Toteutum.tulos,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Osuus,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Muut sijoitukset,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Saldo,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Osuus,Salkku 3,,30.4.2023,iShares Core MSCI World UCITS ETF USD (Acc)
+Likvidit varat,Salkku 3,stock,30.4.2023,Likvidit varat
+"1 692,41",Salkku 3,market_value,30.4.2023,Likvidit varat
+"8,38%",Salkku 3,share,30.4.2023,Likvidit varat
+Yhteensä,Salkku 3,,30.4.2023,Likvidit varat
+"20 196,67",Salkku 3,,30.4.2023,Likvidit varat
+"+25,84",Salkku 3,,30.4.2023,Likvidit varat
+"100,00%",Salkku 3,,30.4.2023,Likvidit varat
+Omistukset,Salkku 3,,30.4.2023,Likvidit varat
+AOT,Salkku 3,,30.4.2023,Likvidit varat
+Salkku 1,Salkku 1,,30.4.2023,Likvidit varat
+31.5.2023,Salkku 1,,31.5.2023,Likvidit varat
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.5.2023,Likvidit varat
+Markk.hinta,Salkku 1,,31.5.2023,Likvidit varat
+Hank.hinta,Salkku 1,,31.5.2023,Likvidit varat
+Määrä,Salkku 1,,31.5.2023,Likvidit varat
+Markkina-arvo EUR,Salkku 1,,31.5.2023,Likvidit varat
+Toteutum.tulos,Salkku 1,,31.5.2023,Likvidit varat
+Osuus,Salkku 1,,31.5.2023,Likvidit varat
+Arbor Realty Trust,Salkku 1,stock,31.5.2023,Arbor Realty Trust
+"12,61 USD",Salkku 1,price,31.5.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.5.2023,Arbor Realty Trust
+600,Salkku 1,qty,31.5.2023,Arbor Realty Trust
+"7 080,47",Salkku 1,market_value,31.5.2023,Arbor Realty Trust
+"−1 199,42",Salkku 1,change,31.5.2023,Arbor Realty Trust
+"1,68%",Salkku 1,share,31.5.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.5.2023,Bank Of Nova Scotia
+"65,57 CAD",Salkku 1,price,31.5.2023,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.5.2023,Bank Of Nova Scotia
+350,Salkku 1,qty,31.5.2023,Bank Of Nova Scotia
+"15 819,42",Salkku 1,market_value,31.5.2023,Bank Of Nova Scotia
+"+3 191,80",Salkku 1,change,31.5.2023,Bank Of Nova Scotia
+"3,76%",Salkku 1,share,31.5.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.5.2023,CubeSmart
+"44,44 USD",Salkku 1,price,31.5.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,31.5.2023,CubeSmart
+160,Salkku 1,qty,31.5.2023,CubeSmart
+"6 654,11",Salkku 1,market_value,31.5.2023,CubeSmart
+"+2 287,87",Salkku 1,change,31.5.2023,CubeSmart
+"1,58%",Salkku 1,share,31.5.2023,CubeSmart
+Omistukset,Salkku 1,,31.5.2023,CubeSmart
+AOT,Salkku 1,,31.5.2023,CubeSmart
+Salkku 2,Salkku 2,,31.5.2023,CubeSmart
+30.6.2023,Salkku 2,,30.6.2023,CubeSmart
+"Ei omistuksiaSaldo 1,00 EUR",Salkku 2,,30.6.2023,CubeSmart
+AOT,Salkku 2,,30.6.2023,CubeSmart
+Salkku 1,Salkku 1,,30.6.2023,CubeSmart
+30.6.2023,Salkku 1,,30.6.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,30.6.2023,CubeSmart
+Markk.hinta,Salkku 1,,30.6.2023,CubeSmart
+Hank.hinta,Salkku 1,,30.6.2023,CubeSmart
+Määrä,Salkku 1,,30.6.2023,CubeSmart
+Markkina-arvo EUR,Salkku 1,,30.6.2023,CubeSmart
+Toteutum.tulos,Salkku 1,,30.6.2023,CubeSmart
+Osuus,Salkku 1,,30.6.2023,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,30.6.2023,Arbor Realty Trust
+"14,82 USD",Salkku 1,price,30.6.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,30.6.2023,Arbor Realty Trust
+600,Salkku 1,qty,30.6.2023,Arbor Realty Trust
+"8 147,25",Salkku 1,market_value,30.6.2023,Arbor Realty Trust
+"−132,64",Salkku 1,change,30.6.2023,Arbor Realty Trust
+"1,85%",Salkku 1,share,30.6.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,30.6.2023,Bank Of Nova Scotia
+"66,28 CAD",Salkku 1,price,30.6.2023,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,30.6.2023,Bank Of Nova Scotia
+350,Salkku 1,qty,30.6.2023,Bank Of Nova Scotia
+"16 046,62",Salkku 1,market_value,30.6.2023,Bank Of Nova Scotia
+"+3 419,01",Salkku 1,change,30.6.2023,Bank Of Nova Scotia
+"3,64%",Salkku 1,share,30.6.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,30.6.2023,CubeSmart
+"44,66 USD",Salkku 1,price,30.6.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,30.6.2023,CubeSmart
+160,Salkku 1,qty,30.6.2023,CubeSmart
+"6 547,12",Salkku 1,market_value,30.6.2023,CubeSmart
+"+2 180,88",Salkku 1,change,30.6.2023,CubeSmart
+"1,48%",Salkku 1,share,30.6.2023,CubeSmart
+AOT,Salkku 1,,30.6.2023,CubeSmart
+Salkku 3,Salkku 3,,30.6.2023,CubeSmart
+30.6.2023,Salkku 3,,30.6.2023,CubeSmart
+"Ei omistuksiaSaldo 1,00 EUR",Salkku 3,,30.6.2023,CubeSmart
+Omistukset,Salkku 3,,30.6.2023,CubeSmart
+AOT,Salkku 3,,30.6.2023,CubeSmart
+Salkku 1,Salkku 1,,30.6.2023,CubeSmart
+31.7.2023,Salkku 1,,31.7.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.7.2023,CubeSmart
+Markk.hinta,Salkku 1,,31.7.2023,CubeSmart
+Hank.hinta,Salkku 1,,31.7.2023,CubeSmart
+Määrä,Salkku 1,,31.7.2023,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.7.2023,CubeSmart
+Toteutum.tulos,Salkku 1,,31.7.2023,CubeSmart
+Osuus,Salkku 1,,31.7.2023,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.7.2023,Arbor Realty Trust
+"16,91 USD",Salkku 1,price,31.7.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.7.2023,Arbor Realty Trust
+600,Salkku 1,qty,31.7.2023,Arbor Realty Trust
+"9 227,57",Salkku 1,market_value,31.7.2023,Arbor Realty Trust
+"+947,67",Salkku 1,change,31.7.2023,Arbor Realty Trust
+"1,85%",Salkku 1,share,31.7.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.7.2023,Bank Of Nova Scotia
+"66,40 CAD",Salkku 1,price,31.7.2023,Bank Of Nova Scotia
+"60,84",Salkku 1,purchase_price,31.7.2023,Bank Of Nova Scotia
+665,Salkku 1,qty,31.7.2023,Bank Of Nova Scotia
+"30 456,51",Salkku 1,market_value,31.7.2023,Bank Of Nova Scotia
+"+3 455,07",Salkku 1,change,31.7.2023,Bank Of Nova Scotia
+"6,09%",Salkku 1,share,31.7.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.7.2023,CubeSmart
+"43,36 USD",Salkku 1,price,31.7.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,31.7.2023,CubeSmart
+160,Salkku 1,qty,31.7.2023,CubeSmart
+"6 309,60",Salkku 1,market_value,31.7.2023,CubeSmart
+"+1 943,36",Salkku 1,change,31.7.2023,CubeSmart
+"1,26%",Salkku 1,share,31.7.2023,CubeSmart
+Omistukset,Salkku 1,,31.7.2023,CubeSmart
+AOT,Salkku 1,,31.7.2023,CubeSmart
+Salkku 1,Salkku 1,,31.7.2023,CubeSmart
+31.8.2023,Salkku 1,,31.8.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.8.2023,CubeSmart
+Markk.hinta,Salkku 1,,31.8.2023,CubeSmart
+Hank.hinta,Salkku 1,,31.8.2023,CubeSmart
+Määrä,Salkku 1,,31.8.2023,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.8.2023,CubeSmart
+Toteutum.tulos,Salkku 1,,31.8.2023,CubeSmart
+Osuus,Salkku 1,,31.8.2023,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.8.2023,Arbor Realty Trust
+"15,96 USD",Salkku 1,price,31.8.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.8.2023,Arbor Realty Trust
+600,Salkku 1,qty,31.8.2023,Arbor Realty Trust
+"8 830,95",Salkku 1,market_value,31.8.2023,Arbor Realty Trust
+"+551,05",Salkku 1,change,31.8.2023,Arbor Realty Trust
+"1,82%",Salkku 1,share,31.8.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.8.2023,Bank Of Nova Scotia
+"64,12 CAD",Salkku 1,price,31.8.2023,Bank Of Nova Scotia
+"60,84",Salkku 1,purchase_price,31.8.2023,Bank Of Nova Scotia
+665,Salkku 1,qty,31.8.2023,Bank Of Nova Scotia
+"29 098,41",Salkku 1,market_value,31.8.2023,Bank Of Nova Scotia
+"+2 096,97",Salkku 1,change,31.8.2023,Bank Of Nova Scotia
+"5,99%",Salkku 1,share,31.8.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.8.2023,CubeSmart
+"41,71 USD",Salkku 1,price,31.8.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,31.8.2023,CubeSmart
+160,Salkku 1,qty,31.8.2023,CubeSmart
+"6 154,36",Salkku 1,market_value,31.8.2023,CubeSmart
+"+1 788,12",Salkku 1,change,31.8.2023,CubeSmart
+"1,27%",Salkku 1,share,31.8.2023,CubeSmart
+AOT,Salkku 1,,31.8.2023,CubeSmart
+Salkku 1,Salkku 1,,31.8.2023,CubeSmart
+30.9.2023,Salkku 1,,30.9.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,30.9.2023,CubeSmart
+Markk.hinta,Salkku 1,,30.9.2023,CubeSmart
+Hank.hinta,Salkku 1,,30.9.2023,CubeSmart
+Määrä,Salkku 1,,30.9.2023,CubeSmart
+Markkina-arvo EUR,Salkku 1,,30.9.2023,CubeSmart
+Toteutum.tulos,Salkku 1,,30.9.2023,CubeSmart
+Osuus,Salkku 1,,30.9.2023,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,30.9.2023,Arbor Realty Trust
+"15,18 USD",Salkku 1,price,30.9.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,30.9.2023,Arbor Realty Trust
+600,Salkku 1,qty,30.9.2023,Arbor Realty Trust
+"8 614,75",Salkku 1,market_value,30.9.2023,Arbor Realty Trust
+"+334,85",Salkku 1,change,30.9.2023,Arbor Realty Trust
+"1,83%",Salkku 1,share,30.9.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,30.9.2023,Bank Of Nova Scotia
+"60,88 CAD",Salkku 1,price,30.9.2023,Bank Of Nova Scotia
+"60,84",Salkku 1,purchase_price,30.9.2023,Bank Of Nova Scotia
+665,Salkku 1,qty,30.9.2023,Bank Of Nova Scotia
+"28 192,33",Salkku 1,market_value,30.9.2023,Bank Of Nova Scotia
+"+1 190,89",Salkku 1,change,30.9.2023,Bank Of Nova Scotia
+"5,98%",Salkku 1,share,30.9.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,30.9.2023,CubeSmart
+"38,13 USD",Salkku 1,price,30.9.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,30.9.2023,CubeSmart
+160,Salkku 1,qty,30.9.2023,CubeSmart
+"5 770,41",Salkku 1,market_value,30.9.2023,CubeSmart
+"+1 404,16",Salkku 1,change,30.9.2023,CubeSmart
+"1,22%",Salkku 1,share,30.9.2023,CubeSmart
+AOT,Salkku 1,,30.9.2023,CubeSmart
+Salkku 1,Salkku 1,,30.9.2023,CubeSmart
+31.10.2023,Salkku 1,,31.10.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.10.2023,CubeSmart
+Markk.hinta,Salkku 1,,31.10.2023,CubeSmart
+Hank.hinta,Salkku 1,,31.10.2023,CubeSmart
+Määrä,Salkku 1,,31.10.2023,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.10.2023,CubeSmart
+Toteutum.tulos,Salkku 1,,31.10.2023,CubeSmart
+Osuus,Salkku 1,,31.10.2023,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.10.2023,Arbor Realty Trust
+"12,61 USD",Salkku 1,price,31.10.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.10.2023,Arbor Realty Trust
+600,Salkku 1,qty,31.10.2023,Arbor Realty Trust
+"7 155,15",Salkku 1,market_value,31.10.2023,Arbor Realty Trust
+"−1 124,75",Salkku 1,change,31.10.2023,Arbor Realty Trust
+"1,44%",Salkku 1,share,31.10.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.10.2023,Bank Of Nova Scotia
+"56,15 CAD",Salkku 1,price,31.10.2023,Bank Of Nova Scotia
+"60,84",Salkku 1,purchase_price,31.10.2023,Bank Of Nova Scotia
+665,Salkku 1,qty,31.10.2023,Bank Of Nova Scotia
+"25 456,68",Salkku 1,market_value,31.10.2023,Bank Of Nova Scotia
+"−1 544,76",Salkku 1,change,31.10.2023,Bank Of Nova Scotia
+"5,13%",Salkku 1,share,31.10.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.10.2023,CubeSmart
+"34,09 USD",Salkku 1,price,31.10.2023,CubeSmart
+"31,97",Salkku 1,purchase_price,31.10.2023,CubeSmart
+160,Salkku 1,qty,31.10.2023,CubeSmart
+"5 158,22",Salkku 1,market_value,31.10.2023,CubeSmart
+"+791,97",Salkku 1,change,31.10.2023,CubeSmart
+"1,04%",Salkku 1,share,31.10.2023,CubeSmart
+AOT,Salkku 1,,31.10.2023,CubeSmart
+Salkku 1,Salkku 1,,31.10.2023,CubeSmart
+30.11.2023,Salkku 1,,30.11.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,30.11.2023,CubeSmart
+Markk.hinta,Salkku 1,,30.11.2023,CubeSmart
+Hank.hinta,Salkku 1,,30.11.2023,CubeSmart
+Määrä,Salkku 1,,30.11.2023,CubeSmart
+Markkina-arvo EUR,Salkku 1,,30.11.2023,CubeSmart
+Toteutum.tulos,Salkku 1,,30.11.2023,CubeSmart
+Osuus,Salkku 1,,30.11.2023,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,30.11.2023,Arbor Realty Trust
+"12,48 USD",Salkku 1,price,30.11.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,30.11.2023,Arbor Realty Trust
+600,Salkku 1,qty,30.11.2023,Arbor Realty Trust
+"6 879,18",Salkku 1,market_value,30.11.2023,Arbor Realty Trust
+"−1 400,72",Salkku 1,change,30.11.2023,Arbor Realty Trust
+"1,30%",Salkku 1,share,30.11.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,30.11.2023,Bank Of Nova Scotia
+"60,70 CAD",Salkku 1,price,30.11.2023,Bank Of Nova Scotia
+"60,84",Salkku 1,purchase_price,30.11.2023,Bank Of Nova Scotia
+665,Salkku 1,qty,30.11.2023,Bank Of Nova Scotia
+"27 330,59",Salkku 1,market_value,30.11.2023,Bank Of Nova Scotia
+"+329,16",Salkku 1,change,30.11.2023,Bank Of Nova Scotia
+"5,18%",Salkku 1,share,30.11.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,30.11.2023,CubeSmart
+"39,76 USD",Salkku 1,price,30.11.2023,CubeSmart
+"34,22",Salkku 1,purchase_price,30.11.2023,CubeSmart
+310,Salkku 1,qty,30.11.2023,CubeSmart
+"11 323,45",Salkku 1,market_value,30.11.2023,CubeSmart
+"+1 816,68",Salkku 1,change,30.11.2023,CubeSmart
+"2,15%",Salkku 1,share,30.11.2023,CubeSmart
+Omistukset,Salkku 1,,30.11.2023,CubeSmart
+AOT,Salkku 1,,30.11.2023,CubeSmart
+Salkku 1,Salkku 1,,30.11.2023,CubeSmart
+31.12.2023,Salkku 1,,31.12.2023,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.12.2023,CubeSmart
+Markk.hinta,Salkku 1,,31.12.2023,CubeSmart
+Hank.hinta,Salkku 1,,31.12.2023,CubeSmart
+Määrä,Salkku 1,,31.12.2023,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.12.2023,CubeSmart
+Toteutum.tulos,Salkku 1,,31.12.2023,CubeSmart
+Osuus,Salkku 1,,31.12.2023,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.12.2023,Arbor Realty Trust
+"15,18 USD",Salkku 1,price,31.12.2023,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.12.2023,Arbor Realty Trust
+600,Salkku 1,qty,31.12.2023,Arbor Realty Trust
+"8 249,99",Salkku 1,market_value,31.12.2023,Arbor Realty Trust
+"−29,91",Salkku 1,change,31.12.2023,Arbor Realty Trust
+"1,51%",Salkku 1,share,31.12.2023,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.12.2023,Bank Of Nova Scotia
+"64,50 CAD",Salkku 1,price,31.12.2023,Bank Of Nova Scotia
+"60,84",Salkku 1,purchase_price,31.12.2023,Bank Of Nova Scotia
+665,Salkku 1,qty,31.12.2023,Bank Of Nova Scotia
+"29 314,14",Salkku 1,market_value,31.12.2023,Bank Of Nova Scotia
+"+2 312,71",Salkku 1,change,31.12.2023,Bank Of Nova Scotia
+"5,37%",Salkku 1,share,31.12.2023,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.12.2023,CubeSmart
+"46,35 USD",Salkku 1,price,31.12.2023,CubeSmart
+"34,22",Salkku 1,purchase_price,31.12.2023,CubeSmart
+310,Salkku 1,qty,31.12.2023,CubeSmart
+"13 014,93",Salkku 1,market_value,31.12.2023,CubeSmart
+"+3 508,16",Salkku 1,change,31.12.2023,CubeSmart
+"2,38%",Salkku 1,share,31.12.2023,CubeSmart
+Omistukset,Salkku 1,,31.12.2023,CubeSmart
+AOT,Salkku 1,,31.12.2023,CubeSmart
+Salkku 1,Salkku 1,,31.12.2023,CubeSmart
+31.1.2024,Salkku 1,,31.1.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.1.2024,CubeSmart
+Markk.hinta,Salkku 1,,31.1.2024,CubeSmart
+Hank.hinta,Salkku 1,,31.1.2024,CubeSmart
+Määrä,Salkku 1,,31.1.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.1.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,31.1.2024,CubeSmart
+Osuus,Salkku 1,,31.1.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.1.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,31.1.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.1.2024,Arbor Realty Trust
+600,Salkku 1,qty,31.1.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,31.1.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,31.1.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,31.1.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.1.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,31.1.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.1.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,31.1.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,31.1.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,31.1.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,31.1.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.1.2024,CubeSmart
+"45,79 USD",Salkku 1,price,31.1.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,31.1.2024,CubeSmart
+160,Salkku 1,qty,31.1.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,31.1.2024,CubeSmart
+"+2 372,59",Salkku 1,change,31.1.2024,CubeSmart
+"1,62%",Salkku 1,share,31.1.2024,CubeSmart
+Omistukset,Salkku 1,,31.1.2024,CubeSmart
+AOT,Salkku 1,,31.1.2024,CubeSmart
+Salkku 1,Salkku 1,,31.1.2024,CubeSmart
+28.2.2024,Salkku 1,,28.2.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,28.2.2024,CubeSmart
+Markk.hinta,Salkku 1,,28.2.2024,CubeSmart
+Hank.hinta,Salkku 1,,28.2.2024,CubeSmart
+Määrä,Salkku 1,,28.2.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,28.2.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,28.2.2024,CubeSmart
+Osuus,Salkku 1,,28.2.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,28.2.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,28.2.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,28.2.2024,Arbor Realty Trust
+600,Salkku 1,qty,28.2.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,28.2.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,28.2.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,28.2.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,28.2.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,28.2.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,28.2.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,28.2.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,28.2.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,28.2.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,28.2.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,28.2.2024,CubeSmart
+"45,79 USD",Salkku 1,price,28.2.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,28.2.2024,CubeSmart
+160,Salkku 1,qty,28.2.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,28.2.2024,CubeSmart
+"+2 372,59",Salkku 1,change,28.2.2024,CubeSmart
+"1,62%",Salkku 1,share,28.2.2024,CubeSmart
+Omistukset,Salkku 1,,28.2.2024,CubeSmart
+AOT,Salkku 1,,28.2.2024,CubeSmart
+Salkku 1,Salkku 1,,28.2.2024,CubeSmart
+31.3.2024,Salkku 1,,31.3.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.3.2024,CubeSmart
+Markk.hinta,Salkku 1,,31.3.2024,CubeSmart
+Hank.hinta,Salkku 1,,31.3.2024,CubeSmart
+Määrä,Salkku 1,,31.3.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.3.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,31.3.2024,CubeSmart
+Osuus,Salkku 1,,31.3.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.3.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,31.3.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.3.2024,Arbor Realty Trust
+600,Salkku 1,qty,31.3.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,31.3.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,31.3.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,31.3.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.3.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,31.3.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.3.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,31.3.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,31.3.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,31.3.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,31.3.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.3.2024,CubeSmart
+"45,79 USD",Salkku 1,price,31.3.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,31.3.2024,CubeSmart
+160,Salkku 1,qty,31.3.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,31.3.2024,CubeSmart
+"+2 372,59",Salkku 1,change,31.3.2024,CubeSmart
+"1,62%",Salkku 1,share,31.3.2024,CubeSmart
+Omistukset,Salkku 1,,31.3.2024,CubeSmart
+AOT,Salkku 1,,31.3.2024,CubeSmart
+Salkku 1,Salkku 1,,31.3.2024,CubeSmart
+40.4.2024,Salkku 1,,40.4.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,40.4.2024,CubeSmart
+Markk.hinta,Salkku 1,,40.4.2024,CubeSmart
+Hank.hinta,Salkku 1,,40.4.2024,CubeSmart
+Määrä,Salkku 1,,40.4.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,40.4.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,40.4.2024,CubeSmart
+Osuus,Salkku 1,,40.4.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,40.4.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,40.4.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,40.4.2024,Arbor Realty Trust
+600,Salkku 1,qty,40.4.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,40.4.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,40.4.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,40.4.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,40.4.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,40.4.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,40.4.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,40.4.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,40.4.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,40.4.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,40.4.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,40.4.2024,CubeSmart
+"45,79 USD",Salkku 1,price,40.4.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,40.4.2024,CubeSmart
+160,Salkku 1,qty,40.4.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,40.4.2024,CubeSmart
+"+2 372,59",Salkku 1,change,40.4.2024,CubeSmart
+"1,62%",Salkku 1,share,40.4.2024,CubeSmart
+Omistukset,Salkku 1,,40.4.2024,CubeSmart
+AOT,Salkku 1,,40.4.2024,CubeSmart
+Salkku 1,Salkku 1,,40.4.2024,CubeSmart
+31.5.2024,Salkku 1,,31.5.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.5.2024,CubeSmart
+Markk.hinta,Salkku 1,,31.5.2024,CubeSmart
+Hank.hinta,Salkku 1,,31.5.2024,CubeSmart
+Määrä,Salkku 1,,31.5.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.5.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,31.5.2024,CubeSmart
+Osuus,Salkku 1,,31.5.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.5.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,31.5.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.5.2024,Arbor Realty Trust
+600,Salkku 1,qty,31.5.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,31.5.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,31.5.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,31.5.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.5.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,31.5.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.5.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,31.5.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,31.5.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,31.5.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,31.5.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.5.2024,CubeSmart
+"45,79 USD",Salkku 1,price,31.5.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,31.5.2024,CubeSmart
+160,Salkku 1,qty,31.5.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,31.5.2024,CubeSmart
+"+2 372,59",Salkku 1,change,31.5.2024,CubeSmart
+"1,62%",Salkku 1,share,31.5.2024,CubeSmart
+Omistukset,Salkku 1,,31.5.2024,CubeSmart
+AOT,Salkku 1,,31.5.2024,CubeSmart
+Salkku 1,Salkku 1,,31.5.2024,CubeSmart
+30.6.2024,Salkku 1,,30.6.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,30.6.2024,CubeSmart
+Markk.hinta,Salkku 1,,30.6.2024,CubeSmart
+Hank.hinta,Salkku 1,,30.6.2024,CubeSmart
+Määrä,Salkku 1,,30.6.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,30.6.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,30.6.2024,CubeSmart
+Osuus,Salkku 1,,30.6.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,30.6.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,30.6.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,30.6.2024,Arbor Realty Trust
+600,Salkku 1,qty,30.6.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,30.6.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,30.6.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,30.6.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,30.6.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,30.6.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,30.6.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,30.6.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,30.6.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,30.6.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,30.6.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,30.6.2024,CubeSmart
+"45,79 USD",Salkku 1,price,30.6.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,30.6.2024,CubeSmart
+160,Salkku 1,qty,30.6.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,30.6.2024,CubeSmart
+"+2 372,59",Salkku 1,change,30.6.2024,CubeSmart
+"1,62%",Salkku 1,share,30.6.2024,CubeSmart
+Omistukset,Salkku 1,,30.6.2024,CubeSmart
+AOT,Salkku 1,,30.6.2024,CubeSmart
+Salkku 1,Salkku 1,,30.6.2024,CubeSmart
+31.7.2024,Salkku 1,,31.7.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.7.2024,CubeSmart
+Markk.hinta,Salkku 1,,31.7.2024,CubeSmart
+Hank.hinta,Salkku 1,,31.7.2024,CubeSmart
+Määrä,Salkku 1,,31.7.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.7.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,31.7.2024,CubeSmart
+Osuus,Salkku 1,,31.7.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.7.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,31.7.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.7.2024,Arbor Realty Trust
+600,Salkku 1,qty,31.7.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,31.7.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,31.7.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,31.7.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.7.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,31.7.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.7.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,31.7.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,31.7.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,31.7.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,31.7.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.7.2024,CubeSmart
+"45,79 USD",Salkku 1,price,31.7.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,31.7.2024,CubeSmart
+160,Salkku 1,qty,31.7.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,31.7.2024,CubeSmart
+"+2 372,59",Salkku 1,change,31.7.2024,CubeSmart
+"1,62%",Salkku 1,share,31.7.2024,CubeSmart
+Omistukset,Salkku 1,,31.7.2024,CubeSmart
+AOT,Salkku 1,,31.7.2024,CubeSmart
+Salkku 1,Salkku 1,,31.7.2024,CubeSmart
+31.8.2024,Salkku 1,,31.8.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.8.2024,CubeSmart
+Markk.hinta,Salkku 1,,31.8.2024,CubeSmart
+Hank.hinta,Salkku 1,,31.8.2024,CubeSmart
+Määrä,Salkku 1,,31.8.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.8.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,31.8.2024,CubeSmart
+Osuus,Salkku 1,,31.8.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.8.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,31.8.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.8.2024,Arbor Realty Trust
+600,Salkku 1,qty,31.8.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,31.8.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,31.8.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,31.8.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.8.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,31.8.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.8.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,31.8.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,31.8.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,31.8.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,31.8.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.8.2024,CubeSmart
+"45,79 USD",Salkku 1,price,31.8.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,31.8.2024,CubeSmart
+160,Salkku 1,qty,31.8.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,31.8.2024,CubeSmart
+"+2 372,59",Salkku 1,change,31.8.2024,CubeSmart
+"1,62%",Salkku 1,share,31.8.2024,CubeSmart
+Omistukset,Salkku 1,,31.8.2024,CubeSmart
+AOT,Salkku 1,,31.8.2024,CubeSmart
+Salkku 1,Salkku 1,,31.8.2024,CubeSmart
+30.9.2024,Salkku 1,,30.9.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,30.9.2024,CubeSmart
+Markk.hinta,Salkku 1,,30.9.2024,CubeSmart
+Hank.hinta,Salkku 1,,30.9.2024,CubeSmart
+Määrä,Salkku 1,,30.9.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,30.9.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,30.9.2024,CubeSmart
+Osuus,Salkku 1,,30.9.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,30.9.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,30.9.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,30.9.2024,Arbor Realty Trust
+600,Salkku 1,qty,30.9.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,30.9.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,30.9.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,30.9.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,30.9.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,30.9.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,30.9.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,30.9.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,30.9.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,30.9.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,30.9.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,30.9.2024,CubeSmart
+"45,79 USD",Salkku 1,price,30.9.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,30.9.2024,CubeSmart
+160,Salkku 1,qty,30.9.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,30.9.2024,CubeSmart
+"+2 372,59",Salkku 1,change,30.9.2024,CubeSmart
+"1,62%",Salkku 1,share,30.9.2024,CubeSmart
+Omistukset,Salkku 1,,30.9.2024,CubeSmart
+AOT,Salkku 1,,30.9.2024,CubeSmart
+Salkku 1,Salkku 1,,30.9.2024,CubeSmart
+31.10.2024,Salkku 1,,31.10.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.10.2024,CubeSmart
+Markk.hinta,Salkku 1,,31.10.2024,CubeSmart
+Hank.hinta,Salkku 1,,31.10.2024,CubeSmart
+Määrä,Salkku 1,,31.10.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.10.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,31.10.2024,CubeSmart
+Osuus,Salkku 1,,31.10.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.10.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,31.10.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.10.2024,Arbor Realty Trust
+600,Salkku 1,qty,31.10.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,31.10.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,31.10.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,31.10.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.10.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,31.10.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.10.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,31.10.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,31.10.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,31.10.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,31.10.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.10.2024,CubeSmart
+"45,79 USD",Salkku 1,price,31.10.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,31.10.2024,CubeSmart
+160,Salkku 1,qty,31.10.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,31.10.2024,CubeSmart
+"+2 372,59",Salkku 1,change,31.10.2024,CubeSmart
+"1,62%",Salkku 1,share,31.10.2024,CubeSmart
+Omistukset,Salkku 1,,31.10.2024,CubeSmart
+AOT,Salkku 1,,31.10.2024,CubeSmart
+Salkku 1,Salkku 1,,31.10.2024,CubeSmart
+30.11.2024,Salkku 1,,30.11.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,30.11.2024,CubeSmart
+Markk.hinta,Salkku 1,,30.11.2024,CubeSmart
+Hank.hinta,Salkku 1,,30.11.2024,CubeSmart
+Määrä,Salkku 1,,30.11.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,30.11.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,30.11.2024,CubeSmart
+Osuus,Salkku 1,,30.11.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,30.11.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,30.11.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,30.11.2024,Arbor Realty Trust
+600,Salkku 1,qty,30.11.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,30.11.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,30.11.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,30.11.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,30.11.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,30.11.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,30.11.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,30.11.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,30.11.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,30.11.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,30.11.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,30.11.2024,CubeSmart
+"45,79 USD",Salkku 1,price,30.11.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,30.11.2024,CubeSmart
+160,Salkku 1,qty,30.11.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,30.11.2024,CubeSmart
+"+2 372,59",Salkku 1,change,30.11.2024,CubeSmart
+"1,62%",Salkku 1,share,30.11.2024,CubeSmart
+Omistukset,Salkku 1,,30.11.2024,CubeSmart
+AOT,Salkku 1,,30.11.2024,CubeSmart
+Salkku 1,Salkku 1,,30.11.2024,CubeSmart
+31.12.2024,Salkku 1,,31.12.2024,CubeSmart
+Osakkeet ja pörssilistatut arvopaperit,Salkku 1,,31.12.2024,CubeSmart
+Markk.hinta,Salkku 1,,31.12.2024,CubeSmart
+Hank.hinta,Salkku 1,,31.12.2024,CubeSmart
+Määrä,Salkku 1,,31.12.2024,CubeSmart
+Markkina-arvo EUR,Salkku 1,,31.12.2024,CubeSmart
+Toteutum.tulos,Salkku 1,,31.12.2024,CubeSmart
+Osuus,Salkku 1,,31.12.2024,CubeSmart
+Arbor Realty Trust,Salkku 1,stock,31.12.2024,Arbor Realty Trust
+"14,93 USD",Salkku 1,price,31.12.2024,Arbor Realty Trust
+"16,22",Salkku 1,purchase_price,31.12.2024,Arbor Realty Trust
+600,Salkku 1,qty,31.12.2024,Arbor Realty Trust
+"8 239,58",Salkku 1,market_value,31.12.2024,Arbor Realty Trust
+"−40,32",Salkku 1,change,31.12.2024,Arbor Realty Trust
+"1,98%",Salkku 1,share,31.12.2024,Arbor Realty Trust
+Bank Of Nova Scotia,Salkku 1,stock,31.12.2024,Bank Of Nova Scotia
+"72,03 CAD",Salkku 1,price,31.12.2024,Bank Of Nova Scotia
+"55,94",Salkku 1,purchase_price,31.12.2024,Bank Of Nova Scotia
+350,Salkku 1,qty,31.12.2024,Bank Of Nova Scotia
+"17 428,91",Salkku 1,market_value,31.12.2024,Bank Of Nova Scotia
+"+4 801,30",Salkku 1,change,31.12.2024,Bank Of Nova Scotia
+"4,19%",Salkku 1,share,31.12.2024,Bank Of Nova Scotia
+CubeSmart,Salkku 1,stock,31.12.2024,CubeSmart
+"45,79 USD",Salkku 1,price,31.12.2024,CubeSmart
+"31,97",Salkku 1,purchase_price,31.12.2024,CubeSmart
+160,Salkku 1,qty,31.12.2024,CubeSmart
+"6 738,83",Salkku 1,market_value,31.12.2024,CubeSmart
+"+2 372,59",Salkku 1,change,31.12.2024,CubeSmart
+"1,62%",Salkku 1,share,31.12.2024,CubeSmart

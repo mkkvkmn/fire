@@ -1,0 +1,11 @@
+"id": "1"
+"pattern": "s-pankki"
+"account": "s-pankki"
+"delimiter": ";"
+"date_format": "%d.%m.%Y"
+"day_first": "TRUE"
+"columns":
+  "date": "Kirjauspäivä"
+  "amount": "Summa"
+  "description": "Saajan nimi"
+  "info": "Tapahtumalaji"

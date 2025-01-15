@@ -1,0 +1,4 @@
+not_unique_id,date,description,info,amount,rule_id,owner,class,category,sub_category
+1,2021-01-01,desc1,info1,100,rule1,owner1,class1,category1,sub1
+2,2021-01-02,desc2,info2,200,rule2,owner2,class2,category2,sub2
+3,2021-01-03,desc3,info3,300,rule3,owner3,class3,category3,sub3

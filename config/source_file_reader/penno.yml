@@ -1,0 +1,11 @@
+"id": "10"
+"pattern": "penno"
+"account": "penno"
+"delimiter": ";"
+"date_format": "%Y-%m-%d %H:%M:%S.%f|%Y-%m-%d %H:%M:%S"
+"day_first": "FALSE"
+"columns":
+  "date": "Päivämäärä"
+  "amount": "Summa"
+  "description": "Kategoria"
+  "info": "Selite"

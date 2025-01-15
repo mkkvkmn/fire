@@ -1,0 +1,11 @@
+"id": "9"
+"pattern": "nordea"
+"account": "nordea"
+"delimiter": ";"
+"date_format": "%Y/%m/%d"
+"day_first": "TRUE"
+"columns":
+  "date": "Kirjauspäivä"
+  "amount": "Määrä"
+  "description": "Otsikko"
+  "info": "Maksaja"

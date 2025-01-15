@@ -1,50 +1,83 @@
-# FiRe - Financial independence, Retire early
-This is a personal finance tracking thing made with python and Power BI.
+# FiRe - Financial Independence, Retire Early
 
-Instructions (in Finnish): https://mkkvkmn.com/oman-talouden-seuranta/
+This is a personal finance tracking application made with Python and Power BI.
 
-# Install
+It eats .csv and .xlsx files and outputs reports.
 
-- create venv: python -m venv venv
-- activate: source venv/bin/activate
-- pip install -r requirements.txt
+## What You Get
 
-# Run in Terminal
-*Python3 fire.py* or *Python3 fire.py -v* (verbose, gives more info and creates intermediate files for debugging)
+- Overall understanding of you finances as a Power BI report
+  - Income, costs, assets & liabilities, dividend income, fire estimate
+- Ability to set and track targets
+- Multiperson household support
 
-# Settings
-![alt text](https://github.com/mkkvkmn/fire/blob/main/assets/glob.png?raw=true)
+## Quick Guide
 
-# Important Notes
-For the Power BI report to work, following classes, categories and subcategories should be used with categories.csv file.
+1. Grab the [Power BI file](x_stuff/pbi/) and see if you like the contents
+2. [Install](#install) environment
+3. [Run datapipeline](./data_pipeline/) to make sure it works
+4. Use you own data ([config](./config/))
+5. Run datapipeline with your own data
+6. Update Power BI and analyze your finances
 
-These are referenced in the related Power BI file. Using something else means that the Power BI file requires changes too.
+## Migrations
 
-## Classes (Luokat)
-Available: Tulot, Menot, Varat, Velat, Pois
+If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pipeline/src/data_processing/migration_scripts/readme.md) for instructions on automatically or manually migrating your data.
 
-Tulot - income
-Menot - costs
-Varat - assets
-Velat - liabilities
-Pois - anything you want to exclude
+! important: Version 2.0 will recalculate id fields for your data. This will break `fixes.csv` and you need to manually find the new id for each fix.
 
-## Categories
-Required (referenced in Power BI measures):
+## Install
 
-- Ansiotulot (salary)
-- Pääomatulot (capital income)
-- Sijoitusvarallisuus (investments)
-- Sijoitusvelat (debts related to investments)
-- add more as you wish
+1. create virtual environment:
 
-## Sub-Categories
-Required (referenced in Power BI measures):
+```shell
+python -m venv venv
+```
 
-- Osinkotulot (dividends)
-- add more as you wish
+2. activate:
 
-# Power BI
-Included in source code.
+macOS/Linux:
 
-![alt text](https://github.com/mkkvkmn/fire/blob/main/assets/fire.png?raw=true)
+```shell
+source venv/bin/activate
+```
+
+Windows:
+
+```shell
+venv\Scripts\activate
+```
+
+3. install dependencies
+
+```shell
+pip install -r requirements.txt
+```
+
+## Config
+
+See how to use your own data with [config](./config/).
+
+## Data Pipeline
+
+[Data pipeline documentation and user guide](./data_pipeline/)
+
+## Logic Backend
+
+Coming someday...
+
+## UI & Power BI
+
+Custom UI coming someday...
+
+For now, just use the Power BI [file](x_stuff/pbi/) included (only Finnish for now, sorry).
+
+# Contribution Guidelines
+
+We welcome contributions to this project! If you would like to contribute, please follow these guidelines:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Make your changes and commit them with clear and concise messages.
+4. Push your changes to your fork.
+5. Create a pull request to the main repository.

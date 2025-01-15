@@ -1,0 +1,11 @@
+"id": "6"
+"pattern": "luottokortti"
+"account": "luottokortti"
+"delimiter": ","
+"date_format": "%Y-%m-%d %H:%M:%S"
+"day_first": "FALSE"
+"columns":
+  "date": "TransactionDate"
+  "amount": "Amount"
+  "description": "Text"
+  "info": "Merchant Category"

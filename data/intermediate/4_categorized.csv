@@ -1,0 +1,296 @@
+date,account,description,info,amount,class,category,sub_category,rule_id,source_file,row_type
+2023-09-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8614.75,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-02-28,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-11-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,6879.18,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-11-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-04-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,6245.23,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-06-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8147.25,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-06-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-09-30,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-01-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-01-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-10-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,7155.15,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-02-27,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8552.46,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-10-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-12-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-03-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,6355.66,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-03-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-05-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,7080.47,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-05-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-07-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,9227.57,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-07-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-08-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8830.95,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-08-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8239.58,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-12-31,nordnet_salkkuraportti,Arbor Realty Trust,Salkku 1,8249.99,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-03-03,penno,Asuminen,Sähkö,-16.9,menot,asuminen,,18,penno.xlsx,Actual
+2023-03-01,penno,Asuminen,Vastike,-165.9,menot,asuminen,,18,penno.xlsx,Actual
+2023-03-01,penno,Asuminen,Korko,-73.77,menot,asuminen,,18,penno.xlsx,Actual
+2023-01-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-04-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-03-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-02-28,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-06-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-01-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-12-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-11-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-07-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-10-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-09-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-08-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-08-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-07-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-09-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-05-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-06-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-12-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-04-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-10-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-02-28,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-03-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2023-05-31,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-11-30,varat,Asunto,,100000.0,varat,asunto,,1,varat.csv,Actual
+2024-01-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-10-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,25456.68,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-05-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,15819.42,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-04-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,15858.1,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-02-28,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-02-27,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17372.94,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-12-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,29314.14,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-12-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-03-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-08-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-10-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-01-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-09-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-11-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,27330.59,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-08-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,29098.41,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-09-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,28192.33,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-03-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,16251.22,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-07-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,30456.51,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-05-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-06-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-07-31,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-11-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,17428.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-06-30,nordnet_salkkuraportti,Bank Of Nova Scotia,Salkku 1,16046.62,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-05-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6654.11,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-07-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-08-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-07-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6309.6,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-05-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-03-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-08-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6154.36,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-01-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-06-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6547.12,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-02-27,nordnet_salkkuraportti,CubeSmart,Salkku 1,7034.91,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-02-28,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-11-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,11323.45,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-11-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-04-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6604.95,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-06-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-09-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,5770.41,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-09-30,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-10-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,5158.22,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-10-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-12-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,13014.93,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2024-12-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-03-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6817.72,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-01-31,nordnet_salkkuraportti,CubeSmart,Salkku 1,6738.83,varat,sijoitusvarallisuus,osinkosalkku,10,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-03-29,penno,Kahvittelu,Pulla,-3.5,menot,ruoka,välipalat,19,penno.xlsx,Actual
+2023-03-29,penno,Liikenne,Bussi,-3.1,menot,liikkuminen,,20,penno.xlsx,Actual
+2023-03-28,penno,Liikenne,Juna,-19.1,menot,liikkuminen,,20,penno.xlsx,Actual
+2023-03-11,penno,Liikenne,Juna,-13.4,menot,liikkuminen,,20,penno.xlsx,Actual
+2023-01-31,nordnet_salkkuraportti,Likvidit varat,Salkku 3,1692.41,varat,sijoitusvarallisuus,kasvusalkku,11,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-03-31,nordnet_salkkuraportti,Likvidit varat,Salkku 3,1692.41,varat,sijoitusvarallisuus,kasvusalkku,11,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-04-30,nordnet_salkkuraportti,Likvidit varat,Salkku 3,1692.41,varat,sijoitusvarallisuus,kasvusalkku,11,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-02-27,nordnet_salkkuraportti,Likvidit varat,Salkku 3,1692.41,varat,sijoitusvarallisuus,kasvusalkku,11,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-03-14,penno,Muut,,-25.0,menot,muut,,24,penno.xlsx,Actual
+2023-12-01,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-11-01,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-06-04,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-04-05,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-03-06,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-02-04,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-07-04,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-08-03,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-01-05,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-05-05,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-10-02,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-09-02,luottokortti,Netflix,MEMBER ORGANIZATIONS - DEF,-11.65,menot,media,suoratoisto,3,luottokortti.xlsx,Actual
+2023-11-30,varat,Nordean sijoitukset,,22934.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-10-31,varat,Nordean sijoitukset,,21624.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-09-30,varat,Nordean sijoitukset,,20145.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-09-30,varat,Nordean sijoitukset,,20145.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-08-31,varat,Nordean sijoitukset,,18713.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-11-30,varat,Nordean sijoitukset,,22934.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-08-31,varat,Nordean sijoitukset,,18713.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-07-31,varat,Nordean sijoitukset,,18019.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-05-31,varat,Nordean sijoitukset,,15228.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-05-31,varat,Nordean sijoitukset,,15228.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-04-30,varat,Nordean sijoitukset,,13954.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-10-31,varat,Nordean sijoitukset,,21624.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-03-31,varat,Nordean sijoitukset,,12471.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-02-28,varat,Nordean sijoitukset,,11085.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-01-31,varat,Nordean sijoitukset,,10000.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-03-31,varat,Nordean sijoitukset,,12471.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-07-31,varat,Nordean sijoitukset,,18019.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-04-30,varat,Nordean sijoitukset,,13954.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-06-30,varat,Nordean sijoitukset,,16529.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-06-30,varat,Nordean sijoitukset,,16529.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-02-28,varat,Nordean sijoitukset,,22893.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-12-31,varat,Nordean sijoitukset,,23593.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2024-01-31,varat,Nordean sijoitukset,,23893.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-12-31,varat,Nordean sijoitukset,,23593.0,varat,sijoitusvarallisuus,osakkeet,7,varat.csv,Actual
+2023-05-16,osingot,O,ENNAKKOPIDÄTYS,-13.36,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-05-16,osingot,O,OSINKO,89.05,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-04-17,osingot,O,ENNAKKOPIDÄTYS,-13.22,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-04-17,osingot,O,OSINKO,88.11,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-03-16,osingot,O,ENNAKKOPIDÄTYS,-13.66,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-03-16,osingot,O,OSINKO,91.05,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-02-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-02-16,osingot,O,OSINKO,88.13,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-01-16,osingot,O,ENNAKKOPIDÄTYS,-13.1,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-01-16,osingot,O,OSINKO,87.35,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-02-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-02-16,osingot,O,OSINKO,88.13,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-06-16,osingot,O,ENNAKKOPIDÄTYS,-13.28,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-01-16,osingot,O,ENNAKKOPIDÄTYS,-13.1,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-06-16,osingot,O,ENNAKKOPIDÄTYS,-13.28,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-06-16,osingot,O,OSINKO,88.56,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-05-16,osingot,O,ENNAKKOPIDÄTYS,-13.36,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-05-16,osingot,O,OSINKO,89.05,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-04-17,osingot,O,ENNAKKOPIDÄTYS,-13.22,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-04-17,osingot,O,OSINKO,88.11,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-03-16,osingot,O,ENNAKKOPIDÄTYS,-13.66,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-03-16,osingot,O,OSINKO,91.05,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-07-16,osingot,O,ENNAKKOPIDÄTYS,-13.22,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-07-16,osingot,O,OSINKO,88.13,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-01-16,osingot,O,OSINKO,87.35,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2023-06-16,osingot,O,OSINKO,88.56,tulot,pääomatulot,osinkotulot,15,osingot-2023-2024.csv,Actual
+2024-02-28,s-pankki,Oma tilisiirto,KORTTIOSTO,-500.0,pois,sisäinen tilisiirto,,16,s-pankki_2024_01-2024_12.csv,Actual
+2023-12-29,s-pankki,P.Ohatta,HYVITYSKORKO,0.36,tulot,passiiviset tulot,korkotulot,5,s-pankki_2023_07-2023_12.csv,Actual
+2023-03-31,penno,Palkka,Matkakorvauksia,200.0,tulot,ansiotulot,,21,penno.xlsx,Actual
+2023-03-30,penno,Palkka,,1000.0,tulot,ansiotulot,,21,penno.xlsx,Actual
+2024-12-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2023-01-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,Actual
+2023-05-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,Actual
+2023-02-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,Actual
+2024-11-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2023-06-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,Actual
+2023-12-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,Actual
+2023-11-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,Actual
+2023-10-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,Actual
+2023-09-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,Actual
+2023-08-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,Actual
+2023-07-01,s-pankki,Prisma,KORTTIOSTO,-1500.0,menot,ruoka,ruoka,4,s-pankki_2023_07-2023_12.csv,Actual
+2023-04-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,Actual
+2024-02-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2024-03-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2023-03-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2023_01-2023_06.csv,Actual
+2024-10-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2024-05-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2024-09-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2024-06-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2024-07-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2024-04-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2024-08-01,s-pankki,Prisma,KORTTIOSTO,-500.0,menot,ruoka,ruoka,4,s-pankki_2024_01-2024_12.csv,Actual
+2023-12-27,s-pankki,Puuilo,KORTTIOSTO,-19.9,menot,muut menot,,9,s-pankki_2023_07-2023_12.csv,Actual
+2023-03-11,penno,Ruokakauppa,,-21.18,menot,ruoka,ruoka,22,penno.xlsx,Actual
+2023-03-14,penno,Ruokakauppa,,-33.9,menot,ruoka,ruoka,22,penno.xlsx,Actual
+2023-03-28,penno,Ruokakauppa,,-2.74,menot,ruoka,ruoka,22,penno.xlsx,Actual
+2024-01-24,nordea,S-MARKET,XXXXX,-22.04,menot,ruoka,ruoka,23,nordea.csv,Actual
+2024-01-31,varat,S-Pankin saldo,,2000.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-06-30,varat,S-Pankin saldo,,447.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-10-31,varat,S-Pankin saldo,,3103.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-12-31,varat,S-Pankin saldo,,3011.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-12-31,varat,S-Pankin saldo,,3011.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-11-30,varat,S-Pankin saldo,,1705.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-09-30,varat,S-Pankin saldo,,9611.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-11-30,varat,S-Pankin saldo,,1705.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-07-31,varat,S-Pankin saldo,,6680.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-08-31,varat,S-Pankin saldo,,6533.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-10-31,varat,S-Pankin saldo,,3103.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-02-28,varat,S-Pankin saldo,,2225.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-05-31,varat,S-Pankin saldo,,201.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-05-31,varat,S-Pankin saldo,,201.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-04-30,varat,S-Pankin saldo,,2851.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-03-31,varat,S-Pankin saldo,,3925.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-07-31,varat,S-Pankin saldo,,6680.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-08-31,varat,S-Pankin saldo,,6533.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-01-31,varat,S-Pankin saldo,,7460.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-02-28,varat,S-Pankin saldo,,497.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-09-30,varat,S-Pankin saldo,,9611.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-03-31,varat,S-Pankin saldo,,3925.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-04-30,varat,S-Pankin saldo,,2851.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2024-06-30,varat,S-Pankin saldo,,447.0,varat,käteinen,s-pankki,6,varat.csv,Actual
+2023-09-03,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-10-03,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-12-02,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-06-05,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-02-05,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-07-05,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-04-06,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-11-02,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-01-06,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-03-07,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-05-06,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-08-04,luottokortti,Spotify,DIGITAL GOODS – LARGE DIGITAL GOODS MERCHANT,-12.99,menot,media,musiikki,8,luottokortti.xlsx,Actual
+2023-03-15,penno,Viihde,SkyShowtime ,-3.49,menot,viihde,,25,penno.xlsx,Actual
+2023-03-01,penno,Viihde,Netflix ,-15.99,menot,viihde,,25,penno.xlsx,Actual
+2024-07-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-11-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-01-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-02-28,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-03-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-04-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-12-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-06-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-07-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-08-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-09-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-10-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-11-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-05-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-01-31,tulot,ansiotulot,,3500.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-02-28,tulot,ansiotulot,,3500.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-03-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-04-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-05-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-06-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-08-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-09-30,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2024-10-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-12-31,tulot,ansiotulot,,3000.0,tulot,ansiotulot,päivityö,12,tulot.csv,Actual
+2023-11-30,velat,asuntolaina,,-85000.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-12-31,velat,asuntolaina,,-84500.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-01-31,velat,asuntolaina,,-84000.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-02-28,velat,asuntolaina,,-83500.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-03-31,velat,asuntolaina,,-83000.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-10-31,velat,asuntolaina,,-79500.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-05-31,velat,asuntolaina,,-82000.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-08-31,velat,asuntolaina,,-80500.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-07-31,velat,asuntolaina,,-81000.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-06-30,velat,asuntolaina,,-81500.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-04-30,velat,asuntolaina,,-82500.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-10-31,velat,asuntolaina,,-85500.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-09-30,velat,asuntolaina,,-80000.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-09-30,velat,asuntolaina,,-86000.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-12-31,velat,asuntolaina,,-78500.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-07-31,velat,asuntolaina,,-87000.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-06-30,velat,asuntolaina,,-87500.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-05-31,velat,asuntolaina,,-88000.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-04-30,velat,asuntolaina,,-88500.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-03-31,velat,asuntolaina,,-89000.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-02-28,velat,asuntolaina,,-89500.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-01-31,velat,asuntolaina,,-90000.0,velat,asuntolaina,,2,velat.csv,Actual
+2024-11-30,velat,asuntolaina,,-79000.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-08-31,velat,asuntolaina,,-86500.0,velat,asuntolaina,,2,velat.csv,Actual
+2023-02-27,nordnet_salkkuraportti,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18489.97,varat,sijoitusvarallisuus,kasvusalkku,11,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-04-30,nordnet_salkkuraportti,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18504.26,varat,sijoitusvarallisuus,kasvusalkku,11,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-01-31,nordnet_salkkuraportti,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18313.61,varat,sijoitusvarallisuus,kasvusalkku,11,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-03-31,nordnet_salkkuraportti,iShares Core MSCI World UCITS ETF USD (Acc),Salkku 3,18456.37,varat,sijoitusvarallisuus,kasvusalkku,11,nordnet_salkkuraportti_preprocessed.csv,Actual
+2023-01-31,menot,käteisellä lapaset,,-500.0,menot,vaatteet,,13,menot.csv,Actual
+2024-02-28,menot,maksoin yrityksen kuluja käteisellä,,-50.0,pois,yrityksen kulut,,17,menot.csv,Actual
+2023-02-28,menot,muuta,,-201.0,menot,muut,,24,menot.csv,Actual

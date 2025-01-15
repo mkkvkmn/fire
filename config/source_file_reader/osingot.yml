@@ -1,0 +1,11 @@
+"id": "7"
+"pattern": "osingot"
+"account": "osingot"
+"delimiter": "\\t"
+"date_format": "%Y-%m-%d"
+"day_first": "FALSE"
+"columns":
+  "date": "Kirjauspäivä"
+  "amount": "Summa"
+  "description": "Arvopaperi"
+  "info": "Tapahtumatyyppi"

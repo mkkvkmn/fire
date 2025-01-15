@@ -1,0 +1,11 @@
+﻿id,pattern,account,delimiter,date_format,day_first,columns
+1,s-pankki,s-pankki,;,%d.%m.%Y,TRUE,"{'Kirjauspäivä': 'date', 'Summa': 'amount', 'Saajan nimi': 'description', 'Tapahtumalaji':'info'}"
+2,varat.csv,varat,",",%d.%m.%Y,TRUE,"{'date': 'date', 'amount': 'amount', 'description': 'description', 'info':'info'}"
+3,velat.csv,velat,",",%d.%m.%Y,TRUE,"{'date': 'date', 'amount': 'amount', 'description': 'description', 'info':'info'}"
+4,tulot.csv,tulot,",",%d.%m.%Y,TRUE,"{'date': 'date', 'amount': 'amount', 'description': 'description', 'info':'info'}"
+5,menot.csv,menot,",",%d.%m.%Y,TRUE,"{'date': 'date', 'amount': 'amount', 'description': 'description', 'info':'info'}"
+6,luottokortti,luottokortti,",",%Y-%m-%d %H:%M:%S,FALSE,"{'TransactionDate': 'date', 'Amount': 'amount', 'Text': 'description', 'Merchant Category':'info'}"
+7,osingot,osingot,\t,%Y-%m-%d,FALSE,"{'Kirjauspäivä': 'date', 'Summa': 'amount', 'Arvopaperi': 'description', 'Tapahtumatyyppi':'info'}"
+8,nordnet_salkkuraportti_preprocessed.csv,nordnet_salkkuraportti,",",%d.%m.%Y,TRUE,"{'date': 'date', 'market_value': 'amount', 'stock': 'description', 'account':'info'}"
+9,nordea,nordea,;,%Y/%m/%d,TRUE,"{'Kirjauspäivä': 'date', 'Määrä': 'amount', 'Otsikko': 'description', 'Maksaja':'info'}"
+10,penno,penno,;,%Y-%m-%d %H:%M:%S.%f|%Y-%m-%d %H:%M:%S,FALSE,"{'Päivämäärä': 'date', 'Summa': 'amount', 'Kategoria': 'description', 'Selite':'info'}"
