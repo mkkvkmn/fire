@@ -11,6 +11,15 @@ It eats .csv and .xlsx files and outputs reports.
 - Ability to set and track targets
 - Multiperson household support
 
+## Quick Guide
+
+1. Grab the [Power BI file](x_stuff/pbi/) and see if you like the contents
+2. [Install](#install) environment
+3. [Run datapipeline](./data_pipeline/)
+4. Use you own data ([config](./config/))
+5. Run datapipeline
+6. Update Power BI
+
 ## Migrations
 
 If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pipeline/src/data_processing/migration_scripts/readme.md) for instructions on automatically or manually migrating your data.
@@ -47,11 +56,11 @@ pip install -r requirements.txt
 
 ## Config
 
-Try running the data pipeline first. Then check how to use your own data from [config](./config/)
+Try running the data pipeline first. Then check how to use your own data from [config](./config/).
 
 ## Data Pipeline
 
-[Data pipeline documentation and user guide](data_pipeline/readme.md)
+[Data pipeline documentation and user guide](./data_pipeline/)
 
 ## Logic Backend
 

@@ -59,3 +59,36 @@ Data processing happens using config files.
 - fixes.csv -> overwrite assigned category, useful forexample if you buy a tv from the store where by default you get groceries
 - splits.csv -> you can split data by owner, useful for multiperson households
 - targets.csv -> set monthly targets for income or costs class / category / sub_category
+
+## Important Notes for Power BI
+
+For the Power BI report to work, following classes, categories and subcategories should be used within categories.csv file.
+
+These are referenced in the related Power BI file. Using something else means that the Power BI file requires changes too.
+
+### Classes (Luokat)
+
+Available: Tulot, Menot, Varat, Velat, Pois
+
+- Tulot - income
+- Menot - costs
+- Varat - assets
+- Velat - liabilities
+- Pois - anything you want to exclude
+
+### Categories
+
+Required (referenced in Power BI measures):
+
+- Ansiotulot (salary)
+- Pääomatulot (capital income)
+- Sijoitusvarallisuus (investments)
+- Sijoitusvelat (debts related to investments)
+- add more as you wish
+
+### Sub-Categories
+
+Required (referenced in Power BI measures):
+
+- Osinkotulot (dividends)
+- add more as you wish

@@ -22,7 +22,7 @@ If you have have used v1, please see the [Migration from v1 to v2 Guide](src/dat
 
 ## Run Tests in Terminal
 
-Run in root directory:
+Run in project root directory (fire):
 
 ```shell
 pytest data_pipeline/tests
@@ -30,7 +30,7 @@ pytest data_pipeline/tests
 
 ## Run Data Pipeline in Terminal
 
-Run the application from root directory:
+Run the application from project root directory (fire):
 
 ```shell
 Python3 fire.py
@@ -42,36 +42,3 @@ Use -d or --debug:
 ```shell
 Python3 fire.py --debug
 ```
-
-## Important Notes
-
-For the Power BI report to work, following classes, categories and subcategories should be used within categories.csv file.
-
-These are referenced in the related Power BI file. Using something else means that the Power BI file requires changes too.
-
-### Classes (Luokat)
-
-Available: Tulot, Menot, Varat, Velat, Pois
-
-- Tulot - income
-- Menot - costs
-- Varat - assets
-- Velat - liabilities
-- Pois - anything you want to exclude
-
-### Categories
-
-Required (referenced in Power BI measures):
-
-- Ansiotulot (salary)
-- Pääomatulot (capital income)
-- Sijoitusvarallisuus (investments)
-- Sijoitusvelat (debts related to investments)
-- add more as you wish
-
-### Sub-Categories
-
-Required (referenced in Power BI measures):
-
-- Osinkotulot (dividends)
-- add more as you wish
