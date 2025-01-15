@@ -2,7 +2,7 @@
 
 ## Migrations
 
-If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pipeline/src/data_processing/migration_scripts/readme.md) for instructions on automatically or manually migrating your data.
+If you have have used v1, please see the [Migration from v1 to v2 Guide](src/data_processing/migration_scripts/readme.md) for instructions on automatically or manually migrating your data.
 
 ! important: Version 2.0 will recalculate id fields for your data. This will break `fixes.csv` and you need to manually find the new id for each fix.
 
@@ -18,7 +18,7 @@ If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pi
 8. Target data records are added if USE_TARGETS = True
 9. Data categorization and id changes are logged - these need to be approved when running the pipeline. Useful for not making errors.
 10. Data duplicates are validated - are they purposeful or mistakes? Again you need to approve them.
-11. [Final data](data/final/final_data.csv) can be analyzed with [Power BI](../x_stuff/pbi)
+11. [Final data](../data/final/final_data.csv) can be analyzed with [Power BI](../x_stuff/pbi)
 
 ## Run Tests in Terminal
 

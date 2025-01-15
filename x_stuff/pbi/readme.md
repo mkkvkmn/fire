@@ -1,6 +1,6 @@
 # FiRe - Power BI Report
 
-![alt text](https://github.com/mkkvkmn/fire/blob/main/assets/fire.png?raw=true)
+A Power BI report for personal finance tracker.
 
 # How To Get Started
 
@@ -20,3 +20,5 @@
 - Targets (Tavoitteet)
 - Transactions (Tapahtumat)
 - Validation (Tarkistus)
+
+![alt text](https://github.com/mkkvkmn/fire/blob/main/assets/fire.png?raw=true)
