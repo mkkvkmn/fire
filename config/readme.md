@@ -54,7 +54,7 @@ etc.
 
 ## Data Processing
 
-Data processing happens using config files.
+Data processing is done using config files.
 
 - categories.csv -> assign class, category and sub_category for you data
 - fixes.csv -> overwrite assigned category, useful forexample if you buy a tv from the store where by default you get groceries
