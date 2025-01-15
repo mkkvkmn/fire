@@ -39,7 +39,7 @@ def main(debug):
     SETTINGS["debug_mode"] = debug
     debug_msg = " (in debug mode)" if debug else ""
 
-    logging.info("fire burning" + debug_msg)
+    logging.info(f"fire burning in {SETTINGS['data_folder']} {debug_msg}")
 
     try:
         clean_folder(SETTINGS["intermediate_folder"])
@@ -84,10 +84,21 @@ def main(debug):
         # set targets if enabled
         if SETTINGS.get("use_targets", False):
             logging.info("use targets: enabled")
-            df_targets = read_csv_file(SETTINGS["targets_file"])
-            df_targets_monthly = set_targets(df_targets)
-            # append targets to actuals
-            df_final = pd.concat([df_fixed, df_targets_monthly], ignore_index=True)
+
+            try:
+                df_targets = read_csv_file(SETTINGS["targets_file"])
+            except FileNotFoundError:
+                df_targets = None
+                logging.warning(
+                    f"targets not found in {SETTINGS['targets_file']}, skipping..."
+                )
+
+            if df_targets is not None:
+                df_targets_monthly = set_targets(df_targets)
+                # append targets to actuals
+                df_final = pd.concat([df_fixed, df_targets_monthly], ignore_index=True)
+            else:
+                df_final = df_fixed
         else:
             logging.info("use targets: disabled")
             df_final = df_fixed

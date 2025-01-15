@@ -80,7 +80,7 @@ def apply_fixes(df: pd.DataFrame, df_fixes: pd.DataFrame) -> pd.DataFrame:
         if failed_fixes:
             logging.error("!\n\nthese fixes failed:\n" + "\n".join(failed_fixes) + "\n")
             raise ValueError(
-                f"{len(failed_fixes)} fixes failed, correct or delete them and try again"
+                f"{len(failed_fixes)} fixes failed, correct transaction_ids or delete rows in {SETTINGS['fixes_file']} and try again"
             )
 
         logging.info("fixes ok")

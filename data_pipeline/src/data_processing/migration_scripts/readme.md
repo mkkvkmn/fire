@@ -25,7 +25,7 @@ Replace `v1_data_dir` with the path to your old data directory and `v2_base_dir`
 Example:
 
 ```shell
-python python migrate_from_v1_to_v2.py /mnt/c/a/repos/m/fire-v1/data/ /mnt/c/a/repos/m/fire-v2/
+python migrate_from_v1_to_v2.py /mnt/c/a/repos/m/fire-v1/data/ /mnt/c/a/repos/m/fire-v2/
 ```
 
 ---
