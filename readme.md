@@ -28,13 +28,15 @@ If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pi
 
 ## Install
 
-1. create virtual environment:
+1. Clone or download the repository and navigate to project root (fire).
+
+2. create virtual environment:
 
 ```shell
 python -m venv venv
 ```
 
-2. activate:
+3. activate:
 
 macOS/Linux:
 
@@ -48,7 +50,7 @@ Windows:
 venv\Scripts\activate
 ```
 
-3. install dependencies
+4. install dependencies
 
 ```shell
 pip install -r requirements.txt
