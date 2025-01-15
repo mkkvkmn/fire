@@ -53,7 +53,7 @@ The application settings are configured in the [settings.py](config/settings.py)
 
 #### .env
 
-You can overwrite settings with environment variables.
+You can overwrite settings with environment variables. You should use your own data and config files from outside the repository.
 
 - Add .env file to repository root
 
