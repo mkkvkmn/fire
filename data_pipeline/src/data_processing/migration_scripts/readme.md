@@ -40,17 +40,18 @@ python python migrate_from_v1_to_v2.py /mnt/c/a/repos/m/fire-v1/data/ /mnt/c/a/r
 
 Old (v1) -> New (v2):
 
-  - `data/config/files.csv` -> `config/source_file_reader/files.csv`
+- `data/config/files.csv` -> `config/source_file_reader/files.csv`
 
-  - `data/config/categories.csv` -> `config/data_processing/categories.csv`
-  - `data/config/fix.csv` -> `config/data_processing/fixes.csv` (! rename)
-  - `data/config/splits.csv` -> `config/data_processing/splits.csv`
+- `data/config/categories.csv` -> `config/data_processing/categories.csv`
+- `data/config/fix.csv` -> `config/data_processing/fixes.csv` (! rename)
+- `data/config/splits.csv` -> `config/data_processing/splits.csv`
 
-  - `data/extensions/nordnet/salkkuraportti.csv` -> `data/source_files/for_preprocessors/nordnet/nordnet_salkkuraportti.csv` (! rename)
-  - `data/input/<all source files>` -> `data/source_files/<all source files>`
+- `data/extensions/nordnet/salkkuraportti.csv` -> `data/source_files/for_preprocessors/nordnet/nordnet_salkkuraportti.csv` (! rename)
+- `data/input/<all source files>` -> `data/source_files/<all source files>`
 
 After moving the files, you should have separate folders for config and data containing all of your files in the folders:
 
+```
 config
 ├── **init**.py
 ├── data_processing
@@ -67,6 +68,7 @@ data
 │   └── nordnet_salkkuraportti.csv
 ├── <source_file_1.csv>
 └── <source_file_2.csv>
+```
 
 # Important
 
