@@ -15,10 +15,10 @@ It eats .csv and .xlsx files and outputs reports.
 
 1. Grab the [Power BI file](x_stuff/pbi/) and see if you like the contents
 2. [Install](#install) environment
-3. [Run datapipeline](./data_pipeline/)
+3. [Run datapipeline](./data_pipeline/) to make sure it works
 4. Use you own data ([config](./config/))
-5. Run datapipeline
-6. Update Power BI
+5. Run datapipeline with your own data
+6. Update Power BI and analyze your finances
 
 ## Migrations
 
@@ -56,7 +56,7 @@ pip install -r requirements.txt
 
 ## Config
 
-Try running the data pipeline first. Then check how to use your own data from [config](./config/).
+See how to use your own data with [config](./config/).
 
 ## Data Pipeline
 

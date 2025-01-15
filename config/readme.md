@@ -8,9 +8,10 @@ You should use your own data and config files from outside the repository with t
 
 ### .env
 
-You can overwrite settings with environment variables.
+You can overwrite settings in settings.py with environment variables.
 
-- Add .env file to repository root
+- Add .env file to project root (fire)
+- Use your own data and config folder
 
 Example .env file contents:
 
@@ -25,7 +26,7 @@ LOG_FILE="./logs/logs.log"
 
 ## Source File Reader
 
-We need to tell the data pipeline how each source file is read. To do this the data_pipeline uses .yml files.
+In [config/source_file_reader](./source_file_reader/) we tell the data pipeline how each source file is read using .yml files.
 
 If you have a files.csv from V1, it will be converted into .yml files when you run the data_pipeline for the first time. Files.csv is depracated in v 2.0.
 
@@ -47,8 +48,8 @@ Let's say you have a source file called credit_card_transactions.csv, an example
 
 .yml files are not defined for each file but for each pattern. Meaning you can use the example .yml file from above to read
 
-credit_card_1.csv
-credit_card_2.csv
+credit_card_1.csv\
+credit_card_2.csv\
 etc.
 
 ## Data Processing
