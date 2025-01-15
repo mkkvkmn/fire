@@ -55,12 +55,12 @@ You can overwrite some settings with environment variables. Add .env file to rep
 
 Example .env file contents:
 
-DATA_FOLDER = "../my_data/data"
-CONFIG_FOLDER = "../my_data/config"
-DEFAULT_OWNER = "mkk"
-USE_TARGETS = True
-USE_NORDNET_PORTFOLIO = True
-LOG_FILE="./logs/logs.log"
+DATA_FOLDER = "../my_data/data"\
+CONFIG_FOLDER = "../my_data/config"\
+DEFAULT_OWNER = "mkk"\
+USE_TARGETS = True\
+USE_NORDNET_PORTFOLIO = True\
+LOG_FILE="./logs/logs.log"\
 
 ### Source File Reader
 
