@@ -37,9 +37,14 @@ def main(debug):
 
     setup_logging(debug=debug)
     SETTINGS["debug_mode"] = debug
-    debug_msg = " (in debug mode)" if debug else ""
+    debug_msg = "(in debug mode)" if debug else ""
 
-    logging.info(f"fire burning in {SETTINGS['data_folder']} {debug_msg}")
+    logging.info(
+        "fire burning..."
+        + f"\n\nusing data from: {SETTINGS['data_folder']}"
+        + f"\nwith config from: {SETTINGS['config_folder']}"
+        + f"\n{debug_msg}\n"
+    )
 
     try:
         clean_folder(SETTINGS["intermediate_folder"])
