@@ -118,6 +118,7 @@ def main(debug):
         validate_not_unique_id(df_final, SETTINGS["duplicates_folder"])
 
         # save final data with fixes
+        df_final = df_final.sort_values(by="date", ascending=False)
         write_to_csv(df_final, SETTINGS["final_result_file"])
         logging.info("great success!")
 
