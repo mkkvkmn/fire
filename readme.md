@@ -2,6 +2,8 @@
 
 FiRe tracks your household's finances. It runs in your browser, and your data never leaves your computer. Open your bank and broker files, categorise the transactions and make better decisions. It includes a FiRe forecast: when your investments could cover your living costs.
 
+**Use it at [fire.mkkvkmn.com](https://fire.mkkvkmn.com).** Nothing to install. You can try it with sample data first.
+
 ## How your data is handled
 
 - **No backend, no accounts.** The site is plain static files, built from this public repo.
