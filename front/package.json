@@ -1,0 +1,32 @@
+{
+  "name": "fire-front",
+  "private": true,
+  "license": "MIT",
+  "version": "3.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build && node scripts/check-dist.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test:run": "vitest run",
+    "check": "tsc --noEmit && node scripts/lint.mjs && prettier --check . && vitest run",
+    "lint": "node scripts/lint.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/papaparse": "^5.5.2",
+    "@types/sql.js": "^1.4.11",
+    "prettier": "^3.10.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  },
+  "dependencies": {
+    "papaparse": "^5.7.1",
+    "sql.js": "^1.16.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  }
+}

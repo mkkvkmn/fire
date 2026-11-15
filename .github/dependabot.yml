@@ -1,0 +1,7 @@
+# Weekly update pull requests for the pinned GitHub Actions (each pin is a full commit SHA).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

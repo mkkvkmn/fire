@@ -1,0 +1,18 @@
+{
+  "name": "fire-root",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "front"
+  ],
+  "scripts": {
+    "dev:front": "npm run dev --workspace front",
+    "build": "npm run build --workspace front",
+    "preview:front": "npm run preview --workspace front",
+    "check": "npm run check --workspace front",
+    "test:run": "npm run test:run --workspace front",
+    "lint": "npm run lint --workspace front",
+    "setup": "npm ci && npm ci --prefix front/lint",
+    "format": "npm run format --workspace front"
+  }
+}

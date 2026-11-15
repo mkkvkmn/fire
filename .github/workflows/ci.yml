@@ -1,0 +1,42 @@
+# Checks every push and pull request: install from the lockfiles, typecheck, lint, test, build and
+# check the built site. Publishing is separate (deploy.yml, from a version tag only).
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            front/lint/package-lock.json
+
+      - name: Install exactly the lockfiles
+        run: npm run setup
+
+      - name: Lockfiles unchanged
+        run: git diff --exit-code
+
+      - name: Typecheck, lint and tests
+        run: npm run check
+
+      - name: No high or critical advisories in the app
+        run: npm audit --audit-level=high
+
+      - name: Build and check the output
+        run: npm run build

@@ -1,0 +1,1210 @@
+// Tuonti: a three-step flow. Tiedostot (drop files, give each a file profile), Luokittelu (a
+// luokittelusääntö for each group of uncategorised rows) and Korjaukset (decisions, corrections for
+// single rows, a preview of every staged row, and Tuo rivit). Nothing is written to the project's
+// rows before Tuo rivit; rules and file profiles are saved as they are made.
+import { ask } from "../../ui/dialog";
+import type { FlowStep, ImportFlow, RowGroup } from "../../app/importFlow";
+import type { Session } from "../../app/session";
+import { compileRules, ruleMatches } from "../../engine/categorize";
+import type { Fix, FixPart, LedgerRow, Rule } from "../../engine/types";
+import {
+  acceptLate,
+  addRule,
+  decideDuplicates,
+  deleteFix,
+  dropInvalid,
+  ignoreLate,
+  members,
+  saveProfile,
+  updateProfile,
+} from "../../project/service";
+import { pickWithInput } from "../../storage/projectFile";
+import { bindCombos, combo } from "../../ui/combo";
+import { dupSection, invalidSection, lateSection, orphanSection, ownerSection } from "./checks";
+import { formatAmount, formatCount, formatDate } from "../../ui/format";
+import { CLASSES, CLASS_LABEL, classification } from "../../ui/classification";
+import { html, raw } from "../../ui/html";
+import { parseNumber } from "../../ui/numberField";
+import { icon } from "../../ui/icons";
+import { stepper, STEP_LABEL, type ShellContext } from "../../ui/shell";
+import { fmt, plural, t, type TextKey } from "../../ui/texts";
+import { showToast } from "../../ui/toast";
+import { ProfileEditor } from "./profileEditor";
+
+const ACCEPT = ".csv,.txt,.tsv,.xlsx,.xls,.xlsm";
+const PREVIEW_PAGE = 50;
+
+type Quick = "all" | "fixed" | "dup" | "late";
+
+function regexEscape(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export class ImportScreen {
+  /** Open file profile editor: for a staged file (key), or for a stored profile (key -1). */
+  private editor: { key: number; profileId?: string; ed: ProfileEditor } | null = null;
+  /** Group whose rule form is open, and the form's values. */
+  private ruleFor: string | null = null;
+  private ruleDraft: Rule | null = null;
+  /** Staged row whose correction (or split) editor is open. */
+  private fixFor: { txId: string; mode: "fix" | "split" } | null = null;
+  private parts: FixPart[] = [];
+  private quick: Quick = "all";
+  private search = "";
+  /** Every imported file in the list, not only the newest. */
+  private allFiles = false;
+  /** Filter for the file list: name or file profile. */
+  private fileQuery = "";
+  private fileFilter = "";
+  private limit = PREVIEW_PAGE;
+  private ctx: ShellContext | null = null;
+
+  constructor(
+    private readonly root: HTMLElement,
+    private readonly session: Session,
+    private readonly flow: ImportFlow,
+  ) {
+    root.addEventListener("click", (e) => void this.onClick(e));
+    root.addEventListener("change", (e) => this.onChange(e));
+    root.addEventListener("input", (e) => this.onInput(e));
+    root.addEventListener("dragover", (e) => {
+      if (!root.querySelector(".drop")) return;
+      e.preventDefault();
+      root.querySelector(".drop")?.classList.add("over");
+    });
+    root.addEventListener("dragleave", () => root.querySelector(".drop")?.classList.remove("over"));
+    root.addEventListener("drop", (e) => {
+      if (!root.querySelector(".drop")) return;
+      e.preventDefault();
+      void this.addFiles(Array.from(e.dataTransfer?.files ?? []));
+    });
+    bindCombos(root, {
+      options: (name, el) => this.comboOptions(name, el),
+      noun: (name) => t(name === "sub" ? "nounSub" : "nounMain"),
+      picked: (name, el, value) => this.comboPicked(name, el, value),
+    });
+  }
+
+  private get project() {
+    return this.session.state.project!;
+  }
+
+  render(ctx: ShellContext, rest: string): void {
+    this.ctx = ctx;
+    if (!this.session.state.project) {
+      this.root.innerHTML = "";
+      return;
+    }
+    const editKey = ctx.step === "files" && rest.startsWith("edit/") ? Number(rest.slice(5)) : null;
+    const profileKey = ctx.step === "files" && rest.startsWith("profile/") ? decodeURIComponent(rest.slice(8)) : null;
+    let body: string;
+    if (editKey !== null) body = this.editorView(editKey);
+    else if (profileKey !== null) body = this.storedProfileView(profileKey);
+    else if (ctx.step === "files") body = this.filesView();
+    else if (ctx.step === "classify") body = this.classifyView();
+    else body = this.fixesView();
+    this.root.innerHTML = html`<div class="page-head">
+        <div>
+          <div class="eyebrow">${t("navGroupData")}</div>
+          <h1>${t("navImport")}</h1>
+        </div>
+      </div>
+      ${raw(stepper(ctx))}${raw(body)}`;
+    this.showFiles();
+  }
+
+  /** After a change to the staged files: their derived data is computed again, then views redraw. */
+  private rerender(): void {
+    this.flow.touch();
+  }
+
+  /** After a change to this view only (a filter, an open editor, a draft field): redraw, reuse the data. */
+  private redraw(): void {
+    this.flow.redraw();
+  }
+
+  // ---- Tiedostot
+
+  private filesView(): string {
+    const st = this.flow.staging;
+    const open = st.openFiles();
+    const ready = st.readyFiles();
+    const imported = this.project.getSourceFiles();
+    const profiles = new Map(this.project.getProfiles().map((p) => [p.id, p.name]));
+    const todo =
+      open.length > 0
+        ? html`<div class="note warn todo">
+            ${raw(icon("alert"))}
+            <div>
+              <b>${plural(open.length, "openTasksOne", "openTasks")}</b>
+              <div class="small">${fmt("filesTodo", { n: open.length })}</div>
+            </div>
+          </div>`
+        : st.empty
+          ? html`<section class="infobox">
+              ${raw(icon("import"))}
+              <div>
+                <b>${t("filesIntroTitle")}</b>
+                <div class="muted small">${t("filesIntroBody")}</div>
+              </div>
+            </section>`
+          : html`<div class="note ok todo">
+              ${raw(icon("check"))}
+              <div>
+                <b>${t("filesAllReady")}</b>
+                <div class="small">${t("filesAllReadyBody")}</div>
+              </div>
+            </div>`;
+    const status = (f: (typeof st.files)[number]) => {
+      if (f.profileId === "") return html`<span class="pill warn">${t("profileMissing")}</span>`;
+      if (f.error) return html`<span class="pill err" title="${f.error}">${t("profileReadError")}</span>`;
+      return html`<span class="pill ok">${raw(icon("check"))}${t(f.recognised ? "profileRecognised" : "profileChosen")}</span>`;
+    };
+    const fq = this.fileQuery.trim().toLowerCase();
+    // every row is in the table; the search only hides rows (see showFiles), so typing stays fast
+    const find = (name: string, profileId: string) => `${name} ${profiles.get(profileId) ?? profileId}`.toLowerCase();
+    const stagedRows = st.files
+      .map((f) => {
+        const needs = f.profileId === "" || f.error !== "";
+        const extra = [
+          f.already > 0 ? fmt("alreadyRows", { n: f.already }) : "",
+          f.problems.length > 0 ? fmt("problemRows", { n: f.problems.length }) : "",
+        ].filter(Boolean);
+        return html`<tr class="${needs ? "needs" : ""}" data-find="${find(f.name, f.profileId)}" data-rank="-1">
+          <td><span class="mono">${f.name}</span>${raw(extra.length ? html`<div class="small muted">${extra.join(" · ")}</div>` : "")}</td>
+          <td class="${f.profileId ? "" : "muted"}">${f.profileId ? (profiles.get(f.profileId) ?? f.profileId) : t("notRecognised")}</td>
+          <td class="num ${f.profileId ? "" : "muted"}">${f.profileId && !f.error ? formatCount(f.rows.length) : ""}</td>
+          <td>${raw(status(f))}</td>
+          <td class="num row-actions">
+            <a class="btn sm ${needs ? "primary" : ""}" href="#/import/files/edit/${f.key}">${raw(icon("pencil"))}${t("edit")}</a>
+            <button
+              type="button"
+              class="sm ghost"
+              data-imp="removeFile"
+              data-key="${f.key}"
+              title="${t("removeFromImport")}"
+              aria-label="${t("removeFromImport")}"
+            >
+              ${raw(icon("x"))}
+            </button>
+          </td>
+        </tr>`;
+      })
+      .join("");
+    const date = (iso: string) => formatDate(iso.slice(0, 10));
+    const doneRows = [...imported]
+      .reverse()
+      .map(
+        (f, i) =>
+          html`<tr class="done" data-find="${find(f.name, f.profileId)}" data-rank="${i}">
+            <td><span class="mono">${f.name}</span></td>
+            <td>
+              ${raw(profiles.has(f.profileId) ? html`<a href="#/import/files/profile/${encodeURIComponent(f.profileId)}" title="${t("editProfile")}">${profiles.get(f.profileId)}</a>` : "")}
+            </td>
+            <td class="num">${formatCount(f.rowCount)}</td>
+            <td><span class="pill">${fmt("importedOn", { d: date(f.importedAt) })}</span></td>
+            <td></td>
+          </tr>`,
+      )
+      .join("");
+    const nRows = ready.reduce((n, f) => n + f.rows.length, 0);
+    const table =
+      st.empty && imported.length === 0
+        ? ""
+        : html`<div class="section-label">${t("filesTitle")}</div>
+            <section class="card flush">
+              <div class="filters file-filters">
+                <label class="search"
+                  >${raw(icon("search"))}<input
+                    type="search"
+                    data-fq
+                    value="${this.fileQuery}"
+                    placeholder="${t("searchFilesPlaceholder")}"
+                    aria-label="${t("searchFilesPlaceholder")}"
+                /></label>
+                <span class="small muted" data-fcount></span>
+              </div>
+              <div class="table-wrap">
+                <table class="files">
+                  <thead>
+                    <tr>
+                      <th>${t("colFile")}</th>
+                      <th>${t("colProfile")}</th>
+                      <th class="num">${t("colRows")}</th>
+                      <th>${t("colStatus")}</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${raw(stagedRows)}${raw(doneRows)}
+                  </tbody>
+                </table>
+              </div>
+              ${raw(st.empty ? "" : html`<div class="actions card-foot"><span class="small muted">${fmt("filesReadyFoot", { f: ready.length, n: formatCount(nRows) })}</span></div>`)}
+              ${raw(
+                imported.length > RECENT_FILES
+                  ? html`<div class="actions card-foot" data-fmore ${raw(fq ? "hidden" : "")}>
+                      <span class="grow"></span>
+                      <button type="button" class="sm" data-imp="allFiles">
+                        ${this.allFiles ? t("filesShowRecent") : fmt("filesShowAll", { n: imported.length })}
+                      </button>
+                    </div>`
+                  : "",
+              )}
+            </section>`;
+    return html`${raw(todo)}
+      <section class="drop compact">
+        ${raw(icon("import"))}
+        <div>
+          <b>${t("dropTitle")}</b>
+          <div class="muted small">${t("dropBody")}</div>
+        </div>
+        <button type="button" class="primary" data-imp="choose">${t("chooseFiles")}</button>
+      </section>
+      ${raw(table)} ${raw(st.empty && imported.length === 0 ? "" : this.next("classify"))}`;
+  }
+
+  /** Shows the files that match the search; without one, the newest few (or all, when asked). */
+  private showFiles(): void {
+    const q = this.fileQuery.trim().toLowerCase();
+    let n = 0;
+    for (const tr of this.root.querySelectorAll<HTMLTableRowElement>("table.files tbody tr[data-find]")) {
+      const show = q ? (tr.dataset.find ?? "").includes(q) : this.allFiles || Number(tr.dataset.rank) < RECENT_FILES;
+      tr.hidden = !show;
+      if (show) n++;
+    }
+    const count = this.root.querySelector("[data-fcount]");
+    if (count) count.textContent = q ? fmt("filesMatching", { n }) : "";
+    const more = this.root.querySelector<HTMLElement>("[data-fmore]");
+    if (more) more.hidden = q !== "";
+  }
+
+  private next(to: FlowStep | "done", back?: FlowStep): string {
+    const counts = this.ctx!.counts;
+    const here = this.ctx!.step;
+    const b = back ? html`<a class="btn" href="#/import/${back}">${raw(icon("arrowL"))}${t("back")}</a>` : "";
+    if (to === "done") return "";
+    const n = counts[here];
+    return html`<div class="actions flow-next">
+      ${raw(b)}<span class="grow"></span>
+      <a class="btn primary" href="#/import/${to}"
+        >${fmt("nextStep", { step: t(STEP_LABEL[to]).toLowerCase() })}${raw(n > 0 ? html`<span class="badge">${plural(n, "openTasksOne", "openTasks")}</span>` : "")}</a
+      >
+    </div>`;
+  }
+
+  private async addFiles(files: File[]): Promise<void> {
+    if (files.length === 0) return;
+    const loaded = await Promise.all(files.map(async (f) => ({ name: f.name, bytes: new Uint8Array(await f.arrayBuffer()) })));
+    this.flow.staging.add(this.project, loaded);
+    this.rerender();
+  }
+
+  // ---- Tiedostot > Muokkaa
+
+  private editorView(key: number): string {
+    const f = this.flow.staging.files.find((x) => x.key === key);
+    if (!f) return html`<p class="muted">${t("fileGone")} <a href="#/import/files">${t("backToFiles")}</a></p>`;
+    if (this.editor?.key !== key) {
+      this.editor = { key, ed: new ProfileEditor(this.project, f.name, f.bytes, f.profileId) };
+    }
+    const pill =
+      f.profileId === ""
+        ? html`<span class="pill warn">${t("profileMissing")}</span>`
+        : html`<span class="pill ok">${raw(icon("check"))}${t(f.recognised ? "profileRecognised" : "profileChosen")}</span>`;
+    const p = this.project;
+    return this.editor.ed.render(p.getSettings().defaultOwner, pill);
+  }
+
+  /** Editor for a stored file profile (from Settings), shown with the latest file it read. */
+  private storedProfileView(id: string): string {
+    const p = this.project;
+    const file = p
+      .getSourceFiles()
+      .filter((f) => f.profileId === id)
+      .pop();
+    const bytes = file ? p.getSourceFileBytes(file.id) : null;
+    if (!file || !bytes)
+      return html`<div class="note warn">
+        ${raw(icon("alert"))}
+        <div>${t("noSampleFile")} <a href="#/settings/profiles">${t("navSettings")}</a></div>
+      </div>`;
+    if (this.editor?.profileId !== id) this.editor = { key: -1, profileId: id, ed: new ProfileEditor(p, file.name, bytes, id) };
+    return this.editor.ed.render(p.getSettings().defaultOwner, html`<span class="pill">${t("storedProfile")}</span>`);
+  }
+
+  private saveEditor(): void {
+    const e = this.editor;
+    if (!e || e.ed.problem()) return;
+    if (e.key === -1) {
+      const profile = structuredClone(e.ed.draft);
+      if (profile.id !== e.profileId) profile.id = e.profileId!;
+      let res: ReturnType<typeof updateProfile> | undefined;
+      this.session.change((proj) => {
+        res = updateProfile(proj, profile);
+      });
+      this.editor = null;
+      if (res)
+        showToast(
+          t("profileSavedTitle"),
+          fmt("profileUpdated", { n: res.reread }) + (res.orphanedFixes > 0 ? ` ${fmt("orphanedFixes", { n: res.orphanedFixes })}` : ""),
+        );
+      location.hash = "#/settings/profiles";
+      return;
+    }
+    const profile = structuredClone(e.ed.draft);
+    const exists = this.project.getProfiles().some((p) => p.id === profile.id);
+    const used = this.project.getSourceFiles().some((f) => f.profileId === profile.id);
+    this.session.change((proj) => {
+      if (exists && used) updateProfile(proj, profile);
+      else saveProfile(proj, profile);
+    });
+    this.flow.staging.setProfile(this.project, e.key, profile.id);
+    // A saved profile may also fit other staged files that had none.
+    for (const f of this.flow.staging.files) {
+      if (f.profileId === "" && new RegExp(`^(?:${profile.filePattern})`).test(f.name))
+        this.flow.staging.setProfile(this.project, f.key, profile.id);
+    }
+    this.editor = null;
+    location.hash = "#/import/files";
+    this.rerender();
+  }
+
+  // ---- Luokittelu
+
+  private classifyView(): string {
+    const data = this.flow.data();
+    const groups = data.groups;
+    const rows = groups.reduce((n, g) => n + g.rows.length, 0);
+    const todo =
+      groups.length > 0
+        ? html`<div class="note warn todo">
+            ${raw(icon("alert"))}
+            <div>
+              <b>${plural(groups.length, "openTasksOne", "openTasks")}</b>
+              <div class="small">${fmt("classifyTodo", { r: rows, g: groups.length })}</div>
+            </div>
+          </div>`
+        : html`<div class="note ok todo">
+            ${raw(icon("check"))}
+            <div>
+              <b>${t("classifyDone")}</b>
+              <div class="small">${t("classifyDoneBody")}</div>
+            </div>
+          </div>`;
+    const info = html`<section class="infobox">
+      ${raw(icon("rule"))}
+      <div>
+        <b>${t("classifyInfoTitle")}</b>
+        <div class="muted small">
+          ${raw(fmt("classifyInfoBody", { link: html`<a href="#/settings/rules">${t("settingsLinkWord")}</a>` }))}
+        </div>
+      </div>
+    </section>`;
+    const body = groups
+      .map((g) => {
+        const open = this.ruleFor === g.key;
+        const row = html`<tr class="${open ? "open" : ""}">
+          <td>${g.description || t("unnamed")}</td>
+          <td class="muted">${g.info}</td>
+          <td>${g.account}</td>
+          <td class="num">${formatCount(g.rows.length)}</td>
+          <td class="num">${formatAmount(g.total)} €</td>
+          <td>${formatDate(g.first)}</td>
+          <td class="num">
+            <button type="button" class="sm ${open ? "" : "primary"}" data-imp="ruleOpen" data-g="${g.key}">${t("createRule")}</button>
+          </td>
+        </tr>`;
+        return (
+          row +
+          (open
+            ? html`<tr class="form-row">
+                <td colspan="7">${raw(this.ruleForm(g))}</td>
+              </tr>`
+            : "")
+        );
+      })
+      .join("");
+    const table = groups.length
+      ? html`<section class="card flush">
+          <div class="table-wrap">
+            <table class="groups">
+              <thead>
+                <tr>
+                  <th>${t("colDescription")}</th>
+                  <th>${t("colInfo")}</th>
+                  <th>${t("colAccount")}</th>
+                  <th class="num">${t("colRows")}</th>
+                  <th class="num">${t("colTotal")}</th>
+                  <th>${t("colFirst")}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${raw(body)}
+              </tbody>
+            </table>
+          </div>
+        </section>`
+      : "";
+    return html`${raw(todo)}${raw(info)}${raw(table)}${raw(this.next("fixes", "files"))}`;
+  }
+
+  private ruleForm(g: RowGroup): string {
+    const r = this.ruleDraft!;
+    const opt = (v: string, label: string, sel: boolean) => html`<option value="${v}" ${raw(sel ? "selected" : "")}>${label}</option>`;
+    const matches = this.ruleMatchCount(r);
+    return html`<div class="rule-form" data-rule-form>
+      <label class="field"
+        >${t("descContains")}<input data-rf2="description" value="${r.description}" /><small data-rule-count
+          >${fmt("ruleHits", { n: matches })}</small
+        ></label
+      >
+      <label class="field"
+        >${t("fieldAmountMatch")}<select data-rf2="amount">
+          ${raw(opt("neg", t("amountNeg"), r.amount === "neg") + opt("pos", t("amountPos"), r.amount === "pos") + opt("any", t("amountAny"), r.amount === "any"))}
+        </select></label
+      >
+      <label class="field"
+        >${t("fieldClass")}<select data-rf2="class" class="${r.class ? "" : "invalid"}" data-rule-class>
+          ${raw(opt("", t("chooseClass"), r.class === "") + CLASSES.map((c) => opt(c, t(CLASS_LABEL[c]!), r.class === c)).join(""))}</select
+        ><small class="req">${t("required")}</small></label
+      >
+      <div class="field">
+        ${t("fieldCategory")}${raw(combo("main", r.category, { placeholder: t("searchOrAdd"), label: t("fieldCategory") }))}
+      </div>
+      <div class="field">
+        ${t("fieldSubCategory")}${raw(combo("sub", r.subCategory, { placeholder: r.category ? t("searchOrAdd") : t("chooseMainFirst"), disabled: !r.category, label: t("fieldSubCategory") }))}<small
+          >${t("subFollowsMain")}</small
+        >
+      </div>
+      <div class="actions rule-actions">
+        <button type="button" class="sm ghost" data-imp="ruleCancel">${t("cancel")}</button>
+        <button type="button" class="sm primary" data-imp="ruleSave" ${raw(r.class ? "" : "disabled")}>${t("saveRule")}</button>
+      </div>
+      ${raw(g.rows.length > 1 ? "" : "")}
+    </div>`;
+  }
+
+  /** Uncategorised rows (staged and stored) the drafted rule would match. */
+  private ruleMatchCount(r: Rule): number {
+    try {
+      const [c] = compileRules([{ ...r, class: r.class || "menot" }]);
+      const rows = this.flow.data().groups.flatMap((g) => g.rows);
+      return rows.filter(
+        (x) =>
+          x.fields.amount !== null &&
+          ruleMatches(c!, { account: x.fields.account, description: x.fields.description, info: x.fields.info, amount: x.fields.amount }),
+      ).length;
+    } catch {
+      return 0;
+    }
+  }
+
+  private openRule(key: string): void {
+    const g = this.flow.data().groups.find((x) => x.key === key);
+    if (!g) return;
+    const neg = g.total < 0;
+    this.ruleFor = key;
+    this.ruleDraft = {
+      id: "",
+      account: "",
+      description: regexEscape(g.description.toLowerCase()),
+      info: "",
+      amount: g.total === 0 ? "any" : neg ? "neg" : "pos",
+      class: neg ? "menot" : "",
+      category: "",
+      subCategory: "",
+    };
+    this.redraw();
+  }
+
+  private saveRule(): void {
+    const r = this.ruleDraft;
+    if (!r || !r.class) return;
+    const rules = this.project.getRules();
+    const id = String(rules.reduce((m, x) => (/^\d+$/.test(x.id) ? Math.max(m, Number(x.id)) : m), 0) + 1);
+    const rule: Rule = { ...r, id, category: r.category.trim(), subCategory: r.subCategory.trim() };
+    try {
+      compileRules([rule]);
+    } catch (e) {
+      this.session.showError(fmt("ruleInvalid", { e: e instanceof Error ? e.message : String(e) }));
+      return;
+    }
+    this.ruleFor = null;
+    this.ruleDraft = null;
+    this.session.change((p) => addRule(p, rule));
+  }
+
+  // ---- category suggestions for the combos
+
+  private known(): { class: string; category: string; subCategory: string }[] {
+    const p = this.project;
+    return [...p.getRules(), ...p.getTargets(), ...p.getLedger()];
+  }
+
+  private comboOptions(name: string, el: HTMLElement): string[] {
+    const form = el.closest<HTMLElement>("[data-rule-form], [data-fix-form], .split-part");
+    const cls = form?.querySelector<HTMLSelectElement>("[data-rule-class]")?.value ?? "";
+    const main = form?.querySelector<HTMLInputElement>('[data-combo="main"] input')?.value.trim().toLowerCase() ?? "";
+    const k = this.known();
+    const uniq = (xs: string[]) => [...new Set(xs.map((x) => x.toLowerCase()).filter(Boolean))].sort();
+    if (name === "main") return uniq(k.filter((x) => !cls || x.class.toLowerCase() === cls).map((x) => x.category));
+    return uniq(k.filter((x) => x.category.toLowerCase() === main).map((x) => x.subCategory));
+  }
+
+  private comboPicked(name: string, el: HTMLElement, value: string): void {
+    const form = el.closest<HTMLElement>("[data-rule-form], [data-fix-form], .split-part");
+    if (!form) return;
+    if (name === "main") {
+      const sub = form.querySelector<HTMLInputElement>('[data-combo="sub"] input');
+      if (sub) {
+        sub.disabled = value === "";
+        sub.placeholder = value ? t("searchOrAdd") : t("chooseMainFirst");
+      }
+    }
+    if (form.matches("[data-rule-form]") && this.ruleDraft) {
+      if (name === "main") {
+        if (this.ruleDraft.category !== value) this.ruleDraft.subCategory = "";
+        this.ruleDraft.category = value;
+        const sub = form.querySelector<HTMLInputElement>('[data-combo="sub"] input');
+        if (sub && this.ruleDraft.subCategory === "") sub.value = "";
+      } else this.ruleDraft.subCategory = value;
+    }
+    if (form.matches(".split-part")) {
+      const i = Number(form.dataset.part);
+      const part = this.parts[i];
+      if (part) {
+        if (name === "main") part.category = value;
+        else part.subCategory = value;
+      }
+    }
+  }
+
+  // ---- Korjaukset
+
+  private fixesView(): string {
+    const data = this.flow.data();
+    const review = data.review!;
+    const st = this.flow.staging;
+    const stagedLate = this.flow.lateDecided ? [] : data.preview.late;
+    const lateRows = [...stagedLate, ...review.late];
+    const tasks: string[] = [];
+    if (lateRows.length)
+      tasks.push(html`<li>${raw(fmt("taskLate", { link: html`<a href="#late">${fmt("nRows", { n: lateRows.length })}</a>` }))}</li>`);
+    if (review.failedFixes.length)
+      tasks.push(
+        html`<li>
+          ${raw(fmt("taskOrphans", { link: html`<a href="#orphans">${fmt("nFixes", { n: review.failedFixes.length })}</a>` }))}
+        </li>`,
+      );
+    if (review.duplicateGroups.length)
+      tasks.push(
+        html`<li>
+          ${raw(fmt("taskDuplicates", { link: html`<a href="#dups">${fmt("nGroups", { n: review.duplicateGroups.length })}</a>` }))}
+        </li>`,
+      );
+    if (review.invalid.length)
+      tasks.push(
+        html`<li>${raw(fmt("taskInvalid", { link: html`<a href="#invalid">${fmt("nRows", { n: review.invalid.length })}</a>` }))}</li>`,
+      );
+    const waiting = st.openFiles().length;
+    if (waiting)
+      tasks.unshift(
+        html`<li>${raw(fmt("taskOpenFiles", { link: html`<a href="#/import/files">${plural(waiting, "nFilesOne", "nFiles")}</a>` }))}</li>`,
+      );
+    const uncategorised = data.preview.uncategorized.length;
+    if (uncategorised && !st.empty)
+      tasks.push(
+        html`<li>
+          ${raw(fmt("taskUncategorised", { link: html`<a href="#/import/classify">${fmt("nRows", { n: uncategorised })}</a>` }))}
+        </li>`,
+      );
+    if (!st.empty) tasks.push(html`<li>${raw(fmt("taskApprove", { b: html`<b>${t("importRows")}</b>` }))}</li>`);
+    const count = this.ctx!.counts.fixes + waiting + (st.empty ? 0 : 1);
+    const todo = tasks.length
+      ? html`<div class="note warn todo">
+          ${raw(icon("alert"))}
+          <div>
+            <b>${plural(count, "openTasksBeforeOne", "openTasksBefore")}</b>
+            <ol class="todo-list small">
+              ${raw(tasks.join(""))}
+            </ol>
+          </div>
+        </div>`
+      : html`<div class="note ok todo">
+          ${raw(icon("check"))}
+          <div>
+            <b>${t("fixesNothing")}</b>
+            <div class="small">${t("fixesNothingBody")}</div>
+          </div>
+        </div>`;
+    const info = html`<section class="infobox">
+      ${raw(icon("review"))}
+      <div>
+        <b>${t("checksInfoTitle")}</b>
+        <ul class="muted small checks-list">
+          <li><b>${t("dupTitle")}:</b> ${t("checksDup")}</li>
+          <li>
+            <b>${t("checksFixesLabel")}:</b>
+            ${raw(fmt("checksFixes", { link: html`<a href="#/settings/fixes">${t("settingsLinkWord")}</a>` }))}
+          </li>
+          <li><b>${t("invalidTitle")}:</b> ${t("checksInvalid")}</li>
+          <li><b>${t("lateTitle")}:</b> ${t("checksLate")}</li>
+          <li><b>${t("ownerTitle")}:</b> ${t("checksOwner")}</li>
+        </ul>
+        <div class="muted small">${t("checksApprove")}</div>
+      </div>
+    </section>`;
+
+    const sections = [
+      ownerSection(this.project, this.flow.staging),
+      dupSection(this.project, review.duplicateGroups),
+      orphanSection(review.failedFixes),
+      invalidSection(this.project, review.invalid),
+      lateSection(this.project, this.flow.staging, stagedLate, review.late),
+    ].join("");
+    const preview = st.empty ? "" : this.previewSection();
+    const nAdd = data.preview.rows.length
+      ? new Set(data.preview.rows.map((r) => r.txId)).size -
+        data.preview.duplicates.filter((d) => !st.keepDuplicates.has(d.newRow.txId)).length
+      : 0;
+    const dupOut = data.preview.duplicates.filter((d) => !st.keepDuplicates.has(d.newRow.txId)).length;
+    const bar = st.empty
+      ? html`<div class="actions flow-next">
+          <a class="btn" href="#/import/classify">${raw(icon("arrowL"))}${t("back")}</a><span class="grow"></span>
+          <span class="small muted">${t("nothingStaged")}</span><a class="btn primary" href="#/overview">${t("toOverview")}</a>
+        </div>`
+      : html`<div class="actions flow-next import-bar">
+          <a class="btn" href="#/import/classify">${raw(icon("arrowL"))}${t("back")}</a><span class="grow"></span>
+          <span class="small muted">${fmt("importSummary", { n: formatCount(nAdd), d: dupOut })}</span>
+          <button type="button" class="primary" data-imp="commit">
+            ${raw(icon("check"))}${fmt("importRowsN", { n: formatCount(nAdd) })}
+          </button>
+        </div>`;
+    return html`${raw(todo)}${raw(info)}${raw(sections)}${raw(preview)}${raw(bar)}`;
+  }
+
+  private previewSection(): string {
+    const data = this.flow.data();
+    const st = this.flow.staging;
+    const dupIds = new Set(data.preview.duplicates.map((d) => d.newRow.txId));
+    const lateIds = new Set(data.preview.late.map((r) => r.txId));
+    const fixIds = new Map(st.fixes.map((f) => [f.txId, f]));
+    const fileOf = new Map(st.stagedRows().map((r) => [r.txId, r.sourceFile]));
+    // one line per transaction: the first ledger row, with the transaction's total amount
+    const byTx = new Map<string, LedgerRow[]>();
+    for (const r of data.preview.rows) {
+      const list = byTx.get(r.txId) ?? [];
+      list.push(r);
+      byTx.set(r.txId, list);
+    }
+    let txs = [...byTx.entries()];
+    const q = this.search.trim().toLowerCase();
+    if (q) txs = txs.filter(([, rs]) => [rs[0]!.description, rs[0]!.info, rs[0]!.account].join(" ").toLowerCase().includes(q));
+    if (this.fileFilter) txs = txs.filter(([id]) => fileOf.get(id) === this.fileFilter);
+    if (this.quick === "fixed") txs = txs.filter(([id]) => fixIds.has(id));
+    if (this.quick === "dup") txs = txs.filter(([id]) => dupIds.has(id));
+    if (this.quick === "late") txs = txs.filter(([id]) => lateIds.has(id));
+    txs.sort((a, b) => b[1][0]!.date.localeCompare(a[1][0]!.date));
+    const counts = { all: byTx.size, fixed: [...byTx.keys()].filter((id) => fixIds.has(id)).length, dup: dupIds.size, late: lateIds.size };
+    const seg = (["all", "fixed", "dup", "late"] as Quick[])
+      .map(
+        (k) =>
+          html`<button type="button" class="${this.quick === k ? "on" : ""}" data-quick="${k}">
+            ${t(QUICK_LABEL[k])} <span class="count">${counts[k]}</span>
+          </button>`,
+      )
+      .join("");
+    const files = [...new Set(fileOf.values())];
+    const body = txs
+      .slice(0, this.limit)
+      .map(([id, rs]) => this.previewRow(id, rs, fixIds.get(id), dupIds.has(id)))
+      .join("");
+    return html`<div class="section-label">${t("previewRowsTitle")}</div>
+      <section class="card flush">
+        <div class="preview-head"><div class="small muted">${t("previewRowsHint")}</div></div>
+        <div class="filters fix-filters">
+          <label class="search"
+            >${raw(icon("search"))}<input
+              data-pq
+              value="${this.search}"
+              placeholder="${t("searchRowsPlaceholder")}"
+              aria-label="${t("searchRowsPlaceholder")}"
+          /></label>
+          <select data-pfile aria-label="${t("colFile")}">
+            <option value="">${t("allFiles")}</option>
+            ${raw(files.map((f) => html`<option value="${f}" ${raw(f === this.fileFilter ? "selected" : "")}>${f}</option>`).join(""))}
+          </select>
+          <div class="seg sm">${raw(seg)}</div>
+        </div>
+        <div class="table-wrap">
+          <table class="fix-table">
+            <thead>
+              <tr>
+                <th>${t("colDate")}</th>
+                <th>${t("colDescription")}</th>
+                <th>${t("colInfo")}</th>
+                <th>${t("colAccount")}</th>
+                <th class="num">${t("colAmount")}</th>
+                <th>${t("colClassification")}</th>
+                <th>${t("colSource")}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${raw(
+                body ||
+                  html`<tr>
+                    <td colspan="8" class="muted">${t("noRowsFound")}</td>
+                  </tr>`,
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div class="actions card-foot">
+          <span class="small muted">${fmt("showingNofM", { a: Math.min(this.limit, txs.length), n: txs.length })}</span
+          ><span class="grow"></span>
+          ${raw(txs.length > this.limit ? html`<button type="button" class="sm" data-imp="moreRows">${t("showMoreRows")}</button>` : "")}
+        </div>
+      </section>`;
+  }
+
+  private previewRow(txId: string, rs: LedgerRow[], fix: Fix | undefined, dup: boolean): string {
+    const r = rs[0]!;
+    const st = this.flow.staging;
+    const amount = rs[0]!.amountOriginal;
+    const label = (x: { class: string; category: string; subCategory: string }) => classification(x.class, x.category, x.subCategory);
+    const cls = fix?.parts
+      ? rs.map((x) => html`<div>${raw(label(x))} <span class="muted small">${formatAmount(x.amount)} €</span></div>`).join("")
+      : label(r);
+    let source: string;
+    let acts: string;
+    if (dup) {
+      source = html`<span class="pill warn">${t("duplicatePill")}</span>`;
+      acts = html`<label class="small check"
+        ><input type="checkbox" data-keepdup="${txId}" ${raw(st.keepDuplicates.has(txId) ? "checked" : "")} /> ${t("importAnyway")}</label
+      >`;
+    } else if (fix) {
+      source = html`<span class="pill accent">${t("fixPill")}</span>`;
+      acts = html`<button type="button" class="sm ghost" data-imp="unfix" data-tx="${txId}">${t("removeFix")}</button>`;
+    } else {
+      source = html`<span class="small muted">${r.ruleId ? fmt("ruleShortN", { id: r.ruleId }) : "-"}</span>`;
+      acts = html`<button type="button" class="sm" data-imp="fixOpen" data-tx="${txId}">${t("fixRow")}</button
+        ><button type="button" class="sm ghost" data-imp="splitOpen" data-tx="${txId}">${t("splitRow")}</button>`;
+    }
+    const open = this.fixFor?.txId === txId;
+    const editor = open
+      ? html`<tr class="${this.fixFor!.mode === "split" ? "split-editor" : "exception-editor"}">
+          <td colspan="8">${raw(this.fixFor!.mode === "split" ? this.splitForm(r) : this.fixForm(r))}</td>
+        </tr>`
+      : "";
+    return (
+      html`<tr class="${fix ? "fixed" : ""} ${dup ? "dup" : ""}">
+        <td class="num">${formatDate(r.date)}</td>
+        <td>${r.description}</td>
+        <td class="muted">${r.info}</td>
+        <td>${r.account}</td>
+        <td class="num">${formatAmount(amount)} €</td>
+        <td>${raw(cls)}</td>
+        <td>${raw(source)}</td>
+        <td class="num row-actions">${raw(acts)}</td>
+      </tr>` + editor
+    );
+  }
+
+  private fixForm(r: LedgerRow): string {
+    const opt = (v: string, label: string, sel: boolean) => html`<option value="${v}" ${raw(sel ? "selected" : "")}>${label}</option>`;
+    return html`<div class="rule-form exception-row" data-fix-form>
+      <div class="field">
+        ${t("rowLabel")}
+        <div class="small muted ex-what">
+          ${formatDate(r.date)} · ${r.description} · ${formatAmount(r.amountOriginal)} €<br />${fmt("byRule", { what: [r.class, r.category, r.subCategory].filter(Boolean).join(" › ") || t("uncategorised") })}
+        </div>
+      </div>
+      <label class="field"
+        >${t("fieldClass")}<select data-rule-class data-fixf="class">
+          ${raw(CLASSES.map((c) => opt(c, t(CLASS_LABEL[c]!), (r.class || "menot") === c)).join(""))}
+        </select></label
+      >
+      <div class="field">
+        ${t("fieldCategory")}${raw(combo("main", r.category, { placeholder: t("searchOrAdd"), label: t("fieldCategory") }))}
+      </div>
+      <div class="field">
+        ${t("fieldSubCategory")}${raw(combo("sub", r.subCategory, { placeholder: t("searchOrAdd"), label: t("fieldSubCategory") }))}
+      </div>
+      <span></span>
+      <div class="actions rule-actions">
+        <button type="button" class="sm ghost" data-imp="fixCancel">${t("cancel")}</button
+        ><button type="button" class="sm primary" data-imp="fixSave" data-tx="${r.txId}">${t("saveFix")}</button>
+      </div>
+    </div>`;
+  }
+
+  private splitForm(r: LedgerRow): string {
+    const opt = (v: string, label: string, sel: boolean) => html`<option value="${v}" ${raw(sel ? "selected" : "")}>${label}</option>`;
+    const ms = members(this.project);
+    const total = r.amountOriginal;
+    const sum = this.parts.reduce((a, p) => a + p.amount, 0);
+    const left = Math.round((total - sum) * 100) / 100;
+    const parts = this.parts
+      .map(
+        (p, i) =>
+          html`<div class="rule-form split-part" data-part="${i}">
+            <label class="field"
+              >${i === 0 ? t("colAmount") : ""}<input
+                class="num"
+                data-partf="amount"
+                data-i="${i}"
+                value="${formatAmount(p.amount)}"
+                inputmode="decimal"
+                aria-label="${t("colAmount")}"
+            /></label>
+            <label class="field"
+              >${i === 0 ? t("fieldClass") : ""}<select data-rule-class data-partf="class" data-i="${i}" aria-label="${t("fieldClass")}">
+                ${raw(CLASSES.map((c) => opt(c, t(CLASS_LABEL[c]!), p.class === c)).join(""))}
+              </select></label
+            >
+            <div class="field">
+              ${i === 0 ? t("fieldCategory") : ""}${raw(combo("main", p.category, { placeholder: t("searchOrAdd"), label: t("fieldCategory") }))}
+            </div>
+            <div class="field">
+              ${i === 0 ? t("fieldSubCategory") : ""}${raw(combo("sub", p.subCategory, { placeholder: t("searchOrAdd"), label: t("fieldSubCategory") }))}
+            </div>
+            <label class="field"
+              >${i === 0 ? t("memberLabel") : ""}<select data-partf="owner" data-i="${i}" aria-label="${t("memberLabel")}">
+                ${raw(opt("", t("asAccount"), !p.owner) + ms.map((m) => opt(m, m, p.owner === m)).join(""))}
+              </select></label
+            >
+            <button
+              type="button"
+              class="sm ghost icon-only"
+              data-imp="partDel"
+              data-i="${i}"
+              title="${t("removePart")}"
+              aria-label="${t("removePart")}"
+              ${raw(this.parts.length <= 2 ? "disabled" : "")}
+            >
+              ${raw(icon("x"))}
+            </button>
+          </div>`,
+      )
+      .join("");
+    const ok = Math.abs(left) < 0.005;
+    return html`<div class="split-head">
+        <b>${t("splitTitle")}</b><span class="small muted">${formatDate(r.date)} · ${r.description} · ${formatAmount(total)} €</span>
+      </div>
+      ${raw(parts)}
+      <div class="split-foot">
+        <button type="button" class="sm ghost" data-imp="partAdd">${raw(icon("plus"))}${t("addPart")}</button>
+        <span class="pill ${ok ? "ok" : "warn"}"
+          >${raw(icon(ok ? "check" : "alert"))}${fmt("partsTotal", { s: formatAmount(sum), l: formatAmount(left) })}</span
+        ><span class="grow"></span> <button type="button" class="sm ghost" data-imp="fixCancel">${t("cancel")}</button
+        ><button type="button" class="sm primary" data-imp="splitSave" data-tx="${r.txId}" ${raw(ok ? "" : "disabled")}>
+          ${t("saveSplit")}
+        </button>
+      </div>`;
+  }
+
+  private stagedRow(txId: string): LedgerRow | undefined {
+    return this.flow.data().preview.rows.find((r) => r.txId === txId);
+  }
+
+  private commit(): void {
+    const st = this.flow.staging;
+    let res: ReturnType<typeof st.commit> | undefined;
+    this.session.change((p) => {
+      res = st.commit(p);
+    });
+    if (!res) return;
+    this.flow.lateDecided = false;
+    this.flow.touch();
+    const r = res;
+    showToast(
+      fmt("toastTitle", { n: formatCount(r.rows) }),
+      [
+        fmt("toastFiles", { n: r.files }),
+        r.fixes ? fmt("toastFixes", { n: r.fixes }) : "",
+        r.late ? fmt("toastLate", { n: r.late }) : "",
+        r.duplicatesLeftOut ? fmt("toastDups", { n: r.duplicatesLeftOut }) : "",
+        t("toastUpdated"),
+      ]
+        .filter(Boolean)
+        .join(" · "),
+      { href: "#/rows", label: t("toastShowRows") },
+    );
+    location.hash = "#/overview";
+  }
+
+  // ---- events
+
+  private async onClick(e: Event): Promise<void> {
+    const el = e.target as HTMLElement;
+    const q = el.closest<HTMLButtonElement>("button[data-quick]");
+    if (q) {
+      this.quick = q.dataset.quick as Quick;
+      this.limit = PREVIEW_PAGE;
+      this.redraw();
+      return;
+    }
+    const a = el.closest<HTMLAnchorElement>('a[href^="#late"], a[href^="#orphans"], a[href^="#dups"], a[href^="#invalid"]');
+    if (a) {
+      e.preventDefault();
+      this.root.querySelector(a.getAttribute("href")!)?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    const b = el.closest<HTMLButtonElement>("button[data-imp]");
+    if (!b || b.disabled) return;
+    const p = this.project;
+    const st = this.flow.staging;
+    switch (b.dataset.imp) {
+      case "choose": {
+        const files = await pickWithInput(ACCEPT, true);
+        await this.addFiles(files);
+        break;
+      }
+      case "removeFile":
+        st.remove(p, Number(b.dataset.key));
+        this.rerender();
+        break;
+      case "guess":
+        this.editor?.ed.guess();
+        this.redraw();
+        break;
+      case "saveProfile":
+        this.saveEditor();
+        break;
+      case "ruleOpen":
+        if (this.ruleFor === b.dataset.g) {
+          this.ruleFor = null;
+          this.redraw();
+        } else this.openRule(b.dataset.g ?? "");
+        break;
+      case "ruleCancel":
+        this.ruleFor = null;
+        this.ruleDraft = null;
+        this.redraw();
+        break;
+      case "ruleSave":
+        this.saveRule();
+        break;
+      case "lateAdd":
+      case "lateSkip": {
+        const all = b.dataset.imp === "lateSkip";
+        const boxes = [...this.root.querySelectorAll<HTMLInputElement>("input[data-late]")];
+        const stored = { add: new Set<string>(), skip: [] as string[] };
+        for (const x of boxes) {
+          const [kind, id] = (x.dataset.late ?? "").split(":") as ["s" | "p", string];
+          const add = !all && x.checked;
+          if (kind === "s") {
+            if (add) st.skipLate.delete(id);
+            else st.skipLate.add(id);
+          } else if (add) stored.add.add(id);
+          else stored.skip.push(id);
+        }
+        this.flow.lateDecided = true;
+        if (stored.add.size || stored.skip.length) {
+          this.session.change((proj) => {
+            if (stored.add.size) acceptLate(proj, stored.add);
+            if (stored.skip.length) ignoreLate(proj, stored.skip);
+          });
+        }
+        this.rerender();
+        break;
+      }
+      case "dropInvalid": {
+        const tx = b.dataset.tx ?? "";
+        this.session.change((proj) => dropInvalid(proj, [tx]));
+        break;
+      }
+      case "delFix":
+        if (!(await ask(t("confirmDeleteFix"), { ok: t("remove"), danger: true }))) return;
+        this.session.change((proj) => deleteFix(proj, b.dataset.id ?? ""));
+        break;
+      case "dupKeep":
+      case "dupDrop": {
+        const g = this.flow.data().review?.duplicateGroups[Number(b.dataset.i)];
+        if (!g) return;
+        const newest = [...g].sort((x, y) => y.sourceFile.localeCompare(x.sourceFile))[0]!;
+        this.session.change((proj) => decideDuplicates(proj, g, b.dataset.imp === "dupDrop" ? new Set([newest.txId]) : new Set()));
+        break;
+      }
+      case "allFiles":
+        this.allFiles = !this.allFiles;
+        this.redraw();
+        break;
+      case "moreRows":
+        this.limit += PREVIEW_PAGE;
+        this.redraw();
+        break;
+      case "fixOpen":
+      case "splitOpen": {
+        const tx = b.dataset.tx ?? "";
+        const r = this.stagedRow(tx);
+        if (!r) return;
+        this.fixFor = { txId: tx, mode: b.dataset.imp === "splitOpen" ? "split" : "fix" };
+        const half = Math.round((r.amountOriginal / 2) * 100) / 100;
+        this.parts = [
+          { amount: half, class: r.class || "menot", category: r.category, subCategory: r.subCategory },
+          { amount: Math.round((r.amountOriginal - half) * 100) / 100, class: r.class || "menot", category: "", subCategory: "" },
+        ];
+        this.redraw();
+        break;
+      }
+      case "fixCancel":
+        this.fixFor = null;
+        this.redraw();
+        break;
+      case "fixSave": {
+        const form = this.root.querySelector<HTMLElement>("[data-fix-form]");
+        if (!form) return;
+        const cls = form.querySelector<HTMLSelectElement>("[data-fixf=class]")!.value;
+        const main = form.querySelector<HTMLInputElement>('[data-combo="main"] input')!.value.trim();
+        const sub = form.querySelector<HTMLInputElement>('[data-combo="sub"] input')!.value.trim();
+        st.setFix({ id: `k-${Date.now().toString(36)}`, txId: b.dataset.tx ?? "", class: cls, category: main, subCategory: sub });
+        this.fixFor = null;
+        this.rerender();
+        break;
+      }
+      case "splitSave":
+        st.setFix({
+          id: `k-${Date.now().toString(36)}`,
+          txId: b.dataset.tx ?? "",
+          parts: this.parts.map((x) => ({ ...x, ...(x.owner ? {} : { owner: undefined }) })),
+        });
+        this.fixFor = null;
+        this.rerender();
+        break;
+      case "partAdd":
+        this.parts.push({ amount: 0, class: this.parts[0]?.class ?? "menot", category: "", subCategory: "" });
+        this.redraw();
+        break;
+      case "partDel":
+        this.parts.splice(Number(b.dataset.i), 1);
+        this.redraw();
+        break;
+      case "unfix": {
+        const f = st.fixes.find((x) => x.txId === b.dataset.tx);
+        if (f) st.removeFix(f.id);
+        this.rerender();
+        break;
+      }
+      case "commit":
+        this.commit();
+        break;
+    }
+  }
+
+  private onChange(e: Event): void {
+    const el = e.target as HTMLInputElement | HTMLSelectElement;
+    const ed = this.editor?.ed;
+    if (ed && el.dataset.pf) {
+      if (el.dataset.pf === "use") {
+        ed.use(el.value);
+        this.redraw();
+        return;
+      }
+      const reread = ed.setField(el.dataset.pf, el.value);
+      if (reread) ed.reload();
+      this.redraw();
+      return;
+    }
+    const multi = el.closest<HTMLElement>("[data-multi]");
+    if (ed && multi) {
+      const cols = [...multi.querySelectorAll<HTMLInputElement>("input:checked")].map((x) => x.value);
+      ed.setColumns(multi.dataset.multi as "description" | "info", cols);
+      this.refreshEditorPreview();
+      const summary = multi.closest("details")?.querySelector("summary");
+      if (summary) summary.textContent = cols.length ? cols.join(" + ") : t("chooseColumns");
+      return;
+    }
+    if (el.dataset.rf2 && this.ruleDraft) {
+      const k = el.dataset.rf2 as "description" | "amount" | "class";
+      (this.ruleDraft as unknown as Record<string, string>)[k] = el.value;
+      if (k === "class") {
+        el.classList.toggle("invalid", !el.value);
+        const save = this.root.querySelector<HTMLButtonElement>('[data-imp="ruleSave"]');
+        if (save) save.disabled = !el.value;
+      }
+      this.updateRuleCount();
+      return;
+    }
+    if (el.dataset.ownerAcc) {
+      // stored on import; until then only the choice is kept
+      this.flow.staging.accountOwners[el.dataset.ownerAcc] = el.value;
+      return;
+    }
+    if (el.dataset.keepdup) {
+      const st = this.flow.staging;
+      if ((el as HTMLInputElement).checked) st.keepDuplicates.add(el.dataset.keepdup);
+      else st.keepDuplicates.delete(el.dataset.keepdup);
+      this.rerender();
+      return;
+    }
+    if (el.dataset.pfile !== undefined) {
+      this.fileFilter = el.value;
+      this.redraw();
+      return;
+    }
+    if (el.dataset.partf) {
+      const part = this.parts[Number(el.dataset.i)];
+      if (!part) return;
+      const k = el.dataset.partf;
+      if (k === "amount") part.amount = parseNumber(el.value) || 0;
+      else if (k === "class") part.class = el.value;
+      else if (k === "owner") part.owner = el.value || undefined;
+      this.redraw();
+    }
+  }
+
+  private onInput(e: Event): void {
+    const el = e.target as HTMLInputElement;
+    if (el.dataset.rf2 === "description" && this.ruleDraft) {
+      this.ruleDraft.description = el.value;
+      this.updateRuleCount();
+      return;
+    }
+    if (el.dataset.fq !== undefined) {
+      this.fileQuery = el.value;
+      this.showFiles();
+      return;
+    }
+    if (el.dataset.pq !== undefined) {
+      this.search = el.value;
+      const pos = el.selectionStart;
+      this.redraw();
+      const again = this.root.querySelector<HTMLInputElement>("[data-pq]");
+      again?.focus();
+      if (pos !== null) again?.setSelectionRange(pos, pos);
+      return;
+    }
+    const ed = this.editor?.ed;
+    if (ed && el.dataset.pf && el.type !== "number" && el.type !== "date") {
+      ed.setField(el.dataset.pf, el.value);
+      this.refreshEditorPreview();
+    }
+  }
+
+  private updateRuleCount(): void {
+    const box = this.root.querySelector("[data-rule-count]");
+    if (box && this.ruleDraft) box.textContent = fmt("ruleHits", { n: this.ruleMatchCount(this.ruleDraft) });
+  }
+
+  private refreshEditorPreview(): void {
+    const ed = this.editor?.ed;
+    const box = this.root.querySelector<HTMLElement>("[data-preview]");
+    if (!ed || !box) return;
+    const p = this.project;
+    box.innerHTML = ed.previewCard(p.getSettings().defaultOwner);
+    const problem = ed.problem();
+    const pr = this.root.querySelector("[data-problem]");
+    if (pr) pr.textContent = problem;
+    const save = this.root.querySelector<HTMLButtonElement>('[data-imp="saveProfile"]');
+    if (save) save.disabled = problem !== "";
+  }
+}
+
+/** Imported files shown before "show all". */
+const RECENT_FILES = 10;
+
+const QUICK_LABEL: Record<Quick, TextKey> = { all: "quickAllRows", fixed: "quickFixed", dup: "quickDuplicates", late: "quickLate" };

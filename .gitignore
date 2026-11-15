@@ -1,4 +1,8 @@
-/venv
 /logs
-__pycache__
 .env
+.env.*
+node_modules/
+front/dist/
+.vscode/
+.claude/
+work/

@@ -1,85 +1,60 @@
 # FiRe - Financial Independence, Retire Early
 
-This is a personal finance tracking application made with Python and Power BI.
+FiRe tracks your household's finances. It runs in your browser, and your data never leaves your computer. Open your bank and broker files, categorise the transactions and make better decisions. It includes a FiRe forecast: when your investments could cover your living costs.
 
-It eats .csv and .xlsx files and outputs reports.
+## How your data is handled
 
-## What You Get
+- **No backend, no accounts.** The site is plain static files, built from this public repo.
+- **Data never leaves the browser.** Every file is read and processed in the tab. The page's content security policy has `connect-src 'none'`, so after it has loaded it cannot make network requests. The policy also allows only the site's own scripts (`script-src 'self'`), and the app escapes every value before it becomes markup, so no foreign code runs in the page. How to check this yourself: [ship/README.md](ship/README.md#checking-a-deployed-version).
+- **Your data is one file you own.** A project is a single `*.fire.sqlite` file on your own machine. The browser keeps a working copy in its private storage, so you can close the tab and continue later; saving writes the file.
 
-- Overall understanding of you finances as a Power BI report
-  - Income, costs, assets & liabilities, dividend income, fire estimate
-- Ability to set and track targets
-- Multiperson household support
+## What you get
 
-## Quick Guide
+- **Clear reports.** Follow your income, spending, savings rate, wealth and investments. Every number opens the transactions behind it.
+- **Made for a household.** Every account has an owner, and a shared account can be split between members. Each person sees their own share.
+- **Easy guided import.** Bring in the CSV and Excel files from your bank and broker. Common Finnish formats work out of the box, and a new format takes one guided setup.
+- **Your FiRe date.** See when your investments could cover your living costs.
+- Migration from FiRe v2.
+- Finnish and English.
 
-1. Grab the [Power BI file](x_stuff/pbi/) and see if you like the contents
-2. [Install](#install) environment
-3. [Run datapipeline](./data_pipeline/) to make sure it works
-4. Use you own data ([config](./config/))
-5. Run datapipeline with your own data
-6. Update Power BI and analyze your finances
+## Run it locally
 
-## Migrations
-
-If you have have used v1, please see the [Migration from v1 to v2 Guide](data_pipeline/src/data_processing/migration_scripts/readme.md) for instructions on automatically or manually migrating your data.
-
-! important: Version 2.0 will recalculate id fields for your data. This will break `fixes.csv` and you need to manually find the new id for each fix.
-
-## Install
-
-1. Clone or download the repository and navigate to project root (fire).
-
-2. Create virtual environment:
+You need Node.js 22.
 
 ```shell
-python -m venv venv
+npm run setup
+npm run dev:front
 ```
 
-3. Activate virtual environment:
+`npm run setup` installs the app and the lint tools exactly as the lockfiles say. The dev server prints the address to open.
 
-macOS/Linux:
+Other commands, all from the repo root:
 
-```shell
-source venv/bin/activate
-```
+| Command | What |
+| --- | --- |
+| `npm run check` | Typecheck, lint, format check and every test. Code is done only when this passes. |
+| `npm run format` | Format `front/` with Prettier. |
+| `npm run build` | Production build into `front/dist`, then checks the output (security policy present, no inline code, no external references). |
+| `npm run lint` | ESLint only. |
 
-Windows:
+## Repository layout
 
-```shell
-venv\Scripts\activate
-```
+| Path | What |
+| --- | --- |
+| `front/` | The web app (Vite, plain TypeScript, no framework). Conventions and layout: [front/AGENTS.md](front/AGENTS.md). |
+| `ship/` | How the site is released, rolled back and checked: [ship/README.md](ship/README.md). |
+| `front/fixtures/v2/` | The v2 sample data. Tests check that the web app gives the same ledger as v2 did, and that the move from v2 works. |
 
-4. Install dependencies from requirements file
+[AGENTS.md](AGENTS.md) holds the working rules for anyone (person or AI agent) changing the code.
 
-```shell
-pip install -r requirements.txt
-```
+## Contributing
 
-## Config
+1. Fork the repository and create a branch for your change.
+2. Make the change; `npm run check` must pass. Every pull request is checked by the CI workflow.
+3. Commit with a clear message and open a pull request.
 
-See how to use your own data with [config](./config/).
+New import formats that need preprocessing are welcome as pull requests: see [front/src/engine/preprocessors](front/src/engine/preprocessors/index.ts).
 
-## Data Pipeline
+## License
 
-[Data pipeline documentation and user guide](./data_pipeline/)
-
-## Logic Backend
-
-Coming someday...
-
-## UI & Power BI
-
-Custom UI coming someday...
-
-For now, just use the Power BI [file](x_stuff/pbi/) included (only Finnish for now, sorry).
-
-# Contribution Guidelines
-
-We welcome contributions to this project! If you would like to contribute, please follow these guidelines:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Make your changes and commit them with clear and concise messages.
-4. Push your changes to your fork.
-5. Create a pull request to the main repository.
+[MIT](LICENSE).
