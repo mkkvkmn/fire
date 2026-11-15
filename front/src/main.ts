@@ -73,7 +73,8 @@ window.addEventListener("unhandledrejection", crashed);
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const session = new Session();
 const flow = new ImportFlow(session);
-setLang(storedLang() ?? (navigator.language.startsWith("fi") ? "fi" : "en"));
+// Finnish is the default: the app is made for Finnish bank and broker files. The choice made with the language button is kept.
+setLang(storedLang() ?? "fi");
 
 app.innerHTML = `
   <div class="shell" data-shell-root>
