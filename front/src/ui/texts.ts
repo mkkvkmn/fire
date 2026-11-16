@@ -672,7 +672,7 @@ const fi = {
   dateFormatHint: "useampi |-merkillä",
   decComma: ", (pilkku)",
   decPoint: ". (piste)",
-  previewTitle3: "2. Esikatselu: näin rivit luetaan",
+  previewTitle3: "2. Esikatselu: näin rivit luodaan",
   previewOk: "{n} riviä luettavissa",
   previewProblems: "{e} riviä ei voi lukea",
   previewSub: "Näin rivit tuodaan tiedostoprofiilin asetuksilla. {d} päivävirhettä · {a} summavirhettä",
