@@ -241,23 +241,6 @@ td.num,
   gap: 10px;
 }
 
-.file-chip {
-  display: grid;
-  gap: 2px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-}
-
-.file-chip b {
-  font-weight: 600;
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .dot {
   display: inline-block;
   width: 7px;
@@ -270,11 +253,6 @@ td.num,
 
 .dot.warn {
   background: var(--warn);
-}
-
-.side-row {
-  display: flex;
-  gap: 6px;
 }
 
 .privacy {
@@ -624,10 +602,6 @@ label.field small {
   grid-template-columns: repeat(4, 1fr);
 }
 
-.g-main {
-  grid-template-columns: 1.6fr 1fr;
-}
-
 .stack {
   display: grid;
   gap: 18px;
@@ -862,38 +836,6 @@ td select {
   font-variant-numeric: tabular-nums;
 }
 
-.bar-list {
-  display: grid;
-  gap: 12px;
-}
-
-.bar-list .item {
-  display: grid;
-  grid-template-columns: 140px 1fr 90px;
-  gap: 12px;
-  align-items: center;
-  font-size: 14px;
-}
-
-.bar-list .track {
-  height: 10px;
-  border-radius: 999px;
-  background: var(--raised);
-  overflow: hidden;
-}
-
-.bar-list .fill {
-  height: 100%;
-  border-radius: 999px;
-  background: var(--c-menot);
-}
-
-.bar-list .amt {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-}
-
 /* ---------- misc ---------- */
 
 .drop {
@@ -957,25 +899,6 @@ td select {
   background: var(--border-strong);
 }
 
-.savebar {
-  position: sticky;
-  bottom: 16px;
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  background: var(--raised);
-  border: 1px solid var(--hero-border);
-  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
-}
-
-.savebar .grow {
-  flex: 1;
-}
-
 .mono {
   font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
   font-size: 13px;
@@ -988,7 +911,6 @@ td select {
 
 @media (max-width: 1100px) {
   .g-hero,
-  .g-main,
   .g-3,
   .g-4 {
     grid-template-columns: 1fr 1fr;
@@ -1019,7 +941,6 @@ td select {
     padding: 20px 16px 48px;
   }
   .g-hero,
-  .g-main,
   .g-2,
   .g-3,
   .g-4 {
@@ -1027,9 +948,6 @@ td select {
   }
   .hero .big {
     font-size: 40px;
-  }
-  .bar-list .item {
-    grid-template-columns: 100px 1fr 80px;
   }
 }
 
@@ -1351,22 +1269,6 @@ td select {
   color: var(--fg);
 }
 
-.goal-row .goal-name {
-  color: var(--fg);
-  margin-right: 6px;
-}
-
-/* card with an uppercase title and tabs under it */
-.card-head-tabs {
-  margin-bottom: 4px;
-}
-
-.card-head-tabs h2 {
-  border: 0;
-  padding: 0;
-  margin: 0;
-}
-
 .card .tabs {
   margin-bottom: 16px;
 }
@@ -1374,24 +1276,6 @@ td select {
 .tabs {
   overflow-y: hidden;
   scrollbar-width: none;
-}
-
-/* chart (2/3) with its detail table (1/3) */
-.chart-detail {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
-.chart-detail[hidden] {
-  display: none;
-}
-
-.detail-wrap {
-  border-left: 1px solid var(--border);
-  padding-left: 20px;
-  min-width: 0;
 }
 
 table.detail {
@@ -1441,18 +1325,6 @@ table.detail tr.sub td:first-child {
   font-size: 14px;
   line-height: 1;
   color: var(--muted);
-}
-
-@media (max-width: 1100px) {
-  .chart-detail {
-    grid-template-columns: 1fr;
-  }
-  .detail-wrap {
-    border-left: 0;
-    padding-left: 0;
-    border-top: 1px solid var(--border);
-    padding-top: 12px;
-  }
 }
 
 table.detail tr.sub td.up {
@@ -1888,39 +1760,6 @@ a.btn.primary {
   text-overflow: ellipsis;
 }
 
-/* about box at the bottom of the sidebar */
-.side-about {
-  display: grid;
-  gap: 4px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.side-about .head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: var(--fg);
-  font-size: 13px;
-}
-
-.side-about .priv {
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
-  margin-top: 2px;
-}
-
-.side-about .priv .ic {
-  width: 14px;
-  height: 14px;
-  margin-top: 1px;
-}
-
 @media (max-width: 820px) {
   .side-save .small {
     display: none;
@@ -2001,26 +1840,10 @@ table.files tr.done td {
 
 .edit-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 8px 12px;
   margin-bottom: 16px;
-}
-
-.edit-grid {
-  align-items: start;
-}
-
-.profile-pick {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
-  gap: 12px;
-  padding-bottom: 16px;
-  margin-bottom: 14px;
-  border-bottom: 1px solid var(--border);
-}
-
-.edit-grid .tabs.pills {
-  margin-bottom: 14px;
 }
 
 .preview-head {
@@ -2038,36 +1861,14 @@ table.files tr.done td {
   padding: 4px 18px 12px;
 }
 
-@media (max-width: 1100px) {
-  .profile-pick {
-    grid-template-columns: 1fr;
-  }
-}
-
 .actions .grow {
   flex: 1;
-}
-
-.profile-pick {
-  align-items: start;
 }
 
 /* profile view: raw data, settings, preview stacked at full width */
 .edit-stack {
   display: grid;
   gap: 16px;
-}
-
-table.raw td,
-table.raw th {
-  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-  font-size: 12.5px;
-  white-space: nowrap;
-}
-
-table.raw .rown {
-  color: var(--faint);
-  width: 36px;
 }
 
 /* fields keep their control on the same line, a hint below never pushes a neighbour */
@@ -2080,75 +1881,152 @@ label.field select {
   height: 40px;
 }
 
-/* profile settings: one line per group */
-.prof-row {
+/* file profile editor: the file with a role chosen on each column */
+.map-top {
+  padding: 16px 18px 0;
+}
+
+.map-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.map-head h3 {
+  margin: 0;
+}
+
+.map-head .grow {
+  flex: 1;
+}
+
+/* the file's columns as a list: under "Tuotava tiedosto" the column and what is in it, then the
+   FiRe field it goes to; a column not used is quiet */
+.col-head,
+.col-line {
   display: grid;
-  grid-template-columns: 110px repeat(5, minmax(0, 1fr));
+  grid-template-columns: minmax(120px, 220px) minmax(0, 1fr) 200px;
+  gap: 4px 16px;
+  align-items: center;
+  padding: 0 18px;
+}
+
+.col-head {
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* the group title over the file's two columns, the three column titles on the row under it */
+.col-head .col-group {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.col-head > span:not(.col-group) {
+  grid-row: 2;
+}
+
+.col-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.col-line {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.col-name {
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.col-ex {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.col-line select {
+  width: 100%;
+  height: 36px;
+}
+
+.col-line:not(.used) .col-name,
+.col-line:not(.used) select {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* phone: the name and the choice on one line, the values under them */
+@media (max-width: 600px) {
+  .col-head {
+    display: none;
+  }
+  .col-line {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 160px);
+    padding: 10px 16px;
+  }
+  .col-ex {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+}
+
+.map-foot {
+  display: grid;
   gap: 12px;
-  align-items: start;
-  padding: 14px 0;
+  padding: 14px 18px 18px;
   border-top: 1px solid var(--border);
 }
 
-.prof-row:first-of-type {
-  border-top: 0;
-}
-
-.prof-label {
-  padding-top: 32px;
-  font-family: Archivo, sans-serif;
-  font-stretch: 125%;
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-@media (max-width: 1100px) {
-  .prof-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .prof-label {
-    grid-column: 1 / -1;
-    padding-top: 0;
-  }
-}
-
-/* every field fills its column and never pushes into the next one */
-.prof-row > .field,
-.profile-pick > .field {
-  min-width: 0;
-}
-
-.prof-row .field select,
-.prof-row .field input,
-.prof-row .field .combo,
-.profile-pick .field select,
-.profile-pick .field input {
-  width: 100%;
-  min-width: 0;
-  text-overflow: ellipsis;
-}
-
-.prof-note {
-  grid-column: 2 / -1;
+.map-foot p {
   display: flex;
   gap: 8px;
   align-items: flex-start;
+  margin: 0;
 }
 
-.prof-note .ic {
+.map-foot p .ic {
+  flex: none;
   width: 15px;
   height: 15px;
   margin-top: 1px;
   color: var(--accent);
 }
 
-@media (max-width: 1100px) {
-  .prof-note {
-    grid-column: 1 / -1;
-  }
+.map-fields,
+.name-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.map-fields > .field,
+.name-fields > .field {
+  min-width: 0;
+}
+
+.map-fields .field select,
+.map-fields .field input,
+.name-fields .field input {
+  width: 100%;
+  min-width: 0;
+}
+
+.name-fields {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
 
 /* rule editor on one row */
@@ -2237,10 +2115,11 @@ label.field small.req {
   background: var(--accent-soft);
 }
 
+/* "+ Lisää uusi …" first in the list, a line under it (as "+ Uusi …" in the selects) */
 .combo-list button.add {
   color: var(--accent-strong);
-  border-top: 1px solid var(--border);
-  border-radius: 0 0 7px 7px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 7px 7px 0 0;
 }
 
 .combo-list button.add .ic {
@@ -2485,6 +2364,15 @@ details.task summary {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+/* a long title wraps rather than push the status pill past the card on a phone */
+details.task summary .title {
+  min-width: 0;
+}
+
+details.task summary .pill {
+  flex: none;
 }
 
 details.task summary::-webkit-details-marker {
@@ -2816,11 +2704,6 @@ main.bare {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
-}
-
-.welcome-foot {
-  margin-top: 32px;
-  text-align: center;
 }
 
 /* demo banner on top of every page while sample data is open */
@@ -3209,84 +3092,9 @@ td.num {
   white-space: nowrap;
 }
 
-/* Tuonti: multi-column picker, combo keyboard focus, form rows */
-details.multi {
-  position: relative;
-}
-
-details.multi summary {
-  list-style: none;
-  cursor: pointer;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  padding: 0 30px 0 11px;
-  border: 1px solid var(--border-strong);
-  border-radius: 10px;
-  background: var(--surface-2);
-  font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-details.multi summary::-webkit-details-marker {
-  display: none;
-}
-
-details.multi summary::after {
-  content: "";
-  position: absolute;
-  right: 12px;
-  top: 16px;
-  width: 7px;
-  height: 7px;
-  border-right: 1.5px solid var(--muted);
-  border-bottom: 1.5px solid var(--muted);
-  transform: rotate(45deg);
-}
-
-.multi-list {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + 4px);
-  left: 0;
-  min-width: 100%;
-  max-height: 260px;
-  overflow-y: auto;
-  display: grid;
-  gap: 2px;
-  padding: 6px;
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: 10px;
-  box-shadow: 0 12px 28px rgb(0 0 0 / 0.35);
-}
-
-.multi-list label {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 5px 8px;
-  border-radius: 7px;
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.multi-list label:hover {
-  background: var(--accent-soft);
-}
-
+/* Tuonti: combo keyboard focus, form rows */
 .combo-list button.active {
   background: var(--accent-soft);
-}
-
-.prof-note.wide {
-  grid-column: 3 / -1;
-}
-
-.prof-row .field input:not([type="checkbox"]) {
-  width: 100%;
 }
 
 .form-row > td {
@@ -3307,30 +3115,27 @@ a.btn[aria-disabled="true"] {
   margin-top: 4px;
 }
 
+/* the save bar: shown, and kept in view, only while the draft has unsaved edits */
 .settings-footer {
   position: sticky;
   bottom: 0;
+  z-index: 5;
   margin-top: 16px;
-  padding: 14px 0;
+  padding: 12px 0;
   background: var(--bg);
   border-top: 1px solid var(--border);
 }
 
-.edit-table input,
-.edit-table select {
-  height: 34px;
-  padding: 5px 8px;
-  font-size: 13.5px;
-  min-width: 70px;
+.settings-footer:not(.dirty) {
+  display: none;
 }
 
-.edit-table td {
-  padding: 6px 6px;
+.settings-footer .actions {
+  margin: 0;
 }
 
-.edit-table .num-input {
-  width: 90px;
-  text-align: right;
+.settings-note {
+  margin: 14px 0 0;
 }
 
 .inline-filter {
@@ -3502,44 +3307,6 @@ select.invalid {
 
 .report-bar .filters.second select {
   flex: 1 1 160px;
-}
-
-/* Asetukset tables: one line per row, compact move and delete buttons */
-.edit-table td.row-actions {
-  white-space: nowrap;
-  text-align: right;
-}
-
-.edit-table td.row-actions button {
-  display: inline-flex;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  justify-content: center;
-  margin-left: 2px;
-  border-radius: 8px;
-  font-size: 13px;
-}
-
-.edit-table input:not(.num-input) {
-  width: 100%;
-  min-width: 90px;
-}
-
-.edit-table select,
-.edit-table .combo input {
-  /* room for the arrow, which every dropdown draws on the right */
-  padding-right: 26px;
-}
-
-.edit-table select {
-  width: auto;
-  min-width: 0;
-}
-
-.edit-table td,
-.edit-table th {
-  white-space: nowrap;
 }
 
 /* in-app dialog (ui/dialog.ts) */
@@ -3819,38 +3586,19 @@ details.mig-files summary {
   align-items: start;
 }
 
-/* fix editor under a Tapahtumat row, the open fix on Asetukset > Korjaukset and the open target */
-.rows-table tr.fix-editor > td,
-.fix-list tr.fix-editor > td,
-.row-list tr.row-editor > td {
+/* the fix editor under a Tapahtumat row */
+.rows-table tr.fix-editor > td {
   background: var(--surface-2);
   padding: 14px 16px 16px;
 }
 
-/* Asetukset: the open line and its inputs read as one block: one background, no line between them,
-   and an accent edge down both; the input titles sit close to their inputs */
-.row-list tr.open > td,
-.fix-list tr.open > td {
+/* Asetukset: the line whose item is open in the editor, marked with an accent edge */
+.row-list tr.open > td {
   background: var(--surface-2);
-  border-bottom: 0;
 }
 
-.row-list tr.open > td:first-child,
-.fix-list tr.open > td:first-child,
-.row-list tr.row-editor > td,
-.fix-list tr.fix-editor > td {
+.row-list tr.open > td:first-child {
   box-shadow: inset 3px 0 0 var(--accent);
-}
-
-.row-list tr.row-editor > td,
-.fix-list tr.fix-editor > td {
-  padding: 0 16px 14px;
-}
-
-.row-list tr.row-editor .edit-table th,
-.fix-list tr.fix-editor .edit-table th {
-  padding: 0 6px 2px;
-  border-bottom: 0;
 }
 
 .fix-form .fix-head {
@@ -3955,18 +3703,9 @@ details.reserved[open] summary {
 }
 
 /* the option that is the field's current value */
-.edit-table tr.found td {
-  background: var(--accent-soft);
-}
-
 .combo-list [data-pick].current {
   font-weight: 600;
   color: var(--accent-strong);
-}
-
-/* combos inside the settings tables keep the table's compact height */
-.edit-table .combo input {
-  width: 100%;
 }
 
 /* an (i) next to a heading that explains while hovered or focused */
@@ -4066,45 +3805,621 @@ details.new-fix[open] summary {
   margin-bottom: 10px;
 }
 
-/* Tilit: the pen opens the account's owner and its split periods under its line */
-.acct-list .acct-owner {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 6px;
-}
-
-.acct-list .acct-owner select {
-  height: 32px;
-  width: 140px;
-}
-
-.acct-body {
-  padding: 4px 0 0;
-}
-
-/* one line per split period: start, end, a share per member, the total, remove */
-.period-line {
-  display: grid;
-  grid-template-columns: 120px 120px repeat(var(--members), 90px) 70px auto;
-  align-items: center;
-  gap: 10px;
-  padding: 5px 0;
-}
-
-.period-line input {
-  height: 34px;
-  width: 100%;
-}
-
-.period-labels {
-  padding-bottom: 0;
-}
-
-.acct-body > button {
-  margin-top: 6px;
-}
-
 input.date-text {
   font-variant-numeric: tabular-nums;
+}
+
+/* Asetukset lists: the filter and the add button on one line above the list */
+.list-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.list-tools .inline-filter {
+  flex: 1 1 260px;
+  margin-bottom: 0;
+}
+
+.list-tools .grow {
+  flex: 0 1 0;
+}
+
+/* a line opens its editor: the whole line is the target */
+.row-list tr.line {
+  cursor: pointer;
+}
+
+.row-list tr.line:hover > td {
+  background: var(--surface-2);
+}
+
+.row-list tr.found > td {
+  background: var(--accent-soft);
+}
+
+/* a rule's conditions read as a line: the field name quiet, the pattern as code */
+.rule-list .rule-when {
+  line-height: 1.7;
+}
+
+.rule-list .cond {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-right: 14px;
+}
+
+.rule-list .cond .k {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.rule-list .rule-then {
+  font-size: 13.5px;
+}
+
+/* the editor every Asetukset tab shares (settingsScreen.drawer): a drawer from the right on a wide
+   screen, a sheet from the bottom on a phone; a fixed head and foot, a body that scrolls down only */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: rgb(5 6 10 / 0.55);
+  cursor: default;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: min(480px, 100vw);
+  background: var(--surface);
+  border-left: 1px solid var(--border-strong);
+  box-shadow: -24px 0 60px rgb(0 0 0 / 0.45);
+}
+
+.drawer:focus {
+  outline: none;
+}
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 16px 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.drawer-head h3 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer-head button {
+  display: inline-flex;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.drawer-body {
+  flex: 1;
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  padding: 18px 20px 24px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.drawer-body p {
+  margin: 0;
+}
+
+.drawer-foot {
+  padding: 14px 20px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.drawer-foot .actions {
+  margin: 0;
+  flex-wrap: nowrap;
+}
+
+.drawer-foot .grow {
+  flex: 1;
+}
+
+.drawer-error {
+  margin: 0 0 10px;
+}
+
+.danger-text {
+  color: var(--neg);
+}
+
+/* the fields: a label above each, side by side in a group; nothing wider than the drawer */
+.field-group {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.drawer .group-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  min-width: 0;
+}
+
+/* one field per line: long values (patterns, descriptions, categories) are never cut */
+.field-grid.n1,
+.field-grid.stack {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.field-grid.n2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.field-grid > * {
+  min-width: 0;
+}
+
+.drawer .field {
+  gap: 5px;
+}
+
+.drawer .field > span:first-child {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.drawer input,
+.drawer select,
+.drawer .combo {
+  width: 100%;
+  min-width: 0;
+}
+
+.drawer input,
+.drawer select {
+  height: 40px;
+}
+
+.drawer .num-input {
+  text-align: right;
+}
+
+/* Luokittelusäännöt: the rule's place in the list */
+.move-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.move-after {
+  display: flex;
+  flex: 1 1 200px;
+  gap: 8px;
+}
+
+.move-after input {
+  flex: 1;
+  height: 32px;
+}
+
+/* Tilit: one block per split period, its dates, then each member's share */
+.period-block {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+/* the members' shares like a sum on paper: a name and its share per line, a rule, the total */
+.share-list {
+  display: grid;
+  gap: 6px;
+}
+
+.share-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px;
+  align-items: center;
+  gap: 12px;
+}
+
+.share-row .who {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer .share-row input {
+  height: 36px;
+}
+
+/* the total lines up with the shares above it: the same column, the % in the same place */
+.share-total {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-strong);
+  font-weight: 600;
+}
+
+.share-total .sum {
+  padding-right: 11px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.period-foot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* the rows a rule hits, two lines each so they fit the editor */
+.hit-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hit-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.hit-list li:last-child {
+  border-bottom: 0;
+}
+
+.hit-list .what {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13.5px;
+}
+
+.hit-list li > :nth-child(4) {
+  text-align: right;
+}
+
+/* the rows a later rule decides: quieter than the rows this rule decides */
+.overridden .hit-list .what,
+.overridden .hit-list .num {
+  color: var(--muted);
+}
+
+.rule-hits {
+  display: grid;
+  gap: 20px;
+}
+
+/* phone: the editor is a sheet from the bottom */
+@media (max-width: 700px) {
+  .drawer {
+    top: auto;
+    left: 0;
+    width: 100%;
+    max-height: 92vh;
+    border-left: 0;
+    border-top: 1px solid var(--border-strong);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -16px 40px rgb(0 0 0 / 0.45);
+  }
+  .drawer-body {
+    padding: 16px;
+  }
+  .drawer-foot {
+    padding: 12px 16px 16px;
+  }
+}
+
+/* the save bar: one row of two buttons on a phone */
+@media (max-width: 600px) {
+  .settings-footer .actions {
+    flex-wrap: nowrap;
+  }
+  .settings-footer .actions button {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+  .settings-footer [data-dirty] {
+    display: none;
+  }
+}
+
+/* phone: each list line is a small card; a tap opens the editor, which has the trash */
+@media (max-width: 600px) {
+  .list-wrap .row-list thead,
+  .list-wrap .row-list tr.line > td.row-actions {
+    display: none;
+  }
+  .list-wrap .row-list,
+  .list-wrap .row-list tbody {
+    display: block;
+  }
+  .list-wrap .row-list tr.line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 12px;
+    padding: 10px 2px;
+    border-bottom: 1px solid var(--border);
+  }
+  .list-wrap .row-list tr.line[hidden] {
+    display: none;
+  }
+  .list-wrap .row-list tr.line > td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+  .list-wrap .rule-list tr.line > td:first-child {
+    display: none;
+  }
+  .list-wrap .rule-list tr.line > td.rule-when {
+    grid-column: 1 / -1;
+  }
+  .rule-list code {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* under a section of a rule's matches: more rows, and the link to Tapahtumat */
+.hit-more {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hit-more .grow {
+  flex: 1;
+}
+
+/* the source: the file profile and the reading settings, a label and its value per row, the
+   labels in one column */
+.map-source {
+  display: grid;
+  gap: 6px;
+  padding: 10px 18px 12px;
+}
+
+.src-row {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 4px 12px;
+  align-items: center;
+}
+
+.src-label {
+  font-weight: 500;
+}
+
+.src-value select {
+  width: 100%;
+  max-width: 340px;
+  height: 36px;
+}
+
+/* the reading settings as a panel: whether the file reads (check or alert), the title with the
+   settings under it, and the two actions on the right (under the text on a phone) */
+.reading-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 14px;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.reading-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+}
+
+.reading-icon .ic {
+  width: 17px;
+  height: 17px;
+}
+
+/* the app's status look (as .pill.ok and .note.warn): a soft tint behind a coloured line icon */
+.reading-panel.ok .reading-icon {
+  background: var(--ok-soft);
+  color: var(--pos);
+}
+
+.reading-panel.warn {
+  border-color: transparent;
+  background: var(--warn-soft);
+}
+
+.reading-panel.warn .reading-icon {
+  color: var(--warn);
+}
+
+.reading-text {
+  display: grid;
+  flex: 1 1 200px;
+  gap: 2px;
+  min-width: 0;
+}
+
+.reading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* phone: the label above its value */
+@media (max-width: 600px) {
+  .src-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .src-value select {
+    max-width: none;
+  }
+}
+
+.map-error {
+  margin: 0 18px 16px;
+}
+
+/* what is done and what is missing, one chip per field */
+.map-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+}
+
+.map-status ul {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.map-status li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12.5px;
+}
+
+.map-status li .ic {
+  width: 13px;
+  height: 13px;
+}
+
+.map-status .chip-ok {
+  border-color: var(--border-strong);
+}
+
+.map-status .chip-ok .ic {
+  color: var(--pos);
+}
+
+.map-status .chip-todo {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.map-status .chip-off {
+  color: var(--muted);
+  border-style: dashed;
+}
+
+/* above the columns: what does not match the file */
+.map-check {
+  display: grid;
+  gap: 6px;
+  margin: 0 18px 12px;
+  padding: 10px 12px;
+  list-style: none;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+}
+
+.map-check li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.map-check .ic {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  margin-top: 1px;
+}
+
+/* the (i) by the columns' title: its popup hangs under the head, from the left, as wide as there is room */
+.map-head {
+  position: relative;
+}
+
+.map-head .info-pop {
+  position: static;
+}
+
+.map-head .info-pop .pop {
+  top: calc(100% + 6px);
+  left: 0;
+  right: auto;
+  width: min(480px, 100%);
+}
+
+/* the column titles: "Tuotava tiedosto" over the file's two columns, "Luotava data" over the field */
+.col-head .col-group.data {
+  grid-column: 3;
+}
+
+/* over the status chips: what they are */
+.map-status-title {
+  flex: 1 1 100%;
+  margin: 0;
+}
+
+/* the reading settings' editor: what the settings give now, under the fields */
+.drawer .field-group + [data-reading-result] {
+  margin-top: -8px;
+}
+
+/* the start screen's own status line (the app's shell, with its status, is hidden there) */
+.welcome-status {
+  margin: 16px 0 0;
 }

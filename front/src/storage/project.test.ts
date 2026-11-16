@@ -35,6 +35,19 @@ describe("project file", () => {
     expect(p.db.exec("PRAGMA user_version")[0]?.values[0]?.[0]).toBe(SCHEMA_VERSION);
     expect(() => Project.open(SQL, new TextEncoder().encode("not sqlite"))).toThrow(ProjectFileError);
     expect(() => Project.open(SQL, new SQL.Database().export())).toThrow(ProjectFileError);
+    // the kind lets the app say why in the user's language
+    const kind = (bytes: Uint8Array) => {
+      try {
+        Project.open(SQL, bytes);
+        return "";
+      } catch (e) {
+        return e instanceof ProjectFileError ? e.kind : "other";
+      }
+    };
+    expect(kind(new TextEncoder().encode("not sqlite"))).toBe("notProject");
+    const newer = Project.create(SQL);
+    newer.db.exec(`PRAGMA user_version = ${SCHEMA_VERSION + 1}`);
+    expect(kind(newer.db.export())).toBe("tooNew");
   });
 
   it("refuses a file from a newer app version", () => {

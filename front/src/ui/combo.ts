@@ -30,7 +30,7 @@ export function combo(
 export interface ComboSource {
   /** Options for a combo, given the element it sits in (to read neighbouring fields). */
   options(name: string, el: HTMLElement): string[];
-  /** Label of what is added: "pääluokka", "alaluokka". */
+  /** Label of what is added: "kategoria", "alakategoria". */
   noun(name: string): string;
   /** Called after a value is picked or typed. */
   picked?(name: string, el: HTMLElement, value: string): void;
@@ -52,8 +52,9 @@ export function bindCombos(root: HTMLElement, source: ComboSource): void {
     const items = hits.map(
       (o) => html`<button type="button" role="option" class="${o.toLowerCase() === q ? "current" : ""}" data-pick="${o}">${o}</button>`,
     );
+    // adding a new value comes first, with a line under it, as in every list that can add
     if (q && !exact)
-      items.push(
+      items.unshift(
         html`<button type="button" role="option" class="add" data-pick="${input.value.trim()}">
           ${raw(icon("plus"))}${fmt("comboAdd", { what: source.noun(name), v: input.value.trim() })}
         </button>`,
@@ -113,6 +114,18 @@ export function bindCombos(root: HTMLElement, source: ComboSource): void {
     pick(input, b.dataset.pick ?? "");
   });
   root.addEventListener("keydown", (e) => {
+    // Esc on an option (reached with Tab) closes the list too, and puts the focus back in the field
+    const onOption = (e.target as HTMLElement).closest?.<HTMLElement>(".combo-list");
+    if (e.key === "Escape" && onOption && !onOption.hidden) {
+      const field = onOption.closest(".combo")?.querySelector<HTMLInputElement>("input");
+      if (field) {
+        e.preventDefault();
+        // focus first: focusing the field opens its list, which then closes
+        field.focus();
+        close(field);
+        return;
+      }
+    }
     const input = inCombo(e);
     if (!input) return;
     const { list } = parts(input);
@@ -131,7 +144,9 @@ export function bindCombos(root: HTMLElement, source: ComboSource): void {
         opts.find((x) => x.classList.contains("add")) ??
         opts[0];
       if (o) pick(input, o.dataset.pick ?? "");
-    } else if (e.key === "Escape") {
+    } else if (e.key === "Escape" && !list.hidden) {
+      // Esc closes the open list and nothing else: an editor around it (a drawer) sees the event as handled
+      e.preventDefault();
       close(input);
     }
   });

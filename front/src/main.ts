@@ -15,6 +15,7 @@ import { html } from "./ui/html";
 import { sampleBanner, sidebar, type Route } from "./ui/shell";
 import { getLang, setLang, t, type Lang } from "./ui/texts";
 import { showToast } from "./ui/toast";
+import { trapDrawerFocus } from "./ui/drawer";
 import "./style.css";
 
 const LANG_KEY = "fire.lang";
@@ -69,6 +70,9 @@ window.addEventListener("error", (e) => {
   if (e.error !== null && e.error !== undefined) crashed();
 });
 window.addEventListener("unhandledrejection", crashed);
+
+// an open editor drawer keeps the keyboard inside it (every screen's drawer, see ui/drawer.ts)
+trapDrawerFocus();
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 const session = new Session();

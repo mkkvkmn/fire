@@ -7,7 +7,15 @@ import { normalizeAmountMatch } from "../engine/categorize";
 import { normalizeRow } from "../engine/profiles";
 import { APP_ID, MIGRATIONS, SCHEMA_VERSION } from "./schema";
 
-export class ProjectFileError extends Error {}
+/** A file that cannot be opened as a project; `kind` lets the app say why in the user's language. */
+export class ProjectFileError extends Error {
+  constructor(
+    message: string,
+    readonly kind: "notProject" | "tooNew" | "broken" = "broken",
+  ) {
+    super(message);
+  }
+}
 
 export interface ProjectSettings {
   /** Last locked month `YYYY-MM`, or "" when nothing is locked. */
@@ -88,17 +96,17 @@ export class Project {
       db = new SQL.Database(bytes);
       db.exec("SELECT count(*) FROM sqlite_master");
     } catch {
-      throw new ProjectFileError("not a fire project file");
+      throw new ProjectFileError("not a fire project file", "notProject");
     }
     const appId = num(db.exec("PRAGMA application_id")[0]?.values[0]?.[0] ?? null);
     const version = num(db.exec("PRAGMA user_version")[0]?.values[0]?.[0] ?? null);
     if (appId !== APP_ID) {
       db.close();
-      throw new ProjectFileError("not a fire project file");
+      throw new ProjectFileError("not a fire project file", "notProject");
     }
     if (version > SCHEMA_VERSION) {
       db.close();
-      throw new ProjectFileError(`project file version ${version} is newer than this app (${SCHEMA_VERSION})`);
+      throw new ProjectFileError(`project file version ${version} is newer than this app (${SCHEMA_VERSION})`, "tooNew");
     }
     const p = new Project(db);
     p.migrate(version);

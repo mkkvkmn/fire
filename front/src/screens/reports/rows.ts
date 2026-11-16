@@ -7,6 +7,7 @@ import type { ReportState } from "../../app/reportState";
 import type { Session } from "../../app/session";
 import { ledgerToCsv } from "../../engine/exportCsv";
 import { isLocked } from "../../engine/lock";
+import { fixOf } from "../../engine/fix";
 import type { Fix, LedgerRow } from "../../engine/types";
 import {
   compiledRules,
@@ -119,7 +120,14 @@ export class RowsScreen {
     const drill = this.state.drill;
     const p: Period = drill?.period ?? barPeriod;
     const months = new Set(monthsBetween(p.from, p.to));
-    const pool = drill?.target !== undefined ? this.state.targetRows(drill.target, p) : drill?.rowType === "Target" ? m.targets : m.rows;
+    const pool =
+      drill?.target !== undefined
+        ? this.state.targetRows(drill.target, p)
+        : drill?.rule !== undefined
+          ? this.state.ruleRows(drill.rule, p)
+          : drill?.rowType === "Target"
+            ? m.targets
+            : m.rows;
     const filter: RowFilter = { ...this.local, ...(drill?.filter ?? {}) };
     const q = this.query.trim().toLowerCase();
     const src = q ? this.sources() : null;
@@ -220,14 +228,17 @@ export class RowsScreen {
     if (this.query.trim()) chips.push(chip(`${t("searchChip")}: ${this.query.trim()}`, "query"));
     // a click-through's dates are in the period picker: one place for the period, no chip for it
     if (drill?.target !== undefined) chips.push(chip(`${t("goalChip")}: ${drill.target}`, "drill"));
+    if (drill?.rule !== undefined) chips.push(chip(`${t("ruleChip")}: ${drill.rule}`, "drill"));
     const lockedThrough = this.session.state.project?.getSettings().lockedThrough ?? "";
     const fixList = this.session.state.project?.getFixes() ?? [];
-    const fixIds = new Set(fixList.map((f) => f.id));
+    // a row's fix by its transaction: its ruleId cannot tell a fix id from a rule id
+    const fixesByTx = new Map<string, Fix[]>();
+    for (const f of fixList) fixesByTx.set(f.txId, [...(fixesByTx.get(f.txId) ?? []), f]);
 
     const body = rows
       .slice(0, this.limit)
       .map((r) => {
-        const fixed = fixIds.has(r.ruleId);
+        const fixed = fixOf(r, fixesByTx.get(r.txId) ?? []) !== undefined;
         const cls = classification(r.class, r.category, r.subCategory);
         const owner = r.split
           ? html`${r.owner} ${Math.round(r.share * 100)} % <span class="pill accent">${t("sharedPill")}</span>`
@@ -368,7 +379,8 @@ export class RowsScreen {
         // a filter that came with the click: take it out of the click-through too
         if (drill && drill.filter[k as keyof RowFilter] !== undefined) {
           const filter = { ...drill.filter, [k]: undefined };
-          if (drill.target === undefined && Object.values(filter).every((v) => v === undefined)) return this.endDrill();
+          if (drill.target === undefined && drill.rule === undefined && Object.values(filter).every((v) => v === undefined))
+            return this.endDrill();
           this.state.drill = { ...drill, filter };
         }
       }

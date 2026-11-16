@@ -1,6 +1,6 @@
 // Categorisation (port of s_04_categorizer.py): rules apply in order, case-insensitive regex search
 // on account, description and info, an amount sign check, and the last matching rule wins.
-import type { AmountMatch, Rule } from "./types";
+import type { AmountMatch, Rule, SourceRow } from "./types";
 
 export interface Categorizable {
   account: string;
@@ -111,6 +111,29 @@ export function categorizeRow(compiled: CompiledRule[], row: Categorizable): Cat
     }
   }
   return null;
+}
+
+/**
+ * Per rule id, the transactions that rule decides (the last match wins). Rows without an amount
+ * are not categorised, so no rule decides them. By transaction, not by a ledger row's ruleId:
+ * a fix puts its own id there.
+ */
+export function decidedTransactions(compiled: CompiledRule[], rows: readonly SourceRow[]): Map<string, Set<string>> {
+  const byRule = new Map<string, Set<string>>();
+  for (const r of rows) {
+    if (r.fields.amount === null) continue;
+    const cat = categorizeRow(compiled, {
+      account: r.fields.account,
+      description: r.fields.description,
+      info: r.fields.info,
+      amount: r.fields.amount,
+    });
+    if (!cat) continue;
+    let set = byRule.get(cat.ruleId);
+    if (!set) byRule.set(cat.ruleId, (set = new Set()));
+    set.add(r.txId);
+  }
+  return byRule;
 }
 
 /** Ids of every rule that matches a row, in order; the last one is the one that applies. */

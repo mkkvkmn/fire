@@ -1,9 +1,9 @@
 // Tests for categorise, split, fix, targets, diff and duplicates (mirrors test_s_04 to test_s_10).
 import { describe, expect, it } from "vitest";
-import { categorizeRow, compileRules, matchingRules, RuleError } from "./categorize";
+import { categorizeRow, compileRules, decidedTransactions, matchingRules, RuleError } from "./categorize";
 import { diffLedger, isEmptyDiff } from "./diff";
 import { decisionKey, findPossibleDuplicates } from "./duplicates";
-import { applyFixes } from "./fix";
+import { applyFixes, fixOf } from "./fix";
 import { processRows } from "./pipeline";
 import { splitParts } from "./split";
 import { monthEnds, targetRows } from "./targets";
@@ -48,6 +48,24 @@ function ledgerRow(over: Partial<LedgerRow> = {}): LedgerRow {
     ...over,
   };
 }
+
+describe("rows a rule decides", () => {
+  it("gives each transaction to the last rule that matches it, and none to a row without an amount", () => {
+    const compiled = compileRules([
+      rule({ id: "1", description: "prisma", class: "menot", category: "ruoka" }),
+      rule({ id: "2", description: "prisma kassi", class: "menot", category: "muut" }),
+    ]);
+    const rows = [
+      source({ txId: "a", description: "Prisma Kassi" }),
+      source({ txId: "b", description: "Prisma" }),
+      source({ txId: "c", description: "Prisma", amount: null }),
+      source({ txId: "d", description: "Lidl" }),
+    ];
+    const by = decidedTransactions(compiled, rows);
+    expect([...(by.get("1") ?? [])]).toEqual(["b"]);
+    expect([...(by.get("2") ?? [])]).toEqual(["a"]);
+  });
+});
 
 describe("categorize", () => {
   const rules = compileRules([
@@ -206,6 +224,23 @@ describe("fix", () => {
       ["b", -40, "lahjat"],
     ]);
     expect(new Set(res.rows.map((r) => r.rowId)).size).toBe(3);
+  });
+
+  it("finds a row's fix by transaction, not by an id a rule can share", () => {
+    // rule 1 decides t-2; fix 1 changes t-1: both rows carry ruleId "1"
+    const rows = [ledgerRow({ txId: "t-1" }), ledgerRow({ rowId: "t-2", txId: "t-2", ruleId: "1" })];
+    const fixes = [{ id: "1", txId: "t-1", class: "pois" }];
+    const out = applyFixes(rows, fixes).rows;
+    expect(out.map((r) => r.ruleId)).toEqual(["1", "1"]);
+    expect(out.map((r) => fixOf(r, fixes)?.id)).toEqual(["1", undefined]);
+  });
+
+  it("finds a member's fix only on that member's row, and a split's fix on its parts", () => {
+    const rows = [ledgerRow({ rowId: "t-1:a", owner: "a", split: true }), ledgerRow({ rowId: "t-1:b", owner: "b", split: true })];
+    const one = [{ id: "f", txId: "t-1", owner: "b", class: "pois" }];
+    expect(applyFixes(rows, one).rows.map((r) => fixOf(r, one)?.id)).toEqual([undefined, "f"]);
+    const parts = [{ id: "k", txId: "t-1", parts: [{ amount: -1, class: "menot", category: "x", subCategory: "", owner: "a" }] }];
+    expect(applyFixes(rows, parts).rows.map((r) => fixOf(r, parts)?.id)).toEqual(["k"]);
   });
 });
 

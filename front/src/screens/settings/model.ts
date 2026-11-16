@@ -1,6 +1,6 @@
 // The settings draft and what it is checked against: tabs, list columns, the draft of every list,
 // owner renames, and the checks before saving. No DOM.
-import { compileRules } from "../../engine/categorize";
+import { compileRules, isMatchAll } from "../../engine/categorize";
 import type { AmountMatch, Fix, Rule, Split, Target } from "../../engine/types";
 import { lockedFixChanges, type SettingsDraft } from "../../project/service";
 import type { Project } from "../../storage/project";
@@ -79,7 +79,9 @@ export const COLS: Record<ListTab, Col[]> = {
   ],
 };
 
-export const MAX_RULE_ROWS = 20;
+/** Rows a section of a rule's matches shows first, and how many more each "Näytä lisää" adds. */
+export const HIT_ROWS = 10;
+export const HIT_MORE = 50;
 export const MAX_SEARCH = 20;
 export const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -100,6 +102,25 @@ export interface Draft {
 
 export function nextNumericId(ids: string[]): string {
   return String(ids.reduce((m, id) => (/^\d+$/.test(id) ? Math.max(m, Number(id)) : m), 0) + 1);
+}
+
+/**
+ * Moves the rule at `from` to the start, to the end, or right after the rule with id `after`, in
+ * place. Returns its new place, or -1 (nothing moved) when no rule has that id.
+ */
+export function moveRule(rules: Rule[], from: number, to: "start" | "end" | { after: string }): number {
+  let at: number;
+  if (to === "start") at = 0;
+  else if (to === "end") at = rules.length - 1;
+  else {
+    const j = rules.findIndex((r) => r.id === to.after);
+    if (j < 0) return -1;
+    // after the rule: once this one is taken out, a rule above it moves up by one
+    at = j < from ? j + 1 : j;
+  }
+  const [rule] = rules.splice(from, 1);
+  rules.splice(at, 0, rule!);
+  return at;
 }
 
 /** Applies owner renames to a draft's lists and default owner. */
@@ -125,6 +146,19 @@ export function validate(p: Project, d: Draft): string {
   } catch (e) {
     return fmt("ruleInvalid", { e: e instanceof Error ? e.message : String(e) });
   }
+  // a rule without a condition would match every row: a rule left empty by mistake (an amount
+  // alone is a condition: v2's rule 0 takes every zero-sum row out). Asked only of rules new or
+  // changed in this draft, so an old rule like that does not block every later save.
+  const saved = new Map(p.getRules().map((r) => [r.id, JSON.stringify(r)]));
+  const noCond = d.rules.find(
+    (r) =>
+      saved.get(r.id) !== JSON.stringify(r) &&
+      isMatchAll(r.account) &&
+      isMatchAll(r.description) &&
+      isMatchAll(r.info) &&
+      (!r.amount || r.amount === "any"),
+  );
+  if (noCond) return fmt("ruleNoCondition", { id: noCond.id });
   const noClass = d.rules.find((r) => !r.class);
   if (noClass) return fmt("needClassRule", { id: noClass.id });
   for (const s of d.splits) {

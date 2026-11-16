@@ -1,6 +1,7 @@
 // Shared state of the report pages: the filter bar (owner, period, comparison, unit), the
 // report model cached per project revision, and click-through into Tapahtumat.
 import { Model, targetMatches, type RowFilter } from "../analytics/measures";
+import { compileRules, decidedTransactions } from "../engine/categorize";
 import type { LedgerRow } from "../engine/types";
 import { latestMonth, resolvePeriod, type Comparison, type Period, type Preset } from "../analytics/period";
 import type { Session } from "./session";
@@ -25,6 +26,8 @@ export interface Drill {
   rowType?: "Actual" | "Target";
   /** A target's name: the rows that target covers (its lines' owners, classes and months). */
   target?: string;
+  /** A rule's id: the rows that rule decides (from Asetukset › Luokittelusäännöt). */
+  rule?: string;
 }
 
 const KEY = "fire.reportFilters";
@@ -100,6 +103,32 @@ export class ReportState {
   targetRows(name: string, p: Period): LedgerRow[] {
     const m = this.model();
     return m ? targetMatches(m, this.cache!.targets, p, name) : [];
+  }
+
+  /** Per rule id, the transactions the saved rules give to that rule (the last match wins). */
+  private decided: { revision: number; byRule: Map<string, Set<string>> } | null = null;
+
+  /**
+   * The rows a saved rule decides in a period, for the member the reports show: the same rows the
+   * rule's editor lists as "voimassa". By transaction, not by the ledger's ruleId (a fix puts its
+   * own id there, and fix ids and rule ids can be the same number).
+   */
+  ruleRows(id: string, p: Period): LedgerRow[] {
+    const s = this.session.state;
+    const m = this.model();
+    if (!s.project || !m) return [];
+    if (this.decided?.revision !== s.revision) {
+      let rules: ReturnType<typeof compileRules> = [];
+      try {
+        rules = compileRules(s.project.getRules());
+      } catch {
+        // a saved rule that does not compile decides nothing here; Asetukset shows the error
+      }
+      const byRule = decidedTransactions(rules, s.project.getSourceRows());
+      this.decided = { revision: s.revision, byRule };
+    }
+    const tx = this.decided.byRule.get(id);
+    return tx ? m.rowsIn(p).filter((r) => tx.has(r.txId)) : [];
   }
 
   period(): Period | null {

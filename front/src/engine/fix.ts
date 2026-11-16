@@ -23,6 +23,17 @@ export function applyFix(row: LedgerRow, fix: Fix): LedgerRow {
   return out;
 }
 
+/**
+ * The fix that changed a ledger row, if any: found by transaction (and member, for a fix limited
+ * to one), never by the row's ruleId. A fixed row keeps the fix id there, and fix ids and rule ids
+ * are both plain numbers, so "12" can be either.
+ */
+export function fixOf(row: LedgerRow, fixes: readonly Fix[]): Fix | undefined {
+  return fixes.find(
+    (f) => f.txId === row.txId && (f.parts && f.parts.length > 0 ? row.ruleId === f.id : !f.owner || f.owner === row.owner),
+  );
+}
+
 export function applyFixes(rows: LedgerRow[], fixes: Fix[]): FixResult {
   const byTx = new Map<string, number[]>();
   rows.forEach((r, i) => {

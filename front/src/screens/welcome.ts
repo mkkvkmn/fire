@@ -117,6 +117,7 @@ export class WelcomeScreen {
           ${raw(own)}
         </section>
       </div>
+      ${raw(this.status())}
       <div class="section-label">${t("welcomeHowItWorks")}</div>
       <div class="grid g-3">
         <section class="card tile">
@@ -133,6 +134,24 @@ export class WelcomeScreen {
         </section>
       </div>`;
     if (this.naming) this.root.querySelector<HTMLInputElement>('[data-w="member"]')?.focus();
+    // while a start runs (a big project takes a while to open), its buttons wait
+    if (this.session.state.busy)
+      for (const b of this.root.querySelectorAll<HTMLButtonElement>(".welcome-choices button")) b.disabled = true;
+  }
+
+  /**
+   * What the start chosen is doing, right under the choices: the app's shell, where this shows
+   * on every other page, is hidden here. Without it, opening a big project looked like nothing
+   * happened, and a file that could not be opened said nothing.
+   */
+  private status(): string {
+    const s = this.session.state;
+    if (s.error)
+      return html`<div class="note err welcome-status" role="alert">
+        ${raw(icon("alert"))}<span>${t("errorPrefix")}: ${s.error}</span>
+      </div>`;
+    if (s.busy) return html`<div class="note welcome-status" role="status">${raw(icon("clock"))}<span>${t("busy")}</span></div>`;
+    return "";
   }
 
   private async onClick(e: Event): Promise<void> {

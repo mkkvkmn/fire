@@ -29,7 +29,7 @@ import { icon } from "../../ui/icons";
 import { stepper, STEP_LABEL, type ShellContext } from "../../ui/shell";
 import { fmt, plural, t, type TextKey } from "../../ui/texts";
 import { showToast } from "../../ui/toast";
-import { ProfileEditor } from "./profileEditor";
+import { ProfileEditor, type Role } from "./profileEditor";
 
 const ACCEPT = ".csv,.txt,.tsv,.xlsx,.xls,.xlsm";
 const PREVIEW_PAGE = 50;
@@ -67,6 +67,19 @@ export class ImportScreen {
     root.addEventListener("click", (e) => void this.onClick(e));
     root.addEventListener("change", (e) => this.onChange(e));
     root.addEventListener("input", (e) => this.onInput(e));
+    // A stored profile's editor left without saving (back, Peruuta, any other page): its draft goes,
+    // so the next visit starts from the saved profile. On the address, as this screen does not
+    // render while another page is shown.
+    window.addEventListener("hashchange", () => {
+      if (this.editor?.key === -1 && !location.hash.startsWith("#/import/files/profile/")) this.editor = null;
+    });
+    // Esc is Peruuta in the reading settings' editor (on the document: the focus may be anywhere);
+    // not when a combo's open list took it, a dialog is open, or this screen is hidden
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape" || e.defaultPrevented || root.hidden || !this.editor?.ed.readingOpen) return;
+      if (document.querySelector("dialog[open]")) return;
+      this.cancelReading();
+    });
     root.addEventListener("dragover", (e) => {
       if (!root.querySelector(".drop")) return;
       e.preventDefault();
@@ -96,10 +109,11 @@ export class ImportScreen {
       return;
     }
     const editKey = ctx.step === "files" && rest.startsWith("edit/") ? Number(rest.slice(5)) : null;
-    const profileKey = ctx.step === "files" && rest.startsWith("profile/") ? decodeURIComponent(rest.slice(8)) : null;
+    // "profile/<id>", or "profile/<id>/settings" when opened from Asetukset › Tiedostoprofiilit
+    const profilePath = ctx.step === "files" && rest.startsWith("profile/") ? rest.slice(8).split("/") : null;
     let body: string;
     if (editKey !== null) body = this.editorView(editKey);
-    else if (profileKey !== null) body = this.storedProfileView(profileKey);
+    else if (profilePath) body = this.storedProfileView(decodeURIComponent(profilePath[0] ?? ""), profilePath[1] === "settings");
     else if (ctx.step === "files") body = this.filesView();
     else if (ctx.step === "classify") body = this.classifyView();
     else body = this.fixesView();
@@ -316,8 +330,17 @@ export class ImportScreen {
     return this.editor.ed.render(p.getSettings().defaultOwner, pill);
   }
 
-  /** Editor for a stored file profile (from Settings), shown with the latest file it read. */
-  private storedProfileView(id: string): string {
+  /** Where the stored profile's editor goes back to, and after saving: where it was opened from. */
+  private profileBack = { href: "#/import/files", label: "" };
+
+  /**
+   * Editor for a stored file profile, shown with the latest file it read. Opened from Asetukset ›
+   * Tiedostoprofiilit or from a profile's name in Tuonti › Tiedostot; it goes back where it came from.
+   */
+  private storedProfileView(id: string, fromSettings: boolean): string {
+    this.profileBack = fromSettings
+      ? { href: "#/settings/profiles", label: t("backToProfiles") }
+      : { href: "#/import/files", label: t("backToFiles") };
     const p = this.project;
     const file = p
       .getSourceFiles()
@@ -327,10 +350,30 @@ export class ImportScreen {
     if (!file || !bytes)
       return html`<div class="note warn">
         ${raw(icon("alert"))}
-        <div>${t("noSampleFile")} <a href="#/settings/profiles">${t("navSettings")}</a></div>
+        <div>${t("noSampleFile")} <a href="${this.profileBack.href}">${this.profileBack.label}</a></div>
       </div>`;
     if (this.editor?.profileId !== id) this.editor = { key: -1, profileId: id, ed: new ProfileEditor(p, file.name, bytes, id) };
-    return this.editor.ed.render(p.getSettings().defaultOwner, html`<span class="pill">${t("storedProfile")}</span>`);
+    return this.editor.ed.render(p.getSettings().defaultOwner, html`<span class="pill">${t("storedProfile")}</span>`, this.profileBack);
+  }
+
+  /** The reading settings' editor closed: its Muokkaa button gets the focus back. */
+  private focusReadingOpener(): void {
+    this.root.querySelector<HTMLElement>('.reading-panel [data-imp="readingOpen"]')?.focus();
+  }
+
+  /** Peruuta in the reading settings' editor: as in Asetukset, it asks first when something was changed. */
+  private cancelReading(): void {
+    const ed = this.editor?.ed;
+    if (!ed) return;
+    const undo = () => {
+      ed.cancelReading();
+      this.redraw();
+      this.focusReadingOpener();
+    };
+    if (!ed.readingChanged()) return undo();
+    void ask(t("confirmDiscardItem"), { danger: true, ok: t("discardShort") }).then((yes) => {
+      if (yes) undo();
+    });
   }
 
   private saveEditor(): void {
@@ -349,7 +392,8 @@ export class ImportScreen {
           t("profileSavedTitle"),
           fmt("profileUpdated", { n: res.reread }) + (res.orphanedFixes > 0 ? ` ${fmt("orphanedFixes", { n: res.orphanedFixes })}` : ""),
         );
-      location.hash = "#/settings/profiles";
+      // back where the editor was opened from
+      location.hash = this.profileBack.href;
       return;
     }
     const profile = structuredClone(e.ed.draft);
@@ -971,6 +1015,24 @@ export class ImportScreen {
         this.editor?.ed.guess();
         this.redraw();
         break;
+      // the reading settings' editor (a drawer): open, Käytä, Peruuta
+      case "readingOpen":
+        this.editor?.ed.openReading();
+        this.redraw();
+        this.root.querySelector<HTMLElement>(".drawer")?.focus();
+        break;
+      case "readingApply":
+        this.editor?.ed.applyReading();
+        this.redraw();
+        this.focusReadingOpener();
+        break;
+      case "readingCancel":
+        this.cancelReading();
+        break;
+      case "dropMissing":
+        this.editor?.ed.dropMissing();
+        this.redraw();
+        break;
       case "saveProfile":
         this.saveEditor();
         break;
@@ -1109,13 +1171,10 @@ export class ImportScreen {
       this.redraw();
       return;
     }
-    const multi = el.closest<HTMLElement>("[data-multi]");
-    if (ed && multi) {
-      const cols = [...multi.querySelectorAll<HTMLInputElement>("input:checked")].map((x) => x.value);
-      ed.setColumns(multi.dataset.multi as "description" | "info", cols);
-      this.refreshEditorPreview();
-      const summary = multi.closest("details")?.querySelector("summary");
-      if (summary) summary.textContent = cols.length ? cols.join(" + ") : t("chooseColumns");
+    if (ed && el.dataset.roleCol !== undefined) {
+      // a role chosen on a column of the file
+      ed.setRole(el.dataset.roleCol, el.value as Role);
+      this.redraw();
       return;
     }
     if (el.dataset.rf2 && this.ruleDraft) {
@@ -1182,6 +1241,9 @@ export class ImportScreen {
     if (ed && el.dataset.pf && el.type !== "number" && el.type !== "date") {
       ed.setField(el.dataset.pf, el.value);
       this.refreshEditorPreview();
+      // typing in the reading settings' editor: its result line follows at once (the rest on leaving the field)
+      const result = this.root.querySelector<HTMLElement>(".drawer [data-reading-result]");
+      if (result) result.innerHTML = ed.readingResult();
     }
   }
 

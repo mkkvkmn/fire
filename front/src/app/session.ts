@@ -6,7 +6,7 @@ import { matchProfile } from "../engine/profiles";
 import { demoData, type DemoData, type DemoLang } from "../project/demo";
 import { migrateV2, type MigrateOptions, type MigrateResult, type V2Found } from "../project/migrate";
 import { ensureAccountOwners, importFile, rebuildLedger, setLock } from "../project/service";
-import { Project } from "../storage/project";
+import { Project, ProjectFileError } from "../storage/project";
 import {
   canSaveInPlace,
   downloadFile,
@@ -142,7 +142,7 @@ export class Session {
     return this.run(async () => {
       const picked = await pickProjectFile();
       if (!picked) return;
-      const p = Project.open(await this.sql(), picked.bytes);
+      const p = openProjectFile(await this.sql(), picked.bytes, picked.name);
       this.replace(p, picked.name, picked.handle, false);
       await rememberHandle(picked.handle);
       await this.persistNow();
@@ -352,6 +352,17 @@ export class Session {
       updatedAt: new Date().toISOString(),
       sample: this.state.sample,
     });
+  }
+}
+
+/** Opens a picked project file; a file that is not a project, or is from a newer FiRe, says so in the user's language. */
+function openProjectFile(SQL: SqlJsStatic, bytes: Uint8Array, name: string): Project {
+  try {
+    return Project.open(SQL, bytes);
+  } catch (e) {
+    if (e instanceof ProjectFileError && e.kind === "notProject") throw new Error(fmt("openNotProject", { f: name }));
+    if (e instanceof ProjectFileError && e.kind === "tooNew") throw new Error(fmt("openTooNew", { f: name }));
+    throw e;
   }
 }
 
