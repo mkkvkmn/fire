@@ -16,6 +16,7 @@ import {
   saastoPct,
   sijoitusvarallisuus,
   snapshotMonth,
+  targetProgress,
   tulot,
   type Measure,
   type Model,
@@ -31,6 +32,7 @@ import { icon, type IconName } from "../../ui/icons";
 import { PeriodPicker, periodName } from "../../ui/periodPicker";
 import { fmt, locale, t, type TextKey } from "../../ui/texts";
 import { bindFilterBar, eur, num, pct, reportBar } from "./common";
+import { pickGoal, pickedGoals } from "./goalPick";
 
 type Main = "flows" | "wealth" | "fire";
 type FlowTab = "all" | "tulot" | "menot" | "osingot";
@@ -95,7 +97,10 @@ function nf(v: number, digits = 1): string {
 /** The overview's tabs and chart step, remembered in this browser (a view, not project data). */
 const VIEW_KEY = "fire.overviewView";
 
-function loadView(): { main?: Main; flowTab?: FlowTab; wealthTab?: WealthTab; grain?: Grain | null } {
+/** Target rows in Tunnusluvut: the card has room for this many beside the four-row Varallisuus card. */
+const GOAL_ROWS = 2;
+
+function loadView(): { main?: Main; flowTab?: FlowTab; wealthTab?: WealthTab; grain?: Grain | null; goals?: string[] } {
   try {
     return (JSON.parse(localStorage.getItem(VIEW_KEY) ?? "null") as ReturnType<typeof loadView> | null) ?? {};
   } catch {
@@ -108,6 +113,10 @@ export class OverviewScreen {
   private flowTab: FlowTab = loadView().flowTab ?? "all";
   private wealthTab: WealthTab = loadView().wealthTab ?? "all";
   private grain: Grain | null = loadView().grain ?? null;
+  /** The targets picked for the Tunnusluvut rows, by name (used when there are more than fit). */
+  private goals: string[] = loadView().goals ?? [];
+  /** The targets the card shows now, row by row: what a pick swaps against. */
+  private shownGoals: string[] = [];
   private open = new Set<string>();
   private yearly = false;
   /** A chart column picked to focus the table below it; cleared when the columns change. */
@@ -208,6 +217,54 @@ export class OverviewScreen {
     return lastYear(m, p, measure, f);
   }
 
+  /**
+   * The targets of the period in Tunnusluvut: one row each, in the room the card has beside the
+   * four-row Varallisuus card (GOAL_ROWS), so it never grows. With more targets than rows, each
+   * row's name is a picker and the choice is remembered in this browser.
+   */
+  private goalRows(m: Model, p: Period): string {
+    const tm = this.state.targetModel();
+    const all = tm ? targetProgress(m, tm, p) : [];
+    const line = (label: string, sub: string, value: string, extra = "") =>
+      html`<div class="row goal-row">
+        ${raw(icon("target"))}<span class="k">${raw(label)}<small>${raw(sub)}</small></span
+        ><span class="v">${raw(value)}${raw(extra)}</span>
+      </div>`;
+    if (!all.length)
+      return line(html`${t("goals")}`, html`${t("noGoal")}`, html`<a href="#/settings/targets" class="small">${t("setGoal")}</a>`);
+    const pick = all.length > GOAL_ROWS;
+    const shown = pick
+      ? pickedGoals(
+          this.goals,
+          all.map((g) => g.name),
+          GOAL_ROWS,
+        )
+      : all.map((g) => g.name);
+    this.shownGoals = shown;
+    return shown
+      .map((name, i) => {
+        const g = all.find((x) => x.name === name)!;
+        const label = pick
+          ? html`<select data-o="goalPick" data-i="${i}" class="goal-pick" aria-label="${fmt("goalPick", { n: i + 1 })}">
+              ${raw(all.map((x) => html`<option value="${x.name}" ${x === g ? "selected" : ""}>${x.name}</option>`).join(""))}
+            </select>`
+          : html`${g.name}`;
+        const ratio = g.goal === 0 ? null : g.actual / g.goal;
+        // colour only for a result: green when an income or savings target is reached, red when a
+        // budget is exceeded; anything still under way stays grey
+        const tone = ratio === null ? "" : g.lowerIsBetter ? (ratio > 1 ? "down" : "") : ratio >= 1 ? "up" : "";
+        return line(
+          label,
+          html`${t(g.lowerIsBetter ? "goalBudget" : "goalTarget")}`,
+          num(pct(ratio), { filter: {}, target: g.name }),
+          html`<span class="delta ${tone}" title="${t(g.lowerIsBetter ? "goalLowerBetter" : "goalHigherBetter")}"
+            >${raw(num(eur(Math.abs(g.actual)), { filter: {}, target: g.name }))} / ${eur(Math.abs(g.goal))} €</span
+          >`,
+        );
+      })
+      .join("");
+  }
+
   private delta(now: number, before: number | null, goodUp: boolean, text?: string): string {
     if (before === null) return "";
     const d = text ?? pctChange(now, before);
@@ -241,26 +298,12 @@ export class OverviewScreen {
       kv !== null && kvBefore !== null
         ? this.delta(kv, kvBefore, true, signed(kv - kvBefore, fmt("yearsUnit", { n: nf(Math.abs(kv - kvBefore)) })))
         : "";
-    const tm = this.state.targetModel();
-    const goal = tm && tm.rows.length > 0 ? saasto(tm, p) : 0;
-    const saved = saasto(m, p);
-    const goalRow =
-      goal > 0
-        ? row(
-            "target",
-            t("savingGoal"),
-            `${eur(saved)} / ${eur(goal)} €`,
-            pct(saved / goal),
-            "",
-            html`<span class="progress"><i data-progress="${Math.max(0, Math.min(100, Math.round((saved / goal) * 100)))}"></i></span>`,
-          )
-        : row("target", t("savingGoal"), t("noGoal"), html`<a href="#/settings" data-o="goal" class="small">${t("setGoal")}</a>`, "");
     const key = html`<section class="card kv-card hero">
       <h2>${t("cardKeyFigures")}</h2>
       <div class="kv">
         ${raw(row("piggy", t("saastoPct"), t("saastoPctSub"), pct(sp), spDelta))}
         ${raw(row("hourglass", t("kassaVuosina"), t("kassaSub"), kv === null ? "-" : fmt("yearsUnit", { n: nf(kv) }), kvDelta))}
-        ${raw(goalRow)}
+        ${raw(this.goalRows(m, p))}
       </div>
     </section>`;
 
@@ -1000,14 +1043,7 @@ export class OverviewScreen {
       this.render();
     }
     if (b.dataset.main || b.dataset.flowtab || b.dataset.wealthtab || b.dataset.grain) {
-      try {
-        localStorage.setItem(
-          VIEW_KEY,
-          JSON.stringify({ main: this.main, flowTab: this.flowTab, wealthTab: this.wealthTab, grain: this.grain }),
-        );
-      } catch {
-        // the choices just reset on reload
-      }
+      this.saveView();
     } else if (b.dataset.exp) {
       const k = b.dataset.exp;
       if (this.open.has(k)) this.open.delete(k);
@@ -1020,8 +1056,26 @@ export class OverviewScreen {
     }
   }
 
+  private saveView(): void {
+    try {
+      localStorage.setItem(
+        VIEW_KEY,
+        JSON.stringify({ main: this.main, flowTab: this.flowTab, wealthTab: this.wealthTab, grain: this.grain, goals: this.goals }),
+      );
+    } catch {
+      // the choices just reset on reload
+    }
+  }
+
   private onChange(e: Event): void {
     const el = e.target as HTMLInputElement | HTMLSelectElement;
+    if (el.dataset.o === "goalPick") {
+      // picking a target shown in the other row swaps the two
+      this.goals = pickGoal(this.shownGoals, Number(el.dataset.i), el.value);
+      this.saveView();
+      this.render();
+      return;
+    }
     if (el.dataset.rf === "vs") {
       this.state.set({ vs: el.value as "prevYear" | "target" | "none" });
       return;

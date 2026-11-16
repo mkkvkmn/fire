@@ -23,8 +23,12 @@ function backupName(fileName: string, now = new Date()): string {
 /** `2024-10` as `10/2024`. */
 const mmyyyy = (m: string) => `${m.slice(5, 7)}/${m.slice(0, 4)}`;
 
+/** Files listed before "Näytä kaikki", newest first (as on Tuonti › Tiedostot). */
+const RECENT_FILES = 10;
+
 export class ProjectScreen {
   private showInfo = false;
+  private allFiles = false;
   private pendingLock: { revision: number; month: string; diff: LedgerDiff } | null = null;
   private pendingRefresh: { revision: number; plan: RefreshPlan; backedUp: boolean } | null = null;
   private readonly lockPicker: PeriodPicker;
@@ -44,12 +48,13 @@ export class ProjectScreen {
     root.addEventListener("change", (e) => this.onChange(e));
   }
 
-  /** First and last month with ledger rows (this month when there are none). */
+  /** First and last month with actual rows (this month when there are none). Target rows run into the future, so they do not count. */
   private monthRange(): [string, string] {
     const p = this.session.state.project;
     const months = p
       ? p
           .getLedger()
+          .filter((r) => r.rowType === "Actual")
           .map((r) => r.month)
           .filter(Boolean)
           .sort()
@@ -73,11 +78,11 @@ export class ProjectScreen {
         <div><h1>${t("navProject")}</h1></div>
       </div>
       <div class="grid g-hero">${raw(this.fileCard())}${raw(this.stats())}</div>
+      <div class="grid g-2 project-tools">${raw(this.lockCard(locked))}${raw(this.refreshCard())}</div>
       <div class="section-label">${t("membersTitle")}</div>
       ${raw(this.membersCard())}
       <div class="section-label">${t("sourceFilesTitle")}</div>
-      ${raw(this.filesCard())}
-      <div class="grid g-2 project-tools">${raw(this.lockCard(locked))}${raw(this.refreshCard())}</div>`;
+      ${raw(this.filesCard())}`;
     this.lockPicker.mount(this.root.querySelector<HTMLElement>("[data-lock-picker]"));
     this.refreshPicker.mount(this.root.querySelector<HTMLElement>("[data-refresh-picker]"));
   }
@@ -254,7 +259,8 @@ export class ProjectScreen {
     }
     const profiles = new Map(p.getProfiles().map((x) => [x.id, x.name]));
     const date = new Intl.DateTimeFormat(locale(), { dateStyle: "short" });
-    const rows = files
+    const shown = [...files].reverse().slice(0, this.allFiles ? undefined : RECENT_FILES);
+    const rows = shown
       .map(
         (f) =>
           html`<tr>
@@ -281,6 +287,16 @@ export class ProjectScreen {
           </tbody>
         </table>
       </div>
+      ${raw(
+        files.length > RECENT_FILES
+          ? html`<div class="actions card-foot">
+              <span class="grow"></span>
+              <button type="button" class="sm" data-a="allFiles">
+                ${this.allFiles ? t("filesShowRecent") : fmt("filesShowAll", { n: files.length })}
+              </button>
+            </div>`
+          : "",
+      )}
     </section>`;
   }
 
@@ -381,6 +397,10 @@ export class ProjectScreen {
       });
     };
     switch (btn.dataset.a) {
+      case "allFiles":
+        this.allFiles = !this.allFiles;
+        this.render();
+        break;
       case "info":
         this.showInfo = !this.showInfo;
         this.render();

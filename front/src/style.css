@@ -1313,6 +1313,49 @@ td select {
   margin-top: 4px;
 }
 
+/* Tavoitteet: the shown target is picked in the row's own line, so the card keeps its height */
+.goal-row .goal-pick {
+  /* reads as the row's title, like Säästöaste above: same size and colour, no box until hovered */
+  font: inherit;
+  color: var(--fg);
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0 20px 0 0;
+  margin: -1px 0;
+  max-width: 100%;
+  /* as wide as the shown name, so the arrow sits right after it */
+  field-sizing: content;
+  cursor: pointer;
+  background-position:
+    calc(100% - 10px) 55%,
+    calc(100% - 5px) 55%;
+}
+
+.goal-row .goal-pick:hover {
+  border-color: var(--border-strong);
+}
+
+.goal-row .goal-pick:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.goal-row .delta:not(.up, .down) {
+  color: var(--muted);
+}
+
+/* the open list does not inherit the transparent field: give it the dropdowns' own colours */
+.goal-row .goal-pick option {
+  background-color: var(--surface-2);
+  color: var(--fg);
+}
+
+.goal-row .goal-name {
+  color: var(--fg);
+  margin-right: 6px;
+}
+
 /* card with an uppercase title and tabs under it */
 .card-head-tabs {
   margin-bottom: 4px;
@@ -1836,6 +1879,13 @@ a.btn.primary {
 .side-save .small {
   color: var(--muted);
   padding-left: 2px;
+}
+
+/* "● Tallennettu · koti.fire.sqlite": the file name gives way first on a narrow sidebar */
+.side-save .save-state {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* about box at the bottom of the sidebar */
@@ -3769,11 +3819,38 @@ details.mig-files summary {
   align-items: start;
 }
 
-/* fix editor under a Tapahtumat row, and the open fix on Asetukset > Korjaukset */
+/* fix editor under a Tapahtumat row, the open fix on Asetukset > Korjaukset and the open target */
 .rows-table tr.fix-editor > td,
-.fix-list tr.fix-editor > td {
+.fix-list tr.fix-editor > td,
+.row-list tr.row-editor > td {
   background: var(--surface-2);
   padding: 14px 16px 16px;
+}
+
+/* Asetukset: the open line and its inputs read as one block: one background, no line between them,
+   and an accent edge down both; the input titles sit close to their inputs */
+.row-list tr.open > td,
+.fix-list tr.open > td {
+  background: var(--surface-2);
+  border-bottom: 0;
+}
+
+.row-list tr.open > td:first-child,
+.fix-list tr.open > td:first-child,
+.row-list tr.row-editor > td,
+.fix-list tr.fix-editor > td {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.row-list tr.row-editor > td,
+.fix-list tr.fix-editor > td {
+  padding: 0 16px 14px;
+}
+
+.row-list tr.row-editor .edit-table th,
+.fix-list tr.fix-editor .edit-table th {
+  padding: 0 6px 2px;
+  border-bottom: 0;
 }
 
 .fix-form .fix-head {
@@ -3799,7 +3876,8 @@ details.mig-files summary {
 }
 
 .rows-table .row-actions button.on,
-.fix-list .row-actions button.on {
+.fix-list .row-actions button.on,
+.row-list .row-actions button.on {
   opacity: 1;
   color: var(--accent-strong);
 }
@@ -3831,9 +3909,20 @@ details.mig-files summary {
   text-decoration-thickness: 1px;
 }
 
-.fix-list .row-actions {
+.fix-list .row-actions,
+.row-list .row-actions {
   white-space: nowrap;
   text-align: right;
+}
+
+.target-list td.small {
+  white-space: nowrap;
+}
+
+/* a rule's patterns read as code, and wrap rather than stretch the list */
+.rule-list code {
+  font-size: 12px;
+  word-break: break-word;
 }
 
 /* an input's own reset button, inside the field before its unit */
@@ -3977,73 +4066,21 @@ details.new-fix[open] summary {
   margin-bottom: 10px;
 }
 
-/* Tilit: one line per account; its splits open in a section under the line */
-.acct-list {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.acct + .acct {
-  border-top: 1px solid var(--border);
-}
-
-.acct-row {
-  display: grid;
-  /* fixed owner column, so the header and every line share the same columns */
-  grid-template-columns: minmax(180px, 260px) 130px 1fr;
-  align-items: center;
-  gap: 8px 18px;
-  padding: 8px 12px;
-}
-
-.acct-row.acct-labels {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
-}
-
-.acct-row.acct-labels span:first-child {
-  padding-left: 20px;
-}
-
-.acct.open .acct-row {
-  background: var(--surface-2);
-}
-
-.acct-toggle {
+/* Tilit: the pen opens the account's owner and its split periods under its line */
+.acct-list .acct-owner {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  justify-content: flex-start;
-  border: 0;
-  background: none;
-  padding: 4px 0;
-  font-weight: 400;
-  color: var(--fg);
-  text-align: left;
+  gap: 10px;
+  margin: 0 0 6px;
 }
 
-.acct-toggle .ic {
-  width: 14px;
-  height: 14px;
-  color: var(--muted);
-}
-
-.acct-owner {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.acct-owner select {
+.acct-list .acct-owner select {
   height: 32px;
-  width: 120px;
+  width: 140px;
 }
 
 .acct-body {
-  padding: 4px 12px 12px 34px;
-  background: var(--surface-2);
+  padding: 4px 0 0;
 }
 
 /* one line per split period: start, end, a share per member, the total, remove */

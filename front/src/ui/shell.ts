@@ -51,17 +51,16 @@ function badge(n: number): string {
 /** The settings tabs, in the order of the settings screen. */
 const SETTINGS_TABS: [string, TextKey][] = [
   ["rules", "tabRules"],
-  ["splits", "tabSplits"],
   ["fixes", "tabFixes"],
   ["targets", "tabTargets"],
+  ["splits", "tabSplits"],
   ["profiles", "tabProfiles"],
   ["scripts", "tabScripts"],
 ];
 
-/** Asetukset opens up into its tabs while it is the page shown. */
+/** Asetukset's tabs, always listed like the Tuonti steps; the current one is marked while Asetukset is shown. */
 function settingsSubs(ctx: ShellContext): string {
-  if (ctx.route !== "settings") return "";
-  const cur = location.hash.split("/")[2] || ctx.settingsTab || "rules";
+  const cur = ctx.route === "settings" ? location.hash.split("/")[2] || ctx.settingsTab || "rules" : "";
   return SETTINGS_TABS.map(
     ([id, label], i) =>
       html`<a
@@ -86,8 +85,10 @@ export function sidebar(ctx: ShellContext): string {
         <button type="button" class="primary" data-shell="save" title="${t("saveHelp")}" ${raw(s.dirty || !s.fileName ? "" : "disabled")}>
           ${raw(icon("save"))}${t("save")}
         </button>
-        <span class="small"
-          >${raw(s.dirty ? '<span class="dot warn"></span>' : '<span class="dot ok"></span>')}${s.dirty ? t("stateDirty") : s.fileName ? t("stateSaved") : t("stateNeverSaved")}</span
+        <span class="small save-state" title="${name}"
+          >${raw(s.dirty ? '<span class="dot warn"></span>' : '<span class="dot ok"></span>')}${s.dirty ? t("stateDirty") : s.fileName ? t("stateSaved") : t("stateNeverSaved")}${raw(
+            name ? html` · <span class="file">${name}</span>` : "",
+          )}</span
         >
         ${raw(
           ctx.staged
@@ -101,11 +102,8 @@ export function sidebar(ctx: ShellContext): string {
       ><span class="dot"></span><span class="lbl">${t(STEP_LABEL[step])}</span>${raw(badge(ctx.counts[step]))}</a
     >`;
   }).join("");
+  // by how often each part is used: reports daily, Tuonti monthly, Asetukset and Projekti rarely
   const nav =
-    link("project", t("navProject"), "project", ctx.route === "project") +
-    html`<a href="#/project" class="nav-sub" title="${t("openProjectTitle")}"
-      ><span class="dot ${s.dirty ? "warn" : "ok"}"></span><span class="lbl">${name}</span></a
-    >` +
     html`<div class="nav-group">${t("navGroupReports")}</div>` +
     link("overview", t("navOverview"), "summary", ctx.route === "overview") +
     link("rows", t("navRows"), "rows", ctx.route === "rows") +
@@ -113,7 +111,9 @@ export function sidebar(ctx: ShellContext): string {
     link("import", t("navImport"), "import", ctx.route === "import") +
     flow +
     link("settings", t("navSettings"), "settings", ctx.route === "settings") +
-    settingsSubs(ctx);
+    settingsSubs(ctx) +
+    html`<div class="nav-group">${t("navProject")}</div>` +
+    link("project", t("navProject"), "project", ctx.route === "project");
   return html` <div class="brand">
       <div class="brand-mark">${raw(icon("logo"))}</div>
       <div class="brand-name">${t("appTitle")}<span>${t("brandTagline")}</span></div>

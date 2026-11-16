@@ -21,6 +21,7 @@ import {
   type Tab,
 } from "./settings/model";
 import { fixChanges, infoPop, reservedNames } from "./settings/parts";
+import type { ReportState } from "../app/reportState";
 import type { Session } from "../app/session";
 import { compileRules, ruleFromRow, ruleMatches } from "../engine/categorize";
 import { isEmptyDiff, type LedgerDiff } from "../engine/diff";
@@ -42,6 +43,7 @@ import { bindCombos, combo } from "../ui/combo";
 import { dateField, parseDateField } from "../ui/dateField";
 import { html, raw } from "../ui/html";
 import { icon } from "../ui/icons";
+import { periodName } from "../ui/periodPicker";
 import { PRE_WHAT } from "../ui/preprocessors";
 import { fmt, plural, t, type TextKey } from "../ui/texts";
 
@@ -56,6 +58,8 @@ export class SettingsScreen {
   private tabFilter: Partial<Record<Tab, string>> = {};
   /** The fix whose inputs are open, by its place in the draft. */
   private openFix: number | null = null;
+  /** Per list tab, the item (index in the draft) whose inputs are open under its line. */
+  private openEdit: Partial<Record<ListTab, number>> = {};
   /** Accounts whose splits are open on Tilit. */
   private openAccts = new Set<string>();
   /** "Uusi korjaus" is open (collapsed by default; stays as the user left it). */
@@ -65,6 +69,7 @@ export class SettingsScreen {
   constructor(
     private readonly root: HTMLElement,
     private readonly session: Session,
+    private readonly reports: ReportState,
   ) {
     root.addEventListener("click", (e) => this.onClick(e));
     root.addEventListener("input", (e) => this.onEdit(e));
@@ -182,18 +187,7 @@ export class SettingsScreen {
         body = this.accountsView(p, d);
         break;
       case "targets":
-        body = html`<p class="muted">${t("targetsBody")}</p>
-          <div class="actions"><button type="button" class="primary" data-act="add">${raw(icon("plus"))}${t("addTarget")}</button></div>
-          ${raw(this.filterBox("targetFilterHint"))}
-          ${raw(
-            this.table("targets", d.targets as unknown as Item[], {
-              sort: (a, b) => (d.targets[b]!.end || "9999").localeCompare(d.targets[a]!.end || "9999") || b - a,
-              find: (i) =>
-                [d.targets[i]!.name, d.targets[i]!.owner, d.targets[i]!.class, d.targets[i]!.category, d.targets[i]!.subCategory]
-                  .join(" ")
-                  .toLowerCase(),
-            }),
-          )}`;
+        body = this.targetsTab(p, d);
         break;
       case "profiles":
         body = this.profilesTab(p);
@@ -234,6 +228,7 @@ export class SettingsScreen {
     this.tab = "rules";
     this.ruleFilter = "";
     this.openRule = rule.id;
+    this.openEdit.rules = d.rules.length - 1;
     this.preview = null;
   }
 
@@ -336,31 +331,35 @@ export class SettingsScreen {
     return html`<td><input type="${type}" class="${cls}" value="${text}" ${raw(attrs)} ${raw(list)} ${raw(mode)} /></td>`;
   }
 
-  private table(
+  /**
+   * The list every Asetukset tab shares: one readable line per item, then its order arrows (when
+   * the order matters), a pen that opens the item's inputs under the line, and a trash.
+   */
+  private rowList(
     tab: ListTab,
     items: Item[],
-    opts: {
-      lead?: (i: number) => string;
-      leadHead?: string;
-      extra?: (i: number) => string;
-      extraHead?: string;
+    o: {
+      /** Header cells as markup. */
+      head: string[];
+      /** The line's cells as markup, one td each. */
+      cells: (i: number) => string;
+      cls: string;
       order?: boolean;
       filter?: (i: number) => boolean;
-      after?: (i: number) => string;
-      sort?: (a: number, b: number) => number;
       find?: (i: number) => string;
-    } = {},
+      sort?: (a: number, b: number) => number;
+      after?: (i: number) => string;
+    },
   ): string {
-    const cols = COLS[tab];
     if (items.length === 0) return html`<p class="muted">${t("noRows")}</p>`;
-    const head =
-      (opts.leadHead !== undefined ? html`<th>${opts.leadHead}</th>` : "") +
-      cols.map((c) => html`<th>${t(c.label)}</th>`).join("") +
-      (opts.extraHead !== undefined ? html`<th class="num">${raw(opts.extraHead)}</th>` : "") +
-      "<th></th>";
+    const cols = COLS[tab];
+    const span = o.head.length + 1;
     const rows = items.map((item, i) => {
-      if (opts.filter && !opts.filter(i)) return "";
-      const move = opts.order
+      if (o.filter && !o.filter(i)) return "";
+      const open = this.openEdit[tab] === i;
+      const find = o.find?.(i);
+      const attrs = find === undefined ? "" : html`data-find="${find}" ${raw(this.hiddenUnless(find))}`;
+      const move = o.order
         ? html`<button
               type="button"
               class="sm ghost icon-only"
@@ -384,37 +383,63 @@ export class SettingsScreen {
               ${raw(icon("arrowDown"))}
             </button>`
         : "";
+      const acts = html`<td class="row-actions">
+        ${raw(move)}<button
+          type="button"
+          class="sm ghost icon-only ${open ? "on" : ""}"
+          data-act="edit"
+          data-i="${i}"
+          title="${t("edit")}"
+          aria-label="${t("edit")}"
+          aria-expanded="${String(open)}"
+        >
+          ${raw(icon("pencil"))}
+        </button>
+        <button type="button" class="sm ghost icon-only" data-act="del" data-i="${i}" title="${t("remove")}" aria-label="${t("remove")}">
+          ${raw(icon("trash"))}
+        </button>
+      </td>`;
+      const editor = open
+        ? html`<tr class="row-editor" ${raw(attrs)}>
+            <td colspan="${span}">
+              <div class="table-wrap">
+                <table class="edit-table">
+                  <thead>
+                    <tr>
+                      ${raw(cols.map((c) => html`<th>${t(c.label)}</th>`).join(""))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="${i}">
+                      ${raw(cols.map((c) => this.cell(i, c, item)).join(""))}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>`
+        : "";
       return (
-        html`<tr data-row="${i}" ${raw(opts.find ? html`data-find="${opts.find(i)}" ${raw(this.hiddenUnless(opts.find(i)))}` : "")}>
-          ${raw(opts.lead ? opts.lead(i) : "")}${raw(cols.map((c) => this.cell(i, c, item)).join(""))}${raw(opts.extra ? opts.extra(i) : "")}
-          <td class="row-actions">
-            ${raw(move)}<button
-              type="button"
-              class="sm ghost icon-only"
-              data-act="del"
-              data-i="${i}"
-              title="${t("remove")}"
-              aria-label="${t("remove")}"
-            >
-              ${raw(icon("trash"))}
-            </button>
-          </td>
-        </tr>` + (opts.after ? opts.after(i) : "")
+        html`<tr class="${open ? "open" : ""}" ${raw(attrs)}>
+          ${raw(o.cells(i))}${raw(acts)}
+        </tr>` +
+        editor +
+        (o.after ? o.after(i) : "")
       );
     });
     // a display order; each row keeps its place in the list (data-i), so edits land on the right item
     const order = items.map((_, i) => i);
-    if (opts.sort) order.sort(opts.sort);
-    const body = order.map((i) => rows[i]).join("");
+    if (o.sort) order.sort(o.sort);
     return html`<div class="table-wrap">
-      <table class="edit-table">
+      <table class="row-list ${o.cls}">
         <thead>
           <tr>
-            ${raw(head)}
+            ${raw(o.head.join(""))}
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          ${raw(body)}
+          ${raw(order.map((i) => rows[i]).join(""))}
         </tbody>
       </table>
     </div>`;
@@ -484,6 +509,8 @@ export class SettingsScreen {
         <td colspan="10">${raw(this.ruleRows(r, d.rules, rows))}</td>
       </tr>`;
     };
+    const pattern = (v: string) => (v ? html`<code>${v}</code>` : "");
+    const amountLabel = new Map(AMOUNT_MATCH.map(([v, label]) => [v, label]));
     return html`
       <p class="muted">${t("rulesBody")}</p>
       ${raw(reservedNames(p))}
@@ -492,14 +519,32 @@ export class SettingsScreen {
         ><span>${t("filter")}</span><input type="search" data-rule-filter value="${this.ruleFilter}" placeholder="${t("ruleFilterHint")}"
       /></label>
       ${raw(
-        this.table("rules", d.rules as unknown as Item[], {
-          leadHead: "#",
-          lead: (i) => html`<td class="muted small">${d.rules[i]!.id}</td>`,
-          extraHead: html`${t("colMatches")} ${raw(infoPop(t("matchesInfoTitle"), [t("matchesInfoHits"), t("matchesInfoValid")]))}`,
-          extra: (i) =>
-            html`<td class="num">
-              <button type="button" class="link" data-act="ruleRows" data-id="${d.rules[i]!.id}" data-count="${i}">…</button>
-            </td>`,
+        this.rowList("rules", d.rules as unknown as Item[], {
+          cls: "rule-list",
+          head: [
+            html`<th>#</th>`,
+            html`<th>${t("colAccount")}</th>`,
+            html`<th>${t("colDescription")}</th>`,
+            html`<th>${t("colInfo")}</th>`,
+            html`<th>${t("fieldAmountMatch")}</th>`,
+            html`<th>${t("colClassification")}</th>`,
+            html`<th class="num">
+              ${t("colMatches")} ${raw(infoPop(t("matchesInfoTitle"), [t("matchesInfoHits"), t("matchesInfoValid")]))}
+            </th>`,
+          ],
+          cells: (i) => {
+            const r = d.rules[i]!;
+            const amount = r.amount && r.amount !== "any" ? amountLabel.get(r.amount) : undefined;
+            return html`<td class="muted small">${r.id}</td>
+              <td class="small">${raw(pattern(r.account))}</td>
+              <td class="small">${raw(pattern(r.description))}</td>
+              <td class="small">${raw(pattern(r.info))}</td>
+              <td class="small">${amount ? t(amount) : ""}</td>
+              <td class="small">${[r.class, r.category, r.subCategory].filter(Boolean).join(" › ")}</td>
+              <td class="num">
+                <button type="button" class="link" data-act="ruleRows" data-id="${r.id}" data-count="${i}">…</button>
+              </td>`;
+          },
           order: true,
           filter,
           after,
@@ -620,6 +665,76 @@ export class SettingsScreen {
   }
 
   // ---- fixes
+
+  // ---- targets
+
+  /**
+   * Tavoitteet: one compact line per target row (name, time, member, a month's amount and the
+   * classification), with the transactions it covers; the pen opens the row's inputs under it.
+   */
+  private targetsTab(p: Project, d: Draft): string {
+    const rows = this.targetRowCounts(p);
+    const period = this.reports.period();
+    const list = this.rowList("targets", d.targets as unknown as Item[], {
+      cls: "target-list",
+      head: [
+        html`<th>${t("colName")}</th>`,
+        html`<th>${t("colPeriod")}</th>`,
+        html`<th>${t("colOwner")}</th>`,
+        html`<th class="num">${t("colMonthly")}</th>`,
+        html`<th>${t("colClassification")}</th>`,
+        html`<th
+          class="num"
+          title="${
+            period ? fmt("goalRowsPeriod", { p: periodName(period.from, period.to), m: this.reports.shownOwner() || t("allOwners") }) : ""
+          }"
+        >
+          ${t("navRows")}
+        </th>`,
+      ],
+      cells: (i) => {
+        const x = d.targets[i]!;
+        const when = x.start || x.end ? `${formatDate(x.start)} – ${formatDate(x.end)}` : "";
+        const c = rows.get(x.name);
+        const count = c
+          ? c.n
+            ? html`<button
+                type="button"
+                class="link"
+                data-drill="${JSON.stringify({ filter: {}, target: x.name })}"
+                title="${t("goalRowsTitle")}"
+              >
+                ${formatCount(c.n)}
+              </button>`
+            : "0"
+          : html`<span class="muted" title="${t("goalRowsUnsaved")}">-</span>`;
+        return html`<td>${raw(x.name ? html`${x.name}` : html`<span class="muted">${t("unnamed")}</span>`)}</td>
+          <td class="small">${when}</td>
+          <td>${x.owner}</td>
+          <td class="num">${Number.isFinite(x.monthlyAmount) ? `${formatAmount(x.monthlyAmount)} €` : ""}</td>
+          <td class="small">${[x.class, x.category, x.subCategory].filter(Boolean).join(" › ")}</td>
+          <td class="num">${raw(count)}</td>`;
+      },
+      sort: (a, b) => (d.targets[b]!.end || "9999").localeCompare(d.targets[a]!.end || "9999") || b - a,
+      find: (i) => {
+        const x = d.targets[i]!;
+        return [x.name, x.owner, x.class, x.category, x.subCategory].join(" ").toLowerCase();
+      },
+    });
+    return html`<p class="muted">${t("targetsBody")}</p>
+      <div class="actions"><button type="button" class="primary" data-act="add">${raw(icon("plus"))}${t("addTarget")}</button></div>
+      ${raw(this.filterBox("targetFilterHint"))} ${raw(list)}`;
+  }
+
+  /**
+   * Per saved target name: how many transactions it covers in the period and for the member chosen
+   * in the reports, which is what its Tapahtumat link lists. A target not saved yet has no entry.
+   */
+  private targetRowCounts(p: Project): Map<string, { n: number }> {
+    const period = this.reports.period();
+    const names = new Set(p.getTargets().map((x) => x.name));
+    return new Map([...names].map((name) => [name, { n: period ? this.reports.targetRows(name, period).length : 0 }]));
+  }
 
   private fixesTab(p: Project, d: Draft): string {
     const rows = this.sourceRows(p);
@@ -781,6 +896,7 @@ export class SettingsScreen {
     );
     if (accounts.length === 0) return html`<p class="muted">${t("acctOwnersNone")}</p>`;
     const ms = this.owners(p, d);
+    const inData = new Set(this.sourceRows(p).map((r) => r.fields.account));
     const today = new Date().toISOString().slice(0, 10);
     const pct = (share: number) => `${Math.round(share * 1000) / 10} %`.replace(".", ",");
     const lines = accounts
@@ -802,6 +918,8 @@ export class SettingsScreen {
                     .join(""),
                 )}
               </select>`;
+        const find = [a, cur, ...idx.map((i) => d.splits[i]!.owner)].join(" ").toLowerCase();
+        const hide = this.hiddenUnless(find);
         // what the splits give today, else how many there are
         const now = idx.map((i) => d.splits[i]!).filter((x) => x.start <= today && today <= x.end);
         const summary = now.length
@@ -809,22 +927,36 @@ export class SettingsScreen {
           : idx.length
             ? plural(new Set(idx.map((i) => `${d.splits[i]!.start}|${d.splits[i]!.end}`)).size, "acctPeriodsOne", "acctPeriods")
             : "";
-        const toggle = html`<button
-          type="button"
-          class="acct-toggle"
-          data-act="toggleAcct"
-          data-acc="${a}"
-          aria-expanded="${String(open)}"
-          title="${open ? t("collapse") : t("acctShowSplits")}"
-        >
-          ${raw(icon(open ? "chevD" : "chevR"))}<b>${a || "?"}</b>
-        </button>`;
-        const head = html`<div class="acct-row">
-          ${raw(toggle)}<span class="acct-owner">${raw(owner)}</span> <span class="small muted acct-sum">${summary}</span>
-        </div>`;
-        const find = [a, cur, ...idx.map((i) => d.splits[i]!.owner)].join(" ").toLowerCase();
-        const hide = this.hiddenUnless(find);
-        if (!open) return html`<div class="acct" data-find="${find}" ${raw(hide)}>${raw(head)}</div>`;
+        const used = inData.has(a);
+        const head = html`<tr class="${open ? "open" : ""}" data-find="${find}" ${raw(hide)}>
+          <td>${raw(a ? html`${a}` : html`<span class="bad-text">${t("splitNoAccount")}</span>`)}</td>
+          <td>${cur}</td>
+          <td class="small muted">${summary}</td>
+          <td class="row-actions">
+            <button
+              type="button"
+              class="sm ghost icon-only ${open ? "on" : ""}"
+              data-act="toggleAcct"
+              data-acc="${a}"
+              title="${t("edit")}"
+              aria-label="${t("edit")}"
+              aria-expanded="${String(open)}"
+            >
+              ${raw(icon("pencil"))}
+            </button>
+            <button
+              type="button"
+              class="sm ghost icon-only"
+              data-act="delAcct"
+              data-acc="${a}"
+              aria-label="${t("remove")}"
+              ${raw(used ? html`disabled title="${t("acctInUse")}"` : html`title="${t("remove")}"`)}
+            >
+              ${raw(icon("trash"))}
+            </button>
+          </td>
+        </tr>`;
+        if (!open) return head;
         // one line per period (same start and end): the dates once, then each member's share
         const periods = new Map<string, number[]>();
         for (const i of idx) {
@@ -884,20 +1016,34 @@ export class SettingsScreen {
               ><span></span>
             </div>`
           : "";
-        const body = html`<div class="acct-body">
-          ${raw(idx.length ? labels + rows : html`<p class="small muted">${fmt("acctNoSplitsYet", { o: cur || "?" })}</p>`)}
-          ${raw(a ? html`<button type="button" class="sm primary" data-act="addSplit" data-acc="${a}">${raw(icon("plus"))}${t("addSplit")}</button>` : "")}
-        </div>`;
-        return html`<div class="acct open" data-find="${find}" ${raw(hide)}>${raw(head)}${raw(body)}</div>`;
+        const body = html`<tr class="row-editor" data-find="${find}" ${raw(hide)}>
+          <td colspan="4">
+            ${raw(a ? html`<label class="field acct-owner"><span>${t("acctOwner")}</span>${raw(owner)}</label>` : "")}
+            <div class="acct-body">
+              ${raw(idx.length ? labels + rows : html`<p class="small muted">${fmt("acctNoSplitsYet", { o: cur || "?" })}</p>`)}
+              ${raw(a ? html`<button type="button" class="sm primary" data-act="addSplit" data-acc="${a}">${raw(icon("plus"))}${t("addSplit")}</button>` : "")}
+            </div>
+          </td>
+        </tr>`;
+        return head + body;
       })
       .join("");
     return html`<p class="muted">${t("acctOwnersBody")} ${t("splitsBody")}</p>
       ${raw(this.filterBox("acctFilterHint"))}
-      <div class="acct-list">
-        <div class="acct-row acct-labels small muted">
-          <span>${t("colAccount")}</span><span>${t("acctOwner")}</span><span>${t("splitsTitle")}</span>
-        </div>
-        ${raw(lines)}
+      <div class="table-wrap">
+        <table class="row-list acct-list">
+          <thead>
+            <tr>
+              <th>${t("colAccount")}</th>
+              <th>${t("acctOwner")}</th>
+              <th>${t("splitsTitle")}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${raw(lines)}
+          </tbody>
+        </table>
       </div>`;
   }
 
@@ -981,7 +1127,7 @@ export class SettingsScreen {
       <p class="muted">${t("profilesBody")}</p>
       ${raw(how)} ${raw(this.filterBox("profileFilterHint"))}
       <div class="table-wrap">
-        <table class="profile-list">
+        <table class="row-list profile-list">
           <thead>
             <tr>
               <th>${t("fieldName")}</th>
@@ -1168,6 +1314,16 @@ export class SettingsScreen {
         this.render();
         break;
       }
+      case "delAcct": {
+        // only an account without transactions (its trash is disabled otherwise)
+        const acc = btn.dataset.acc ?? "";
+        delete d.accountOwners[acc];
+        d.splits = d.splits.filter((x) => x.account !== acc);
+        this.openAccts.delete(acc);
+        this.preview = null;
+        this.render();
+        break;
+      }
       case "toggleAcct": {
         const acc = btn.dataset.acc ?? "";
         if (this.openAccts.has(acc)) this.openAccts.delete(acc);
@@ -1181,7 +1337,7 @@ export class SettingsScreen {
         this.openAccts.add(acc);
         this.preview = null;
         this.render();
-        this.root.querySelector<HTMLInputElement>(`.acct.open [data-gdate="start"][data-group="${d.splits.length - 1}"]`)?.focus();
+        this.root.querySelector<HTMLInputElement>(`.acct-list [data-gdate="start"][data-group="${d.splits.length - 1}"]`)?.focus();
         break;
       }
       case "add": {
@@ -1204,15 +1360,17 @@ export class SettingsScreen {
           });
         }
         this.preview = null;
-        this.render();
-        // the new row: last in the list, wherever the table shows it
+        // the new row: last in the list, wherever the table shows it, with its inputs open
         const added = this.listOf(tab).length - 1;
+        this.openEdit[tab] = added;
+        this.render();
         this.root.querySelector<HTMLInputElement>(`.edit-table tr[data-row="${added}"] input`)?.focus();
         break;
       }
       case "del":
         this.listOf(tab).splice(i, 1);
         if (tab === "fixes") this.openFix = null;
+        this.openEdit[tab] = undefined;
         this.preview = null;
         this.render();
         break;
@@ -1222,6 +1380,9 @@ export class SettingsScreen {
         const j = btn.dataset.act === "up" ? i - 1 : i + 1;
         if (j < 0 || j >= list.length) return;
         [list[i], list[j]] = [list[j]!, list[i]!];
+        // the open editor follows its item
+        if (this.openEdit[tab] === i) this.openEdit[tab] = j;
+        else if (this.openEdit[tab] === j) this.openEdit[tab] = i;
         this.preview = null;
         this.render();
         break;
@@ -1237,6 +1398,11 @@ export class SettingsScreen {
         this.session.change((proj) => restoreTransaction(proj, tx));
         break;
       }
+      case "edit":
+        this.openEdit[tab] = this.openEdit[tab] === i ? undefined : i;
+        this.render();
+        this.root.querySelector<HTMLElement>(".row-editor input, .row-editor select")?.focus();
+        break;
       case "editFix":
         this.openFix = this.openFix === i ? null : i;
         this.render();
@@ -1274,6 +1440,7 @@ export class SettingsScreen {
           this.draft = this.load(p);
           this.preview = null;
           this.openFix = null;
+          this.openEdit = {};
           if (this.session.state.error) this.session.showError("");
           else this.render();
         });

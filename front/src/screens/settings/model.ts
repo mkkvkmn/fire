@@ -13,9 +13,9 @@ export { parseNumber };
 export type Tab = "rules" | "splits" | "fixes" | "targets" | "profiles" | "scripts";
 export const TABS: [Tab, TextKey][] = [
   ["rules", "tabRules"],
-  ["splits", "tabSplits"],
   ["fixes", "tabFixes"],
   ["targets", "tabTargets"],
+  ["splits", "tabSplits"],
   ["profiles", "tabProfiles"],
   ["scripts", "tabScripts"],
 ];

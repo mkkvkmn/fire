@@ -1,6 +1,7 @@
 // Shared state of the report pages: the filter bar (owner, period, comparison, unit), the
 // report model cached per project revision, and click-through into Tapahtumat.
-import { Model, type RowFilter } from "../analytics/measures";
+import { Model, targetMatches, type RowFilter } from "../analytics/measures";
+import type { LedgerRow } from "../engine/types";
 import { latestMonth, resolvePeriod, type Comparison, type Period, type Preset } from "../analytics/period";
 import type { Session } from "./session";
 
@@ -19,8 +20,11 @@ export interface ReportFilters {
 /** What Tapahtumat shows after a click on a number. */
 export interface Drill {
   filter: RowFilter;
-  period: Period;
+  /** The rows' period; without one, the period chosen in the picker (it stays as it is). */
+  period?: Period;
   rowType?: "Actual" | "Target";
+  /** A target's name: the rows that target covers (its lines' owners, classes and months). */
+  target?: string;
 }
 
 const KEY = "fire.reportFilters";
@@ -82,6 +86,20 @@ export class ReportState {
   /** The target rows seen as a model, so any measure can be read for the targets. */
   targetModel(): Model | null {
     return this.model() ? this.cache!.targets : null;
+  }
+
+  /** The member the reports show ("" = every member), after a member no longer in the data falls back to everyone. */
+  shownOwner(): string {
+    return this.model() ? this.cache!.owner : "";
+  }
+
+  /**
+   * The rows behind a target in a period, for the member the reports show: the same rows its
+   * Tunnusluvut card sums, so the card, its Tapahtumat link and the Tavoitteet count agree.
+   */
+  targetRows(name: string, p: Period): LedgerRow[] {
+    const m = this.model();
+    return m ? targetMatches(m, this.cache!.targets, p, name) : [];
   }
 
   period(): Period | null {

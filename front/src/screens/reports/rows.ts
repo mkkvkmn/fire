@@ -53,7 +53,9 @@ export class RowsScreen {
       first: () => this.state.model()?.firstMonth ?? "",
       last: () => this.state.model()?.lastMonth ?? "",
       onChange: (from, to) => {
-        this.state.drill = null;
+        // a click-through's filter stays; only its period follows the picker
+        const d = this.state.drill;
+        this.state.drill = d ? (d.period ? { ...d, period: { from, to } } : d) : null;
         this.state.set({ preset: "custom", custom: { from, to } });
       },
     });
@@ -117,7 +119,7 @@ export class RowsScreen {
     const drill = this.state.drill;
     const p: Period = drill?.period ?? barPeriod;
     const months = new Set(monthsBetween(p.from, p.to));
-    const pool = drill?.rowType === "Target" ? m.targets : m.rows;
+    const pool = drill?.target !== undefined ? this.state.targetRows(drill.target, p) : drill?.rowType === "Target" ? m.targets : m.rows;
     const filter: RowFilter = { ...this.local, ...(drill?.filter ?? {}) };
     const q = this.query.trim().toLowerCase();
     const src = q ? this.sources() : null;
@@ -216,7 +218,8 @@ export class RowsScreen {
     if (filter.categories) chips.push(chip(filter.categories.join(" + "), "drill"));
     if (filter.description) chips.push(chip(filter.description, "drill"));
     if (this.query.trim()) chips.push(chip(`${t("searchChip")}: ${this.query.trim()}`, "query"));
-    if (drill) chips.push(chip(`${t("periodChip")}: ${drill.period.from} – ${drill.period.to}`, "drill"));
+    // a click-through's dates are in the period picker: one place for the period, no chip for it
+    if (drill?.target !== undefined) chips.push(chip(`${t("goalChip")}: ${drill.target}`, "drill"));
     const lockedThrough = this.session.state.project?.getSettings().lockedThrough ?? "";
     const fixList = this.session.state.project?.getFixes() ?? [];
     const fixIds = new Set(fixList.map((f) => f.id));
@@ -344,14 +347,31 @@ export class RowsScreen {
     this.picker.mount(this.root.querySelector<HTMLElement>("[data-period]"));
   }
 
+  /** Ends a click-through, keeping the period the picker shows, so the dates do not jump. */
+  private endDrill(): void {
+    const period = this.state.drill?.period;
+    this.state.drill = null;
+    if (period) this.state.set({ preset: "custom", custom: period });
+    else this.render();
+  }
+
   private onClick(e: Event): void {
     const el = e.target as HTMLElement;
     const chipBtn = el.closest<HTMLButtonElement>("button[data-chip]");
     if (chipBtn) {
       const k = chipBtn.dataset.chip!;
+      const drill = this.state.drill;
       if (k === "query") this.query = "";
-      else if (k === "drill") this.state.drill = null;
-      else (this.local as Record<string, string | undefined>)[k] = undefined;
+      else if (k === "drill") return this.endDrill();
+      else {
+        (this.local as Record<string, string | undefined>)[k] = undefined;
+        // a filter that came with the click: take it out of the click-through too
+        if (drill && drill.filter[k as keyof RowFilter] !== undefined) {
+          const filter = { ...drill.filter, [k]: undefined };
+          if (drill.target === undefined && Object.values(filter).every((v) => v === undefined)) return this.endDrill();
+          this.state.drill = { ...drill, filter };
+        }
+      }
       this.render();
       return;
     }
@@ -368,8 +388,7 @@ export class RowsScreen {
       case "clear":
         this.local = {};
         this.query = "";
-        this.state.drill = null;
-        this.render();
+        this.endDrill();
         break;
       case "more":
         this.limit += PAGE;

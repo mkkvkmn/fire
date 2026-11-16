@@ -177,3 +177,69 @@ export function lastInvestmentMonth(m: Model): string | null {
   for (let i = months.length - 1; i >= 0; i--) if (hasInvestments(m, months[i]!)) return months[i]!;
   return null;
 }
+
+/** One named target in a period: its goal and the actual amount of the rows it covers. */
+export interface TargetProgress {
+  name: string;
+  /** Sum of the target's monthly amounts in the period (income +, spending -). */
+  goal: number;
+  /** Sum of the actual rows matching any of the target's lines: owner, class, category, sub-category. */
+  actual: number;
+  /** A net spending target (goal below zero): staying under it is good. */
+  lowerIsBetter: boolean;
+}
+
+/**
+ * Progress of every target with rows in the period. A target is a name with one or more lines
+ * (v2's "Säästötavoite" is income +1000 and spending -500), so goal and actual are signed sums:
+ * a savings target compares income minus spending, a dividend target only dividends. An empty
+ * category or sub-category covers all of them. A line counts only its owner's rows in its own
+ * months, so one member's target is not compared with the whole household, nor a 2026 budget
+ * with 2025. `targets` holds the target rows as actual rows.
+ */
+export function targetProgress(m: Model, targets: Model, p: Period): TargetProgress[] {
+  const byName = targetsIn(targets, p);
+  const rows = byName.size ? m.rowsIn(p) : [];
+  return [...byName]
+    .map(([name, t]) => {
+      let actual = 0;
+      for (const r of rows) if (t.covers(r)) actual += r.amount;
+      return { name, goal: t.goal, actual, lowerIsBetter: t.goal < 0 };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/** The actual rows behind one target in a period: the rows Tapahtumat lists for it. */
+export function targetMatches(m: Model, targets: Model, p: Period, name: string): LedgerRow[] {
+  const t = targetsIn(targets, p).get(name);
+  return t ? m.rowsIn(p).filter((r) => t.covers(r)) : [];
+}
+
+/** Each target of the period by name: its goal, and which actual rows it covers. */
+function targetsIn(targets: Model, p: Period): Map<string, { goal: number; covers: (r: LedgerRow) => boolean }> {
+  type Line = { owner: string; f: RowFilter; months: Set<string> };
+  const byName = new Map<string, { goal: number; lines: Map<string, Line> }>();
+  for (const r of targets.rowsIn(p)) {
+    let t = byName.get(r.description);
+    if (!t) byName.set(r.description, (t = { goal: 0, lines: new Map() }));
+    t.goal += r.amount;
+    const key = JSON.stringify([r.owner, lc(r.class), lc(r.category), lc(r.subCategory)]);
+    let line = t.lines.get(key);
+    if (!line) {
+      const f: RowFilter = {
+        class: lc(r.class),
+        ...(r.category ? { category: r.category } : {}),
+        ...(r.subCategory ? { subCategory: r.subCategory } : {}),
+      };
+      t.lines.set(key, (line = { owner: r.owner, f, months: new Set() }));
+    }
+    line.months.add(r.month);
+  }
+  return new Map(
+    [...byName].map(([name, t]) => {
+      const lines = [...t.lines.values()];
+      const covers = (r: LedgerRow) => lines.some((l) => l.owner === r.owner && l.months.has(r.month) && matches(r, l.f));
+      return [name, { goal: t.goal, covers }];
+    }),
+  );
+}

@@ -35,6 +35,7 @@ CI (`.github/workflows/ci.yml`) runs setup, check, audit and build on every push
 - Commit only when the user asks. Ask before every push.
 - Never read `.env` files.
 - Code is done only when `npm run check` passes.
+- A UI change is done only when it has been checked in the browser. Look at every state a user can reach (open dropdowns, hover, empty and error states) at desktop and phone width, and judge it critically, not just that it renders. Test on a second dev server port (another origin), so the user's working copy is never touched.
 - No em dash in any writing (code comments, docs, UI text). Use a colon, comma or parentheses.
 - The v2 Python pipeline is no longer in the tree. Where v2 behaviour matters, read it from git history (`git show f515f7b:data_pipeline/...`, the last v2 commit on `main`). The parity tests over `front/fixtures/v2` must keep passing.
 - `work/` (plans, logs, reviews) is local and not in git.

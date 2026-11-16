@@ -100,8 +100,8 @@ const status = el("status");
 
 const welcome = new WelcomeScreen(el("screen-welcome"), session, flow);
 const importScreen = new ImportScreen(el("screen-import"), session, flow);
-const settingsScreen = new SettingsScreen(el("screen-settings"), session);
 const reports = new ReportState(session);
+const settingsScreen = new SettingsScreen(el("screen-settings"), session, reports);
 const overview = new OverviewScreen(el("screen-overview"), reports);
 const rowsScreen = new RowsScreen(el("screen-rows"), reports, session);
 const projectScreen = new ProjectScreen(el("screen-project"), session, () => flow.staging.files.length);

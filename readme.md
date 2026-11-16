@@ -12,12 +12,13 @@ FiRe tracks your household's finances. It runs in your browser, and your data ne
 
 ## What you get
 
-- **Clear reports.** Follow your income, spending, savings rate, wealth and investments. Every number opens the transactions behind it.
-- **Made for a household.** Every account has an owner, and a shared account can be split between members. Each person sees their own share.
-- **Easy guided import.** Bring in the CSV and Excel files from your bank and broker. Common Finnish formats work out of the box, and a new format takes one guided setup.
+- **Clear reports.** Follow your income, spending, savings rate, wealth and investments.
+- **Made for a household.** Split account transactions among family members for common accounts.
+- **Easy guided import.** Bring in the CSV and Excel files from your bank and broker.
+- **Set targets.** Set and track your financial goals. 
 - **Your FiRe date.** See when your investments could cover your living costs.
-- Migration from FiRe v2.
-- Finnish and English.
+- **Multi language.** Finnish and English available.
+- **Easy migration.** From FiRe v2.
 
 ## Run it locally
 
