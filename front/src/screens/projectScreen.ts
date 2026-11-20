@@ -39,6 +39,11 @@ export class ProjectScreen {
     private readonly session: Session,
     /** Number of added files that are not imported yet (they are lost when the project closes). */
     private readonly stagedFiles: () => number = () => 0,
+    /** Unsaved Settings edits: a warning for the close dialog, and a way back to them when the user cancels. */
+    private readonly settingsEdits: { unsavedNote(): string | undefined; showEdits(): void } = {
+      unsavedNote: () => undefined,
+      showEdits: () => {},
+    },
   ) {
     const first = () => this.monthRange()[0];
     const last = () => this.monthRange()[1];
@@ -388,12 +393,15 @@ export class ProjectScreen {
     const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-a]");
     if (!btn || btn.disabled) return;
     const s = this.session;
+    const edits = this.settingsEdits.unsavedNote();
     const guard = () => {
       const staged = this.stagedFiles();
       return ask(`${t("closeAsk")} ${this.closeText()}`, {
         ok: t("closeProject"),
-        danger: s.state.dirty || !s.state.fileName || staged > 0,
-        note: staged > 0 ? plural(staged, "closeLosesStagedOne", "closeLosesStagedMany") : undefined,
+        danger: s.state.dirty || !s.state.fileName || staged > 0 || edits !== undefined,
+        note:
+          [staged > 0 ? plural(staged, "closeLosesStagedOne", "closeLosesStagedMany") : "", edits ?? ""].filter(Boolean).join(" ") ||
+          undefined,
       });
     };
     switch (btn.dataset.a) {
@@ -412,8 +420,10 @@ export class ProjectScreen {
         s.download();
         break;
       case "close":
-        void (s.state.sample ? ask(t("confirmLeaveSample"), { ok: t("closeProject") }) : guard()).then(async (yes) => {
-          if (!yes) return;
+        void (
+          s.state.sample ? ask(t("confirmLeaveSample"), { ok: t("closeProject"), danger: edits !== undefined, note: edits }) : guard()
+        ).then(async (yes) => {
+          if (!yes) return this.settingsEdits.showEdits();
           await s.close();
           location.hash = "#/";
         });

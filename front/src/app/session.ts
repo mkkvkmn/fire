@@ -6,6 +6,7 @@ import { matchProfile } from "../engine/profiles";
 import { demoData, type DemoData, type DemoLang } from "../project/demo";
 import { migrateV2, type MigrateOptions, type MigrateResult, type V2Found } from "../project/migrate";
 import { ensureAccountOwners, importFile, rebuildLedger, setLock } from "../project/service";
+import { syncCategories } from "../project/categories";
 import { Project, ProjectFileError } from "../storage/project";
 import {
   canSaveInPlace,
@@ -21,6 +22,8 @@ import {
 } from "../storage/projectFile";
 import { loadSqlJs } from "../storage/sqljs";
 import { fmt } from "../ui/texts";
+import { RESERVED_PATHS } from "../engine/reserved";
+import { withPaths } from "../engine/categories";
 import { clearWorkingCopy, loadWorkingCopy, saveWorkingCopy } from "../storage/workingCopy";
 
 export interface SessionState {
@@ -92,6 +95,8 @@ export class Session {
     this.handle = handle;
     // projects from before account owners: write down who owns each account today (no row changes)
     if (ensureAccountOwners(project).length > 0 && !sample) dirty = true;
+    // a list may lack names that rules and rows use: an older FiRe keeps the list in the file but never adds to it
+    if (syncCategories(project) && !sample) dirty = true;
     this.set({
       project,
       fileName,
@@ -130,7 +135,7 @@ export class Session {
   newProject(defaultOwner: string, projectName = ""): Promise<void> {
     return this.run(async () => {
       const p = Project.create(await this.sql());
-      p.setSettings({ defaultOwner, projectName });
+      p.setSettings({ defaultOwner, projectName, categories: startList() });
       this.replace(p, "", null, true);
       await rememberHandle(null);
       await this.persistNow();
@@ -190,6 +195,8 @@ export class Session {
     let out: { project: Project; result: MigrateResult } | null = null;
     await this.run(async () => {
       const p = Project.create(await this.sql());
+      // the v2 names join the list as the migration saves them (rebuildLedger)
+      p.setSettings({ categories: startList() });
       try {
         out = { project: p, result: migrateV2(p, found, opts) };
       } catch (e) {
@@ -295,7 +302,6 @@ export class Session {
     return this.run(async () => {
       this.state.project?.close();
       this.handle = null;
-      forgetReportOwner();
       this.set({
         project: null,
         fileName: "",
@@ -387,16 +393,12 @@ function setupDemo(p: Project, d: DemoData, name: string, lang: DemoLang): void 
     members: [d.members[1]],
     projectName: name,
     language: lang,
+    categories: startList(),
   });
+  syncCategories(p);
 }
 
-/** The report filters are kept in this browser (app/reportState.ts); the chosen member is a name. */
-function forgetReportOwner(): void {
-  try {
-    const key = "fire.reportFilters";
-    const v = JSON.parse(localStorage.getItem(key) ?? "null") as Record<string, unknown> | null;
-    if (v && v.owner) localStorage.setItem(key, JSON.stringify({ ...v, owner: "" }));
-  } catch {
-    // nothing kept, or storage blocked
-  }
+/** A new project's category list: the reserved names. The names its rules and rows use join it as they are saved. */
+function startList() {
+  return withPaths([], RESERVED_PATHS);
 }

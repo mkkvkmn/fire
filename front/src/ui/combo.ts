@@ -27,9 +27,15 @@ export function combo(
   </div>`;
 }
 
+/** An option with a hint shown after it, which typing also finds ("varattu", "reserved: earned income"). */
+export interface ComboOption {
+  value: string;
+  hint?: string;
+}
+
 export interface ComboSource {
   /** Options for a combo, given the element it sits in (to read neighbouring fields). */
-  options(name: string, el: HTMLElement): string[];
+  options(name: string, el: HTMLElement): (string | ComboOption)[];
   /** Label of what is added: "kategoria", "alakategoria". */
   noun(name: string): string;
   /** Called after a value is picked or typed. */
@@ -46,11 +52,14 @@ export function bindCombos(root: HTMLElement, source: ComboSource): void {
   const render = (input: HTMLInputElement, typed = true) => {
     const { box, list, name } = parts(input);
     const q = input.value.trim().toLowerCase();
-    const all = source.options(name, box);
-    const hits = typed ? all.filter((o) => o.toLowerCase().includes(q)) : all;
-    const exact = all.some((o) => o.toLowerCase() === q);
+    const all = source.options(name, box).map((o) => (typeof o === "string" ? { value: o } : o));
+    const hits = typed ? all.filter((o) => `${o.value} ${o.hint ?? ""}`.toLowerCase().includes(q)) : all;
+    const exact = all.some((o) => o.value.toLowerCase() === q);
     const items = hits.map(
-      (o) => html`<button type="button" role="option" class="${o.toLowerCase() === q ? "current" : ""}" data-pick="${o}">${o}</button>`,
+      (o) =>
+        html`<button type="button" role="option" class="${o.value.toLowerCase() === q ? "current" : ""}" data-pick="${o.value}">
+          ${o.value}${raw(o.hint ? html`<span class="combo-hint">${o.hint}</span>` : "")}
+        </button>`,
     );
     // adding a new value comes first, with a line under it, as in every list that can add
     if (q && !exact)

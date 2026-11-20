@@ -40,6 +40,8 @@ function link(route: Route, label: string, ic: IconName, active: boolean, extra 
 export function stepState(step: FlowStep, ctx: ShellContext): "on" | "done" | "" {
   if (ctx.route === "import" && step === ctx.step) return "on";
   if (step === "fixes" && ctx.staged) return "";
+  // a file not read yet (no file profile, or an error) may still bring rows to categorise
+  if (step === "classify" && ctx.counts.files > 0) return "";
   if (!ctx.hasRows && !ctx.staged) return "";
   return ctx.counts[step] === 0 ? "done" : "";
 }
@@ -51,6 +53,7 @@ function badge(n: number): string {
 /** The settings tabs, in the order of the settings screen. */
 const SETTINGS_TABS: [string, TextKey][] = [
   ["rules", "tabRules"],
+  ["categories", "tabCategories"],
   ["fixes", "tabFixes"],
   ["targets", "tabTargets"],
   ["splits", "tabSplits"],
@@ -92,7 +95,11 @@ export function sidebar(ctx: ShellContext): string {
         >
         ${raw(
           ctx.staged
-            ? html`<a class="small" href="#/import/fixes" title="${t("stagedHelp")}"><span class="dot warn"></span>${t("stateStaged")}</a>`
+            ? html`<a class="small" href="#/import/fixes" title="${t("stagedHelp")}"
+                ><span class="dot warn"></span><span class="long">${t("stateStaged")}</span>${raw(icon("import"))}<span class="short"
+                  >${t("stateStagedShort")}</span
+                ></a
+              >`
             : "",
         )}
       </div>`;

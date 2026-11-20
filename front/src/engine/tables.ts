@@ -106,9 +106,11 @@ export function sheetNames(bytes: Uint8Array): string[] {
   return XLSX.read(bytes, { type: "array", bookSheets: true }).SheetNames;
 }
 
-export function parseXlsx(bytes: Uint8Array, opts: { sheet?: string; skipRows?: number } = {}): Table {
+/** maxRows is the row limit; only a test passes it, to avoid a 200 000 row fixture. */
+export function parseXlsx(bytes: Uint8Array, opts: { sheet?: string; skipRows?: number; maxRows?: number } = {}): Table {
   checkFileSize(bytes);
-  const wb = XLSX.read(bytes, { type: "array", cellDates: false, cellNF: true, sheetRows: MAX_SHEET_ROWS + (opts.skipRows ?? 0) + 1 });
+  const sheetRows = (opts.maxRows ?? MAX_SHEET_ROWS) + (opts.skipRows ?? 0) + 1;
+  const wb = XLSX.read(bytes, { type: "array", cellDates: false, cellNF: true, sheetRows });
   const name = opts.sheet && wb.SheetNames.includes(opts.sheet) ? opts.sheet : wb.SheetNames[0];
   const ws = name ? wb.Sheets[name] : undefined;
   if (!ws || !ws["!ref"]) return { headers: [], rows: [] };
@@ -122,6 +124,11 @@ export function parseXlsx(bytes: Uint8Array, opts: { sheet?: string; skipRows?: 
     if (at.r > lastRow) lastRow = at.r;
     if (at.c > lastCol) lastCol = at.c;
   }
+  // sheetRows keeps the sheet rows 1..sheetRows (absolute) and leaves the full range in !fullref.
+  // dropped counts sheet rows past the limit, blank rows included. A crafted range with no cells
+  // behind it also warns: a false warning is better than silent loss.
+  const full = ws["!fullref"] ? XLSX.utils.decode_range(ws["!fullref"]) : range;
+  const cut = Math.max(0, full.e.r + 1 - sheetRows);
   range.e.r = Math.min(range.e.r, lastRow);
   range.e.c = Math.min(range.e.c, lastCol, range.s.c + MAX_SHEET_COLUMNS - 1);
   const matrix: string[][] = [];
@@ -133,7 +140,8 @@ export function parseXlsx(bytes: Uint8Array, opts: { sheet?: string; skipRows?: 
     }
     matrix.push(row);
   }
-  return toTable(matrix, opts.skipRows ?? 0);
+  const table = toTable(matrix, opts.skipRows ?? 0);
+  return cut > 0 ? { ...table, cut: { kept: table.rows.length, dropped: cut } } : table;
 }
 
 function cellText(cell: XLSX.CellObject | undefined): string {

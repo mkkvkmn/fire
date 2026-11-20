@@ -6,7 +6,9 @@ import type { Project } from "../../storage/project";
 import { formatAmount, formatCount, formatDate } from "../../ui/format";
 import { html, raw } from "../../ui/html";
 import { icon } from "../../ui/icons";
-import { fmt, t, type TextKey } from "../../ui/texts";
+import { RESERVED } from "../../engine/reserved";
+import { reservedLabel, reservedWhat } from "../../ui/reserved";
+import { fmt, t } from "../../ui/texts";
 
 export /** What a fix changes, as "field: before → after" lines; before is the transaction without fixes. */
 function fixChanges(f: Fix, orig: FixValues | null): string {
@@ -45,19 +47,6 @@ function fixChanges(f: Fix, orig: FixValues | null): string {
   return out.join("") || html`<span class="muted small">${t("fixNoChange")}</span>`;
 }
 
-/** Names the reports look for in the classification. Matched without case; any other name is free. */
-const RESERVED: { name: string; level: "class" | "category" | "subCategory"; what: TextKey }[] = [
-  { name: "tulot", level: "class", what: "resTulot" },
-  { name: "menot", level: "class", what: "resMenot" },
-  { name: "varat", level: "class", what: "resVarat" },
-  { name: "velat", level: "class", what: "resVelat" },
-  { name: "pois", level: "class", what: "resPois" },
-  { name: "ansiotulot", level: "category", what: "resAnsiotulot" },
-  { name: "pääomatulot", level: "category", what: "resPaaomatulot" },
-  { name: "sijoitusvarallisuus", level: "category", what: "resSijoitusvarallisuus" },
-  { name: "sijoitusvelat", level: "category", what: "resSijoitusvelat" },
-  { name: "osinkotulot", level: "subCategory", what: "resOsinkotulot" },
-];
 const LEVEL_LABEL = { class: "fieldClass", category: "fieldCategory", subCategory: "fieldSubCategory" } as const;
 
 /** The reserved names, what each drives in the reports, and how many ledger rows use it now. */
@@ -66,9 +55,9 @@ export function reservedNames(p: Project): string {
   const rows = RESERVED.map((r) => {
     const n = ledger.filter((x) => x[r.level].toLowerCase() === r.name).length;
     return html`<tr>
-      <td class="mono">${r.name}</td>
+      <td><span class="mono">${r.name}</span>${raw(reservedLabel(r) ? html`<div class="small muted">${reservedLabel(r)}</div>` : "")}</td>
       <td class="muted">${t(LEVEL_LABEL[r.level])}</td>
-      <td>${t(r.what)}</td>
+      <td>${reservedWhat(r)}</td>
       <td class="num ${n ? "" : "warn-text"}">${n ? fmt("resRows", { n: formatCount(n) }) : t("resUnused")}</td>
     </tr>`;
   }).join("");

@@ -16,6 +16,7 @@ import type { Project } from "../../storage/project";
 import { formatAmount, formatDate } from "../../ui/format";
 import { html, raw } from "../../ui/html";
 import { icon } from "../../ui/icons";
+import { rowCutWarning } from "../../ui/rowCut";
 import { fmt, plural, t } from "../../ui/texts";
 import { infoPop } from "../settings/parts";
 import { draftProfile } from "../wizard";
@@ -349,7 +350,7 @@ export class ProfileEditor {
       <div class="map-top">${raw(head)}</div>
       <!-- the source first: the profile, and the reading settings that decide what the columns are -->
       <div class="map-source">${raw(profile)}${raw(this.readingRow())}</div>
-      ${raw(this.statusLine(cols.length, tb.rows.length))} ${raw(check)} ${raw(table)}
+      ${raw(this.statusLine(cols.length, tb.rows.length, tb.cut))} ${raw(check)} ${raw(table)}
       <div class="map-foot">
         <div class="map-fields">
           <label class="field"><span>${t("fieldSign")}</span>${raw(sign)}</label>
@@ -364,7 +365,7 @@ export class ProfileEditor {
    * Viesti" for a field set (several columns are joined, in the file's order), an orange chip for a
    * field every profile needs, a quiet one for an optional field left out.
    */
-  private statusLine(columns: number, rows: number): string {
+  private statusLine(columns: number, rows: number, cut: Table["cut"]): string {
     const d = this.draft;
     const chip = (state: "ok" | "todo" | "off", text: string) =>
       html`<li class="chip-${state}">
@@ -396,6 +397,7 @@ export class ProfileEditor {
         ${raw(amount)} ${raw(field(t("fieldInfo"), d.columns.info, false))} ${raw(account)}
       </ul>
       <span class="small muted">${plural(columns, "colsCountOne", "colsCount")} · ${fmt("rowsCount", { n: rows })}</span>
+      ${raw(rowCutWarning(cut))}
     </div>`;
   }
 

@@ -3,13 +3,13 @@
 // single rows, a preview of every staged row, and Tuo rivit). Nothing is written to the project's
 // rows before Tuo rivit; rules and file profiles are saved as they are made.
 import { ask } from "../../ui/dialog";
-import type { FlowStep, ImportFlow, RowGroup } from "../../app/importFlow";
+import { matchesSearch, visibleGroups, type ClassifiedLine, type FlowStep, type ImportFlow, type RowGroup } from "../../app/importFlow";
 import type { Session } from "../../app/session";
-import { compileRules, ruleMatches } from "../../engine/categorize";
-import type { Fix, FixPart, LedgerRow, Rule } from "../../engine/types";
+import { amountMatchOf, type Categorizable } from "../../engine/categorize";
+import type { AmountMatch, Fix, FixPart, LedgerRow, Rule, SourceRow } from "../../engine/types";
+import type { RuleOrigin } from "../settingsScreen";
 import {
   acceptLate,
-  addRule,
   decideDuplicates,
   deleteFix,
   dropInvalid,
@@ -18,34 +18,45 @@ import {
   saveProfile,
   updateProfile,
 } from "../../project/service";
+import type { Project } from "../../storage/project";
 import { pickWithInput } from "../../storage/projectFile";
-import { bindCombos, combo } from "../../ui/combo";
+import { bindCombos, combo, type ComboOption } from "../../ui/combo";
+import { categoryOptions } from "../../ui/reserved";
+import { RESERVED_PATHS } from "../../engine/reserved";
+import { listOrMigration } from "../../project/categories";
 import { dupSection, invalidSection, lateSection, orphanSection, ownerSection } from "./checks";
 import { formatAmount, formatCount, formatDate } from "../../ui/format";
 import { CLASSES, CLASS_LABEL, classification } from "../../ui/classification";
 import { html, raw } from "../../ui/html";
+import { rowCutWarning } from "../../ui/rowCut";
 import { parseNumber } from "../../ui/numberField";
 import { icon } from "../../ui/icons";
 import { stepper, STEP_LABEL, type ShellContext } from "../../ui/shell";
 import { fmt, plural, t, type TextKey } from "../../ui/texts";
+import { refocusShowMore, showMoreFoot } from "../../ui/showMore";
 import { showToast } from "../../ui/toast";
 import { ProfileEditor, type Role } from "./profileEditor";
 
 const ACCEPT = ".csv,.txt,.tsv,.xlsx,.xls,.xlsm";
-const PREVIEW_PAGE = 50;
+/** Rows (staged rows, groups) a table draws at first and adds per "Show more". */
+const PAGE = 50;
 
 type Quick = "all" | "fixed" | "dup" | "late";
-
-function regexEscape(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
 
 export class ImportScreen {
   /** Open file profile editor: for a staged file (key), or for a stored profile (key -1). */
   private editor: { key: number; profileId?: string; ed: ProfileEditor } | null = null;
-  /** Group whose rule form is open, and the form's values. */
-  private ruleFor: string | null = null;
-  private ruleDraft: Rule | null = null;
+  /** Group whose Luo luokittelusääntö button opened the rule editor (Asetukset); the focus returns to it. */
+  private ruleFor: { key: string; id: string; act: string; index: number } | null = null;
+  /** "Luokiteltu tässä tuonnissa" shows its groups. */
+  private showClassified = false;
+  /** How many classified lines are drawn ("Näytä lisää" adds a page). */
+  private classifiedLimit = PAGE;
+  /** The last rule saved here: its number, and the rows and groups it took off the list (until the page is left). */
+  private lastSaved: { id: string; rows: number; groups: number } | null = null;
+  /** Search over the Luokittelu groups, and how many of the matching groups are drawn. */
+  private groupQuery = "";
+  private groupLimit = PAGE;
   /** Staged row whose correction (or split) editor is open. */
   private fixFor: { txId: string; mode: "fix" | "split" } | null = null;
   private parts: FixPart[] = [];
@@ -56,22 +67,42 @@ export class ImportScreen {
   /** Filter for the file list: name or file profile. */
   private fileQuery = "";
   private fileFilter = "";
-  private limit = PREVIEW_PAGE;
+  private limit = PAGE;
+  /** The project the searches above were typed for: another project starts them empty. */
+  private searchFor: Project | null = null;
   private ctx: ShellContext | null = null;
 
   constructor(
     private readonly root: HTMLElement,
     private readonly session: Session,
     private readonly flow: ImportFlow,
+    /** Asetukset' rule editor, where Luo luokittelusääntö drafts the new rule. */
+    private readonly rules: {
+      startRule(input: Categorizable & { amountMatch?: AmountMatch }, back: string, extraRows: SourceRow[], origin: RuleOrigin): void;
+      editRule(id: string, back: string, extraRows: SourceRow[], origin: RuleOrigin): void;
+      readonly ruleOverlay: boolean;
+    },
   ) {
     root.addEventListener("click", (e) => void this.onClick(e));
     root.addEventListener("change", (e) => this.onChange(e));
     root.addEventListener("input", (e) => this.onInput(e));
+    // details do not bubble their toggle: listen while capturing. Opening draws the table (lazy).
+    root.addEventListener(
+      "toggle",
+      (e) => {
+        const el = e.target as HTMLDetailsElement;
+        if (!el.matches?.("[data-classified]") || el.open === this.showClassified) return;
+        this.showClassified = el.open;
+        if (el.open) this.redraw();
+      },
+      true,
+    );
     // A stored profile's editor left without saving (back, Peruuta, any other page): its draft goes,
     // so the next visit starts from the saved profile. On the address, as this screen does not
     // render while another page is shown.
     window.addEventListener("hashchange", () => {
       if (this.editor?.key === -1 && !location.hash.startsWith("#/import/files/profile/")) this.editor = null;
+      if (!location.hash.startsWith("#/import/classify")) this.lastSaved = null;
     });
     // Esc is Peruuta in the reading settings' editor (on the document: the focus may be anywhere);
     // not when a combo's open list took it, a dialog is open, or this screen is hidden
@@ -108,6 +139,7 @@ export class ImportScreen {
       this.root.innerHTML = "";
       return;
     }
+    if (this.searchFor !== this.project) this.clearSearches();
     const editKey = ctx.step === "files" && rest.startsWith("edit/") ? Number(rest.slice(5)) : null;
     // "profile/<id>", or "profile/<id>/settings" when opened from Asetukset › Tiedostoprofiilit
     const profilePath = ctx.step === "files" && rest.startsWith("profile/") ? rest.slice(8).split("/") : null;
@@ -125,11 +157,53 @@ export class ImportScreen {
       </div>
       ${raw(stepper(ctx))}${raw(body)}`;
     this.showFiles();
+    this.focusRuleOpener(ctx.step);
+  }
+
+  /**
+   * Back from the rule editor: the focus returns to the button that opened it, or, when its line is
+   * gone (the group left the waiting list), to the group now in its place (the last one; the search
+   * field when none is left).
+   */
+  private focusRuleOpener(step: FlowStep): void {
+    const opener = this.ruleFor;
+    // the editor is still open over this page: it keeps the focus
+    if (opener === null || step !== "classify" || this.rules.ruleOverlay) return;
+    // a save draws this page a few times in a row (the project changed, the checked groups, the
+    // drawer closed): each draw puts the focus back, then it is forgotten
+    queueMicrotask(() => {
+      if (!this.rules.ruleOverlay) this.ruleFor = null;
+    });
+    const table = opener.id ? "table.done-groups" : "table.waiting-groups";
+    const line = [...this.root.querySelectorAll<HTMLElement>(`${table} tbody > tr`)].find(
+      (r) => r.dataset.g === opener.key && (!opener.id || r.dataset.id === opener.id),
+    );
+    const own = line?.querySelector<HTMLElement>(`button[data-imp="${opener.act}"]`);
+    if (own) return own.focus();
+    const waiting = [...this.root.querySelectorAll<HTMLElement>('table.waiting-groups button[data-imp="ruleOpen"]')];
+    const next =
+      waiting.find((b) => b.dataset.g === opener.key) ??
+      (opener.index >= 0 ? waiting[Math.min(opener.index, waiting.length - 1)] : waiting[0]);
+    (next ?? this.root.querySelector<HTMLElement>("input[data-gq]"))?.focus();
   }
 
   /** After a change to the staged files: their derived data is computed again, then views redraw. */
   private rerender(): void {
     this.flow.touch();
+  }
+
+  /** Empties the searches and pages, for a project opened after them. */
+  private clearSearches(): void {
+    this.searchFor = this.project;
+    this.search = "";
+    this.limit = PAGE;
+    this.fileQuery = "";
+    this.fileFilter = "";
+    this.groupQuery = "";
+    this.groupLimit = PAGE;
+    this.classifiedLimit = PAGE;
+    this.showClassified = false;
+    this.lastSaved = null;
   }
 
   /** After a change to this view only (a filter, an open editor, a draft field): redraw, reuse the data. */
@@ -185,7 +259,10 @@ export class ImportScreen {
           f.problems.length > 0 ? fmt("problemRows", { n: f.problems.length }) : "",
         ].filter(Boolean);
         return html`<tr class="${needs ? "needs" : ""}" data-find="${find(f.name, f.profileId)}" data-rank="-1">
-          <td><span class="mono">${f.name}</span>${raw(extra.length ? html`<div class="small muted">${extra.join(" · ")}</div>` : "")}</td>
+          <td>
+            <span class="mono">${f.name}</span
+            >${raw(extra.length ? html`<div class="small muted">${extra.join(" · ")}</div>` : "")}${raw(rowCutWarning(f.cut))}
+          </td>
           <td class="${f.profileId ? "" : "muted"}">${f.profileId ? (profiles.get(f.profileId) ?? f.profileId) : t("notRecognised")}</td>
           <td class="num ${f.profileId ? "" : "muted"}">${f.profileId && !f.error ? formatCount(f.rows.length) : ""}</td>
           <td>${raw(status(f))}</td>
@@ -227,7 +304,7 @@ export class ImportScreen {
         ? ""
         : html`<div class="section-label">${t("filesTitle")}</div>
             <section class="card flush">
-              <div class="filters file-filters">
+              <div class="filters card-filters">
                 <label class="search"
                   >${raw(icon("search"))}<input
                     type="search"
@@ -418,10 +495,27 @@ export class ImportScreen {
 
   private classifyView(): string {
     const data = this.flow.data();
-    const groups = data.groups;
+    // in the order first shown: a group that loses rows to a rule keeps its place
+    const groups = this.flow.ordered(data.groups);
+    // every group has a rule now: a search left from before would only hide the next import's groups
+    if (groups.length === 0) {
+      this.groupQuery = "";
+      this.groupLimit = PAGE;
+    }
     const rows = groups.reduce((n, g) => n + g.rows.length, 0);
+    // files not read yet (no file profile, or an error): their rows are not on this list yet
+    const unread = this.ctx!.counts.files;
+    const filesLink = html`<a href="#/import/files">${t(STEP_LABEL.files)}</a>`;
+    const unreadNote = html`<div class="note warn todo">
+      ${raw(icon("alert"))}
+      <div>
+        <b>${plural(unread, "filesUnreadOne", "filesUnread")}</b>
+        <div class="small">${raw(fmt(unread === 1 ? "filesUnreadBodyOne" : "filesUnreadBody", { link: filesLink }))}</div>
+      </div>
+    </div>`;
     const todo =
-      groups.length > 0
+      (unread > 0 ? unreadNote : "") +
+      (groups.length > 0
         ? html`<div class="note warn todo">
             ${raw(icon("alert"))}
             <div>
@@ -429,13 +523,15 @@ export class ImportScreen {
               <div class="small">${fmt("classifyTodo", { r: rows, g: groups.length })}</div>
             </div>
           </div>`
-        : html`<div class="note ok todo">
-            ${raw(icon("check"))}
-            <div>
-              <b>${t("classifyDone")}</b>
-              <div class="small">${t("classifyDoneBody")}</div>
-            </div>
-          </div>`;
+        : unread > 0
+          ? ""
+          : html`<div class="note ok todo">
+              ${raw(icon("check"))}
+              <div>
+                <b>${t("classifyDone")}</b>
+                <div class="small">${t("classifyDoneBody")}</div>
+              </div>
+            </div>`);
     const info = html`<section class="infobox">
       ${raw(icon("rule"))}
       <div>
@@ -445,160 +541,194 @@ export class ImportScreen {
         </div>
       </div>
     </section>`;
-    const body = groups
-      .map((g) => {
-        const open = this.ruleFor === g.key;
-        const row = html`<tr class="${open ? "open" : ""}">
-          <td>${g.description || t("unnamed")}</td>
-          <td class="muted">${g.info}</td>
-          <td>${g.account}</td>
-          <td class="num">${formatCount(g.rows.length)}</td>
-          <td class="num">${formatAmount(g.total)} €</td>
-          <td>${formatDate(g.first)}</td>
-          <td class="num">
-            <button type="button" class="sm ${open ? "" : "primary"}" data-imp="ruleOpen" data-g="${g.key}">${t("createRule")}</button>
-          </td>
-        </tr>`;
-        return (
-          row +
-          (open
-            ? html`<tr class="form-row">
-                <td colspan="7">${raw(this.ruleForm(g))}</td>
-              </tr>`
-            : "")
-        );
-      })
+    const { shown, matching } = visibleGroups(groups, this.groupQuery, this.groupLimit);
+    const body = shown
+      .map(
+        (g) =>
+          html`<tr data-g="${g.key}">
+            ${raw(this.groupCells(g))}
+            <td class="num">
+              <button type="button" class="sm primary" data-imp="ruleOpen" data-g="${g.key}">${t("createRule")}</button>
+            </td>
+          </tr>`,
+      )
       .join("");
     const table = groups.length
       ? html`<section class="card flush">
+          <div class="filters card-filters">
+            <label class="search"
+              >${raw(icon("search"))}<input
+                type="search"
+                data-gq
+                value="${this.groupQuery}"
+                placeholder="${t("searchRowsPlaceholder")}"
+                aria-label="${t("searchRowsPlaceholder")}"
+            /></label>
+          </div>
           <div class="table-wrap">
-            <table class="groups">
-              <thead>
-                <tr>
-                  <th>${t("colDescription")}</th>
-                  <th>${t("colInfo")}</th>
-                  <th>${t("colAccount")}</th>
-                  <th class="num">${t("colRows")}</th>
-                  <th class="num">${t("colTotal")}</th>
-                  <th>${t("colFirst")}</th>
-                  <th></th>
-                </tr>
-              </thead>
+            <table class="groups waiting-groups">
+              ${raw(this.groupHead())}
+              <tbody>
+                ${raw(
+                  body ||
+                    html`<tr>
+                      <td colspan="7" class="muted">${t("noGroupsFound")}</td>
+                    </tr>`,
+                )}
+              </tbody>
+            </table>
+          </div>
+          ${raw(showMoreFoot(shown.length, matching, "showingGroups", ["imp", "moreGroups"]))}
+        </section>`
+      : "";
+    const classified = this.classifiedCard(this.flow.classifiedLines(groups));
+    return html`${raw(todo)}${raw(info)}${raw(classified)}${raw(table)}${raw(this.next("fixes", "files"))}`;
+  }
+
+  /** The head of a Luokittelu groups table. */
+  private groupHead(): string {
+    return html`<thead>
+      <tr>
+        <th>${t("colDescription")}</th>
+        <th>${t("colInfo")}</th>
+        <th>${t("colAccount")}</th>
+        <th class="num">${t("colRows")}</th>
+        <th class="num">${t("colTotal")}</th>
+        <th>${t("colFirst")}</th>
+        <th></th>
+      </tr>
+    </thead>`;
+  }
+
+  /** A group's cells before its buttons, the same in both Luokittelu tables. */
+  private groupCells(g: RowGroup): string {
+    return html`<td>${g.description || t("unnamed")}</td>
+      <td class="muted">${g.info}</td>
+      <td>${g.account}</td>
+      <td class="num">${formatCount(g.rows.length)}</td>
+      <td class="num">${formatAmount(g.total)} €</td>
+      <td>${formatDate(g.first)}</td>`;
+  }
+
+  /** "Luokiteltu tässä tuonnissa": a summary line on top of the waiting list, its groups shown on request. */
+  private classifiedCard(lines: ClassifiedLine[]): string {
+    if (lines.length === 0) return "";
+    const rows = lines.reduce((n, l) => n + l.group.rows.length, 0);
+    const groups = new Set(lines.map((l) => l.group.key)).size;
+    const open = this.showClassified;
+    const s = this.lastSaved;
+    const last = s
+      ? html`<span class="small">${fmt("ruleSavedNote", { id: s.id, r: formatCount(s.rows), g: formatCount(s.groups) })}</span>`
+      : "";
+    const body = lines
+      .slice(0, this.classifiedLimit)
+      .map(({ group: g, rule: r }) => {
+        const cls = [r.class, r.category, r.subCategory].filter(Boolean).join(" › ");
+        return html`<tr class="done" data-g="${g.key}" data-id="${r.id}">
+          ${raw(this.groupCells(g))}
+          <td class="num">
+            <div class="done-cell">
+              <span class="done-by">${raw(icon("check"))}${fmt("groupDoneBy", { id: r.id })}</span>
+              <span class="small muted">${cls}</span>
+              <span class="done-acts">
+                <button
+                  type="button"
+                  class="sm"
+                  data-imp="ruleEdit"
+                  data-g="${g.key}"
+                  data-id="${r.id}"
+                  aria-label="${fmt("editRuleAria", { id: r.id })}"
+                >
+                  ${t("editRule")}
+                </button>
+                <button type="button" class="sm" data-imp="ruleOpen" data-g="${g.key}" data-id="${r.id}">${t("newRule")}</button>
+              </span>
+            </div>
+          </td>
+        </tr>`;
+      })
+      .join("");
+    // the table is drawn only while open: 100 000 rows can make thousands of lines
+    const table = open
+      ? html`<div class="table-wrap">
+            <table class="groups done-groups">
+              ${raw(this.groupHead())}
               <tbody>
                 ${raw(body)}
               </tbody>
             </table>
           </div>
-        </section>`
+          ${raw(showMoreFoot(Math.min(this.classifiedLimit, lines.length), lines.length, "showingGroups", ["imp", "moreClassified"]))}`
       : "";
-    return html`${raw(todo)}${raw(info)}${raw(table)}${raw(this.next("fixes", "files"))}`;
+    return html`<details class="card task ok classified-card" data-classified ${raw(open ? "open" : "")}>
+      <summary>
+        ${raw(icon("check"))}<span class="title">${fmt("classifiedTitle", { r: formatCount(rows), g: formatCount(groups) })}</span
+        >${raw(last)}
+      </summary>
+      ${raw(table)}
+    </details>`;
   }
 
-  private ruleForm(g: RowGroup): string {
-    const r = this.ruleDraft!;
-    const opt = (v: string, label: string, sel: boolean) => html`<option value="${v}" ${raw(sel ? "selected" : "")}>${label}</option>`;
-    const matches = this.ruleMatchCount(r);
-    return html`<div class="rule-form" data-rule-form>
-      <label class="field"
-        >${t("descContains")}<input data-rf2="description" value="${r.description}" /><small data-rule-count
-          >${fmt("ruleHits", { n: matches })}</small
-        ></label
-      >
-      <label class="field"
-        >${t("fieldAmountMatch")}<select data-rf2="amount">
-          ${raw(opt("neg", t("amountNeg"), r.amount === "neg") + opt("pos", t("amountPos"), r.amount === "pos") + opt("any", t("amountAny"), r.amount === "any"))}
-        </select></label
-      >
-      <label class="field"
-        >${t("fieldClass")}<select data-rf2="class" class="${r.class ? "" : "invalid"}" data-rule-class>
-          ${raw(opt("", t("chooseClass"), r.class === "") + CLASSES.map((c) => opt(c, t(CLASS_LABEL[c]!), r.class === c)).join(""))}</select
-        ><small class="req">${t("required")}</small></label
-      >
-      <div class="field">
-        ${t("fieldCategory")}${raw(combo("main", r.category, { placeholder: t("searchOrAdd"), label: t("fieldCategory") }))}
-      </div>
-      <div class="field">
-        ${t("fieldSubCategory")}${raw(combo("sub", r.subCategory, { placeholder: r.category ? t("searchOrAdd") : t("chooseMainFirst"), disabled: !r.category, label: t("fieldSubCategory") }))}<small
-          >${t("subFollowsMain")}</small
-        >
-      </div>
-      <div class="actions rule-actions">
-        <button type="button" class="sm ghost" data-imp="ruleCancel">${t("cancel")}</button>
-        <button type="button" class="sm primary" data-imp="ruleSave" ${raw(r.class ? "" : "disabled")}>${t("saveRule")}</button>
-      </div>
-      ${raw(g.rows.length > 1 ? "" : "")}
-    </div>`;
-  }
-
-  /** Uncategorised rows (staged and stored) the drafted rule would match. */
-  private ruleMatchCount(r: Rule): number {
-    try {
-      const [c] = compileRules([{ ...r, class: r.class || "menot" }]);
-      const rows = this.flow.data().groups.flatMap((g) => g.rows);
-      return rows.filter(
-        (x) =>
-          x.fields.amount !== null &&
-          ruleMatches(c!, { account: x.fields.account, description: x.fields.description, info: x.fields.info, amount: x.fields.amount }),
-      ).length;
-    } catch {
-      return 0;
-    }
-  }
-
-  private openRule(key: string): void {
-    const g = this.flow.data().groups.find((x) => x.key === key);
+  /**
+   * Luo luokittelusääntö (or Uusi sääntö on a classified line): the one rule editor of Asetukset (its
+   * drawer) opens over this page with a new rule drafted from the group.
+   */
+  private openRule(key: string, ruleId = ""): void {
+    const before = this.flow.ordered(this.flow.data().groups);
+    const done = ruleId ? this.flow.classifiedLines(before).find((l) => l.group.key === key && l.rule.id === ruleId)?.group : undefined;
+    const g = done ?? before.find((x) => x.key === key);
     if (!g) return;
-    const neg = g.total < 0;
-    this.ruleFor = key;
-    this.ruleDraft = {
-      id: "",
-      account: "",
-      description: regexEscape(g.description.toLowerCase()),
-      info: "",
-      amount: g.total === 0 ? "any" : neg ? "neg" : "pos",
-      class: neg ? "menot" : "",
-      category: "",
-      subCategory: "",
-    };
-    this.redraw();
+    this.ruleFor = { key, id: ruleId, act: "ruleOpen", index: before.indexOf(g) };
+    const info = g.infoShared ? g.info : "";
+    // every staged row once (they are not in the project yet), so the editor counts what the rule would hit;
+    // the waiting groups, so it says how many the rule leaves; the drawer opens over this page
+    this.rules.startRule(
+      // the sign comes from the rows: a total of 0 (purchase and refund) or mixed signs must not lose rows
+      { account: "", description: g.description, info, amount: g.total, amountMatch: amountMatchOf(g.rows.map((r) => r.fields.amount)) },
+      location.hash,
+      this.flow.staging.stagedRows(),
+      {
+        waiting: before,
+        overlay: true,
+        onSaved: (rule) => this.ruleSaved(rule, before),
+      },
+    );
+    this.flow.redraw();
   }
 
-  private saveRule(): void {
-    const r = this.ruleDraft;
-    if (!r || !r.class) return;
-    const rules = this.project.getRules();
-    const id = String(rules.reduce((m, x) => (/^\d+$/.test(x.id) ? Math.max(m, Number(x.id)) : m), 0) + 1);
-    const rule: Rule = { ...r, id, category: r.category.trim(), subCategory: r.subCategory.trim() };
-    try {
-      compileRules([rule]);
-    } catch (e) {
-      this.session.showError(fmt("ruleInvalid", { e: e instanceof Error ? e.message : String(e) }));
-      return;
-    }
-    this.ruleFor = null;
-    this.ruleDraft = null;
-    this.session.change((p) => addRule(p, rule));
+  /** Muokkaa sääntöä on a classified line: the rule that decides it opens in the same drawer, over this page. */
+  private editRule(key: string, id: string): void {
+    const before = this.flow.data().groups;
+    this.ruleFor = { key, id, act: "ruleEdit", index: -1 };
+    this.rules.editRule(id, location.hash, this.flow.staging.stagedRows(), {
+      waiting: before,
+      overlay: true,
+      onSaved: (rule) => this.ruleSaved(rule, before),
+    });
+    this.flow.redraw();
+  }
+
+  /** A rule from here was saved: the rows it took off the waiting list are listed as classified, with a note on what it did. */
+  private ruleSaved(rule: Rule, before: RowGroup[]): void {
+    const { rows, groups } = this.flow.markClassified(before);
+    // an edit that took nothing more off the list needs no note
+    this.lastSaved = rows > 0 ? { id: rule.id, rows, groups } : null;
+    this.flow.redraw();
   }
 
   // ---- category suggestions for the combos
 
-  private known(): { class: string; category: string; subCategory: string }[] {
-    const p = this.project;
-    return [...p.getRules(), ...p.getTargets(), ...p.getLedger()];
-  }
-
-  private comboOptions(name: string, el: HTMLElement): string[] {
-    const form = el.closest<HTMLElement>("[data-rule-form], [data-fix-form], .split-part");
+  /** From the category list: the categories of the form's class, the subcategories of its category. */
+  private comboOptions(name: string, el: HTMLElement): (string | ComboOption)[] {
+    const form = el.closest<HTMLElement>("[data-fix-form], .split-part");
     const cls = form?.querySelector<HTMLSelectElement>("[data-rule-class]")?.value ?? "";
-    const main = form?.querySelector<HTMLInputElement>('[data-combo="main"] input')?.value.trim().toLowerCase() ?? "";
-    const k = this.known();
-    const uniq = (xs: string[]) => [...new Set(xs.map((x) => x.toLowerCase()).filter(Boolean))].sort();
-    if (name === "main") return uniq(k.filter((x) => !cls || x.class.toLowerCase() === cls).map((x) => x.category));
-    return uniq(k.filter((x) => x.category.toLowerCase() === main).map((x) => x.subCategory));
+    const main = form?.querySelector<HTMLInputElement>('[data-combo="main"] input')?.value ?? "";
+    const list = listOrMigration(this.project, RESERVED_PATHS);
+    return name === "main" ? categoryOptions(list, "category", cls) : categoryOptions(list, "subCategory", cls, main);
   }
 
   private comboPicked(name: string, el: HTMLElement, value: string): void {
-    const form = el.closest<HTMLElement>("[data-rule-form], [data-fix-form], .split-part");
+    const form = el.closest<HTMLElement>("[data-fix-form], .split-part");
     if (!form) return;
     if (name === "main") {
       const sub = form.querySelector<HTMLInputElement>('[data-combo="sub"] input');
@@ -606,14 +736,6 @@ export class ImportScreen {
         sub.disabled = value === "";
         sub.placeholder = value ? t("searchOrAdd") : t("chooseMainFirst");
       }
-    }
-    if (form.matches("[data-rule-form]") && this.ruleDraft) {
-      if (name === "main") {
-        if (this.ruleDraft.category !== value) this.ruleDraft.subCategory = "";
-        this.ruleDraft.category = value;
-        const sub = form.querySelector<HTMLInputElement>('[data-combo="sub"] input');
-        if (sub && this.ruleDraft.subCategory === "") sub.value = "";
-      } else this.ruleDraft.subCategory = value;
     }
     if (form.matches(".split-part")) {
       const i = Number(form.dataset.part);
@@ -744,8 +866,7 @@ export class ImportScreen {
       byTx.set(r.txId, list);
     }
     let txs = [...byTx.entries()];
-    const q = this.search.trim().toLowerCase();
-    if (q) txs = txs.filter(([, rs]) => [rs[0]!.description, rs[0]!.info, rs[0]!.account].join(" ").toLowerCase().includes(q));
+    if (this.search.trim()) txs = txs.filter(([, rs]) => matchesSearch(rs[0]!, this.search));
     if (this.fileFilter) txs = txs.filter(([id]) => fileOf.get(id) === this.fileFilter);
     if (this.quick === "fixed") txs = txs.filter(([id]) => fixIds.has(id));
     if (this.quick === "dup") txs = txs.filter(([id]) => dupIds.has(id));
@@ -806,11 +927,7 @@ export class ImportScreen {
             </tbody>
           </table>
         </div>
-        <div class="actions card-foot">
-          <span class="small muted">${fmt("showingNofM", { a: Math.min(this.limit, txs.length), n: txs.length })}</span
-          ><span class="grow"></span>
-          ${raw(txs.length > this.limit ? html`<button type="button" class="sm" data-imp="moreRows">${t("showMoreRows")}</button>` : "")}
-        </div>
+        ${raw(showMoreFoot(Math.min(this.limit, txs.length), txs.length, "showingNofM", ["imp", "moreRows"]))}
       </section>`;
   }
 
@@ -962,6 +1079,10 @@ export class ImportScreen {
     });
     if (!res) return;
     this.flow.lateDecided = false;
+    // the imported rows are the project's now: the next import starts its Luokittelu list afresh
+    this.flow.clearClassified();
+    this.lastSaved = null;
+    this.classifiedLimit = PAGE;
     this.flow.touch();
     const r = res;
     showToast(
@@ -987,7 +1108,7 @@ export class ImportScreen {
     const q = el.closest<HTMLButtonElement>("button[data-quick]");
     if (q) {
       this.quick = q.dataset.quick as Quick;
-      this.limit = PREVIEW_PAGE;
+      this.limit = PAGE;
       this.redraw();
       return;
     }
@@ -1037,18 +1158,10 @@ export class ImportScreen {
         this.saveEditor();
         break;
       case "ruleOpen":
-        if (this.ruleFor === b.dataset.g) {
-          this.ruleFor = null;
-          this.redraw();
-        } else this.openRule(b.dataset.g ?? "");
+        this.openRule(b.dataset.g ?? "", b.dataset.id ?? "");
         break;
-      case "ruleCancel":
-        this.ruleFor = null;
-        this.ruleDraft = null;
-        this.redraw();
-        break;
-      case "ruleSave":
-        this.saveRule();
+      case "ruleEdit":
+        this.editRule(b.dataset.g ?? "", b.dataset.id ?? "");
         break;
       case "lateAdd":
       case "lateSkip": {
@@ -1095,10 +1208,27 @@ export class ImportScreen {
         this.allFiles = !this.allFiles;
         this.redraw();
         break;
-      case "moreRows":
-        this.limit += PREVIEW_PAGE;
+      case "moreRows": {
+        const before = this.root.querySelectorAll("table.fix-table tbody > tr").length;
+        this.limit += PAGE;
         this.redraw();
+        refocusShowMore(this.root, '[data-imp="moreRows"]', "table.fix-table", before);
         break;
+      }
+      case "moreGroups": {
+        const before = this.root.querySelectorAll("table.waiting-groups tbody > tr").length;
+        this.groupLimit += PAGE;
+        this.redraw();
+        refocusShowMore(this.root, '[data-imp="moreGroups"]', "table.waiting-groups", before);
+        break;
+      }
+      case "moreClassified": {
+        const before = this.root.querySelectorAll("table.done-groups tbody > tr").length;
+        this.classifiedLimit += PAGE;
+        this.redraw();
+        refocusShowMore(this.root, '[data-imp="moreClassified"]', "table.done-groups", before);
+        break;
+      }
       case "fixOpen":
       case "splitOpen": {
         const tx = b.dataset.tx ?? "";
@@ -1177,17 +1307,6 @@ export class ImportScreen {
       this.redraw();
       return;
     }
-    if (el.dataset.rf2 && this.ruleDraft) {
-      const k = el.dataset.rf2 as "description" | "amount" | "class";
-      (this.ruleDraft as unknown as Record<string, string>)[k] = el.value;
-      if (k === "class") {
-        el.classList.toggle("invalid", !el.value);
-        const save = this.root.querySelector<HTMLButtonElement>('[data-imp="ruleSave"]');
-        if (save) save.disabled = !el.value;
-      }
-      this.updateRuleCount();
-      return;
-    }
     if (el.dataset.ownerAcc) {
       // stored on import; until then only the choice is kept
       this.flow.staging.accountOwners[el.dataset.ownerAcc] = el.value;
@@ -1218,11 +1337,6 @@ export class ImportScreen {
 
   private onInput(e: Event): void {
     const el = e.target as HTMLInputElement;
-    if (el.dataset.rf2 === "description" && this.ruleDraft) {
-      this.ruleDraft.description = el.value;
-      this.updateRuleCount();
-      return;
-    }
     if (el.dataset.fq !== undefined) {
       this.fileQuery = el.value;
       this.showFiles();
@@ -1230,9 +1344,20 @@ export class ImportScreen {
     }
     if (el.dataset.pq !== undefined) {
       this.search = el.value;
+      this.limit = PAGE;
       const pos = el.selectionStart;
       this.redraw();
       const again = this.root.querySelector<HTMLInputElement>("[data-pq]");
+      again?.focus();
+      if (pos !== null) again?.setSelectionRange(pos, pos);
+      return;
+    }
+    if (el.dataset.gq !== undefined) {
+      this.groupQuery = el.value;
+      this.groupLimit = PAGE;
+      const pos = el.selectionStart;
+      this.redraw();
+      const again = this.root.querySelector<HTMLInputElement>("[data-gq]");
       again?.focus();
       if (pos !== null) again?.setSelectionRange(pos, pos);
       return;
@@ -1245,11 +1370,6 @@ export class ImportScreen {
       const result = this.root.querySelector<HTMLElement>(".drawer [data-reading-result]");
       if (result) result.innerHTML = ed.readingResult();
     }
-  }
-
-  private updateRuleCount(): void {
-    const box = this.root.querySelector("[data-rule-count]");
-    if (box && this.ruleDraft) box.textContent = fmt("ruleHits", { n: this.ruleMatchCount(this.ruleDraft) });
   }
 
   private refreshEditorPreview(): void {

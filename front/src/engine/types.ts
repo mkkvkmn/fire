@@ -4,6 +4,8 @@
 export interface Table {
   headers: string[];
   rows: string[][];
+  /** Set when the file had more rows than the row limit: rows kept and rows dropped. */
+  cut?: { kept: number; dropped: number };
 }
 
 /** Fields every source row is normalised into (successor of the Python loader's output). */

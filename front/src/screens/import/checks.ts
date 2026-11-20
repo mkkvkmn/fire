@@ -51,9 +51,16 @@ function profileFor(project: Project, fileName: string) {
 }
 
 /** The rows of a check: what to decide on the left, its buttons on the right. */
-function checkTable(rows: string[]): string {
+function checkTable(rows: string[], head = ""): string {
   return html`<div class="table-wrap">
     <table class="check-table">
+      ${raw(
+        head
+          ? html`<thead>
+              ${raw(head)}
+            </thead>`
+          : "",
+      )}
       <tbody>
         ${raw(rows.join(""))}
       </tbody>
@@ -86,7 +93,15 @@ export function ownerSection(project: Project, staging: Staging): string {
       ${raw(icon("user"))}
       <div>${t("ownerBody")}</div>
     </div>
-    ${raw(checkTable(rows))}`;
+    ${raw(
+      checkTable(
+        rows,
+        html`<tr>
+          <th>${t("colAccount")}</th>
+          <th>${t("acctOwner")}</th>
+        </tr>`,
+      ),
+    )}`;
   return task("owners", "user", t("ownerTitle"), accounts.length, body, "ownerOk");
 }
 

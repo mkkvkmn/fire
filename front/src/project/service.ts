@@ -8,6 +8,7 @@ import { processRows, type PipelineConfig, type PipelineResult } from "../engine
 import { readSourceRows, readTable, type RowProblem } from "../engine/read";
 import type { Fix, LedgerRow, Rule, SourceProfile, SourceRow } from "../engine/types";
 import type { Project } from "../storage/project";
+import { syncCategories } from "./categories";
 
 export interface ImportSummary {
   fileName: string;
@@ -120,10 +121,21 @@ export function computeLedger(
   return { result, ...merged };
 }
 
-/** Updates the open months of the stored ledger. Locked months stay as they are. */
+/**
+ * Updates the open months of the stored ledger. Locked months stay as they are. Every save of rules,
+ * fixes and targets comes here, so a new name in them joins the category list here.
+ */
 export function rebuildLedger(project: Project): PipelineResult {
   const update = computeLedger(project);
-  project.replaceLedger(update.ledger);
+  // only the open months change: writing the locked ones again as they are costs seconds at 100k rows
+  const lockedThrough = project.getSettings().lockedThrough;
+  const open = lockedThrough
+    ? new Set([...project.getLedger(), ...update.ledger].map((r) => r.month).filter((m) => !isLocked(m, lockedThrough)))
+    : undefined;
+  project.transaction(() => {
+    project.replaceLedger(update.ledger, open);
+    syncCategories(project);
+  });
   return update.result;
 }
 

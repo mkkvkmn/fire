@@ -57,6 +57,17 @@ export class ReportState {
 
   constructor(readonly session: Session) {}
 
+  /**
+   * Another project opened: no member, no custom period and no click-through from the old one. Called by main.ts
+   * next to flow.reset(), not for the first project after a page load (a restored working copy
+   * keeps its stored member).
+   */
+  resetProject(): void {
+    this.drill = null;
+    const { owner, custom } = this.filters;
+    if (owner !== "" || custom.from !== "" || custom.to !== "") this.set({ owner: "", custom: { from: "", to: "" } });
+  }
+
   subscribe(fn: () => void): void {
     this.listeners.push(fn);
   }

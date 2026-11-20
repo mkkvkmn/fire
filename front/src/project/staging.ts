@@ -22,6 +22,8 @@ export interface StagedFile {
   /** Rows the project already has (an overlapping export); they are skipped. */
   already: number;
   problems: RowProblem[];
+  /** Rows kept and dropped when the file is over the row limit, null otherwise. */
+  cut: { kept: number; dropped: number } | null;
   /** Reading error with the chosen profile, "" when the file reads. */
   error: string;
 }
@@ -45,6 +47,8 @@ export class Staging {
   keepDuplicates = new Set<string>();
   /** Late rows (tx ids) to leave out of their locked month. Others are added. */
   skipLate = new Set<string>();
+  /** The project's rowsVersion when the files were last read: reading again gives the same rows. */
+  readFor = -1;
   private nextKey = 1;
 
   get empty(): boolean {
@@ -65,6 +69,7 @@ export class Staging {
         rows: [],
         already: 0,
         problems: [],
+        cut: null,
         error: "",
       });
     }
@@ -92,17 +97,21 @@ export class Staging {
 
   /** Re-reads every staged file in order, so occurrence numbers match what commit() will store. */
   read(project: Project): void {
+    this.readFor = project.rowsVersion;
     const profiles = new Map(project.getProfiles().map((p) => [p.id, p]));
     const counts = project.hashCounts();
     for (const f of this.files) {
       f.rows = [];
       f.already = 0;
       f.problems = [];
+      f.cut = null;
       f.error = "";
       const profile = profiles.get(f.profileId);
       if (!profile) continue;
       try {
-        const res = readSourceRows(f.name, readTable(f.name, f.bytes, profile), profile, counts);
+        const table = readTable(f.name, f.bytes, profile);
+        f.cut = table.cut ?? null;
+        const res = readSourceRows(f.name, table, profile, counts);
         f.rows = res.rows;
         f.already = res.alreadyImported.length;
         f.problems = res.problems;

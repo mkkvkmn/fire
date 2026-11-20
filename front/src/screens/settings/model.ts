@@ -10,9 +10,10 @@ import { fmt, t, type TextKey } from "../../ui/texts";
 
 export { parseNumber };
 
-export type Tab = "rules" | "splits" | "fixes" | "targets" | "profiles" | "scripts";
+export type Tab = "rules" | "categories" | "splits" | "fixes" | "targets" | "profiles" | "scripts";
 export const TABS: [Tab, TextKey][] = [
   ["rules", "tabRules"],
+  ["categories", "tabCategories"],
   ["fixes", "tabFixes"],
   ["targets", "tabTargets"],
   ["splits", "tabSplits"],

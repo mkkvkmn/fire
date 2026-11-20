@@ -1,7 +1,7 @@
 // Tests for presets, profile guessing, rule drafts and project-wide duplicate groups.
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { categorizeRow, compileRules, escapeRegex, nextRuleId, ruleFromRow } from "./categorize";
+import { amountMatchOf, categorizeRow, compileRules, escapeRegex, nextRuleId, ruleFromRow } from "./categorize";
 import { decisionKey, findDuplicateGroups } from "./duplicates";
 import { guessDateFormat, guessDecimal, guessProfile, patternFromFileName } from "./guess";
 import { PRESETS } from "./presets";
@@ -80,6 +80,44 @@ describe("rule drafts", () => {
     expect(rule).toMatchObject({ id: "26", description: "K-Market \\(Kamppi\\)", amount: "neg" });
     expect(categorizeRow(compileRules([rule]), row)?.ruleId).toBe("26");
     expect(escapeRegex("a.b*c")).toBe("a\\.b\\*c");
+  });
+
+  it("takes the amount match of a group from its rows: one sign, else any", () => {
+    expect(amountMatchOf([-3, -4])).toBe("neg");
+    expect(amountMatchOf([3, 4])).toBe("pos");
+    // a purchase and its refund: total 0, but the rule must still hit both rows
+    expect(amountMatchOf([5, -5])).toBe("any");
+    // mixed signs with a non-zero total
+    expect(amountMatchOf([-10, -10, 4])).toBe("any");
+    expect(amountMatchOf([null])).toBe("any");
+    const rows = [
+      { account: "a", description: "Shop", info: "", amount: 5 },
+      { account: "a", description: "Shop", info: "", amount: -5 },
+    ];
+    const rule = { ...ruleFromRow({ ...rows[0]!, amountMatch: amountMatchOf(rows.map((r) => r.amount)) }, "1"), class: "menot" };
+    expect(rows.map((r) => categorizeRow(compileRules([rule]), r)?.ruleId)).toEqual(["1", "1"]);
+  });
+
+  it("carries the info (lisätieto) of the row into the draft", () => {
+    const row = { account: "s-pankki", description: "Korttiosto", info: "Example Oy 1234567-8", amount: -9 };
+    expect(ruleFromRow(row, "1")).toMatchObject({ description: "Korttiosto", info: "Example Oy 1234567-8" });
+  });
+
+  it("matches on info alone: only rows with that info, whatever the description", () => {
+    const rule = {
+      id: "7",
+      account: "",
+      description: "",
+      info: "example oy",
+      amount: "any" as const,
+      class: "menot",
+      category: "Food",
+      subCategory: "",
+    };
+    const compiled = compileRules([rule]);
+    const row = (info: string) => ({ account: "a", description: "Korttiosto", info, amount: -5 });
+    expect(categorizeRow(compiled, row("EXAMPLE OY 1234567-8"))?.ruleId).toBe("7");
+    expect(categorizeRow(compiled, row("Other Ab"))).toBeNull();
   });
 });
 

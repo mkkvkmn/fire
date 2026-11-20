@@ -103,12 +103,12 @@ const banner = app.querySelector<HTMLElement>("[data-banner]")!;
 const status = el("status");
 
 const welcome = new WelcomeScreen(el("screen-welcome"), session, flow);
-const importScreen = new ImportScreen(el("screen-import"), session, flow);
 const reports = new ReportState(session);
-const settingsScreen = new SettingsScreen(el("screen-settings"), session, reports);
+const settingsScreen = new SettingsScreen(el("screen-settings"), session, reports, () => render());
+const importScreen = new ImportScreen(el("screen-import"), session, flow, settingsScreen);
 const overview = new OverviewScreen(el("screen-overview"), reports);
 const rowsScreen = new RowsScreen(el("screen-rows"), reports, session);
-const projectScreen = new ProjectScreen(el("screen-project"), session, () => flow.staging.files.length);
+const projectScreen = new ProjectScreen(el("screen-project"), session, () => flow.staging.files.length, settingsScreen);
 installChartTooltips(app);
 
 /** Saves the project file. Added files that are not imported yet are not part of it: say so. */
@@ -144,13 +144,15 @@ app.addEventListener("click", (e) => {
       render();
       break;
     }
-    case "endSample":
-      void ask(t("confirmLeaveSample"), { ok: t("bannerStartOwn") }).then(async (yes) => {
-        if (!yes) return;
+    case "endSample": {
+      const edits = settingsScreen.unsavedNote();
+      void ask(t("confirmLeaveSample"), { ok: t("bannerStartOwn"), danger: edits !== undefined, note: edits }).then(async (yes) => {
+        if (!yes) return settingsScreen.showEdits();
         await session.close();
         location.hash = "#/";
       });
       break;
+    }
   }
 });
 
@@ -164,8 +166,9 @@ window.addEventListener("keydown", (e) => {
 
 // Added files wait in memory until Tuo rivit: the browser asks before a reload or a closed tab drops them.
 // Not for the sample: nothing of it is kept, and the guided files are staged again after a reload.
+// Unsaved Settings edits count for the sample too: a reload drops them.
 window.addEventListener("beforeunload", (e) => {
-  if (!flow.staging.empty && !session.state.sample) e.preventDefault();
+  if ((!flow.staging.empty && !session.state.sample) || settingsScreen.dirty()) e.preventDefault();
 });
 
 function render(): void {
@@ -195,15 +198,19 @@ function render(): void {
         ? html`<div class="muted small">${t("busy")}</div>`
         : "";
     for (const r of ROUTES) if (r !== "welcome") el(`screen-${r}`).hidden = r !== route;
+    // a rule editor opened from Luokittelu is drawn over it: Asetukset shows only its drawer
+    const ruleOverlay = route === "import" && step === "classify" && settingsScreen.ruleOverlay;
+    if (ruleOverlay) el("screen-settings").hidden = false;
     if (route === "overview") overview.render();
     else if (route === "rows") rowsScreen.render();
     else if (route === "project") projectScreen.render();
-    else if (route === "import")
+    else if (route === "import") {
       importScreen.render(
         { route, step, state: s, counts, staged: !flow.staging.empty, hasRows: (s.project?.counts().rawRows ?? 0) > 0 },
         rest,
       );
-    else settingsScreen.render(location.hash.split("/")[2] ?? "", decodeURIComponent(location.hash.split("/")[3] ?? ""));
+      if (ruleOverlay) settingsScreen.render();
+    } else settingsScreen.render(location.hash.split("/")[2] ?? "", decodeURIComponent(location.hash.split("/")[3] ?? ""));
   }
   const name = s.project ? s.fileName || s.project.getSettings().projectName || t("unsavedProject") : "";
   document.title = s.project ? `${s.dirty ? "* " : ""}${name} - ${t("appTitle")}` : t("appTitle");
@@ -217,6 +224,7 @@ window.addEventListener("hashchange", () => {
 reports.subscribe(() => render());
 flow.subscribe(() => render());
 let lastProject: unknown = null;
+let restoring = true;
 let lastRevision = -1;
 let riskShown = false;
 session.subscribe((s) => {
@@ -227,6 +235,18 @@ session.subscribe((s) => {
   if (s.project !== lastProject) {
     lastProject = s.project;
     flow.reset();
+    // The project restored by session.init keeps its stored member; every later change (open,
+    // close, sample, new) clears it.
+    if (!restoring) reports.resetProject();
+    // a project from before the category list: its migration step waits on Asetukset > Luokat
+    if (s.project && s.project.getSettings().categories === null)
+      showToast(
+        t("catMigrateTitle"),
+        t("catMigrateToastBody"),
+        { href: "#/settings/categories", label: t("catMigrateLink") },
+        15000,
+        "warn",
+      );
     // A guided sample project whose staged files were lost in a reload: stage them again.
     const files = session.guidedFiles();
     if (files.length > 0 && s.project) {
@@ -240,4 +260,6 @@ session.subscribe((s) => {
   render();
 });
 render();
-void session.init();
+void session.init().finally(() => {
+  restoring = false;
+});

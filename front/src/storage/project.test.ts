@@ -6,7 +6,7 @@ import { defaultProfile } from "../engine/profiles";
 import { loadSample } from "../engine/testing/sampleProject";
 import { importFile, rebuildLedger } from "../project/service";
 import { runSample, sampleInputFromDisk } from "../engine/testing/sampleData";
-import { Project, ProjectFileError } from "./project";
+import { ledgerOrder, Project, ProjectFileError } from "./project";
 import { SCHEMA_VERSION } from "./schema";
 import { loadSqlJs } from "./sqljs";
 
@@ -148,5 +148,33 @@ describe("sample project", () => {
     const before = p.getLedger();
     rebuildLedger(p);
     expect(p.getLedger()).toEqual(before);
+  });
+
+  it("keeps the cached ledger the same as the stored one after a write of some months", () => {
+    const p = Project.create(SQL);
+    loadSample(p, sampleInputFromDisk());
+    const ledger = p.getLedger();
+    const month = ledger[ledger.length - 1]!.month;
+    // one month's rows changed and one dropped, read back from the cache and from the file
+    const changed = ledger.filter((r) => r.month === month).map((r) => ({ ...r, category: "muutettu" }));
+    p.replaceLedger(changed.slice(1), new Set([month]));
+    expect(p.getLedger()).toEqual(reopen(p).getLedger());
+    expect(p.getLedger()).toHaveLength(ledger.length - 1);
+  });
+});
+
+describe("ledger order of the cache", () => {
+  const row = (date: string, rowId: string) => ({ date, rowId }) as Parameters<typeof ledgerOrder>[0];
+  const sorted = (rows: ReturnType<typeof row>[]) => [...rows].sort(ledgerOrder).map((r) => r.rowId);
+
+  it("orders row ids by code point, as SQLite does, not by locale", () => {
+    // locale order puts "a" before "B"; code point order puts "B" first
+    expect(sorted([row("2025-01-01", "a"), row("2025-01-01", "B")])).toEqual(["B", "a"]);
+    // an astral character (U+1F600) sorts after U+FF5E by code point, but before it by UTF-16 unit
+    expect(sorted([row("2025-01-01", "\u{1F600}"), row("2025-01-01", "\uFF5E")])).toEqual(["\uFF5E", "\u{1F600}"]);
+  });
+
+  it("orders newest date first", () => {
+    expect(sorted([row("2025-01-01", "x"), row("2025-02-01", "y")])).toEqual(["y", "x"]);
   });
 });

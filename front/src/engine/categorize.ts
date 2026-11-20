@@ -29,14 +29,25 @@ export function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/** A rule draft that matches a row: its description as literal text and the sign of its amount. */
-export function ruleFromRow(row: Categorizable, id: string): Rule {
+/** The amount match that fits every row: "neg" or "pos" when they all share that sign, else "any" (a purchase and its refund). */
+export function amountMatchOf(amounts: readonly (number | null)[]): AmountMatch {
+  const known = amounts.filter((a): a is number => a !== null);
+  if (known.length > 0 && known.every((a) => a < 0)) return "neg";
+  if (known.length > 0 && known.every((a) => a > 0)) return "pos";
+  return "any";
+}
+
+/**
+ * A rule draft that matches a row: its account, description and info as literal text, and the sign
+ * of its amount (or `amountMatch`, when the draft stands for several rows).
+ */
+export function ruleFromRow(row: Categorizable & { amountMatch?: AmountMatch }, id: string): Rule {
   return {
     id,
     account: escapeRegex(row.account.trim()),
     description: escapeRegex(row.description.trim()),
-    info: "",
-    amount: row.amount > 0 ? "pos" : row.amount < 0 ? "neg" : "zero",
+    info: escapeRegex(row.info.trim()),
+    amount: row.amountMatch ?? (row.amount > 0 ? "pos" : row.amount < 0 ? "neg" : "zero"),
     class: "",
     category: "",
     subCategory: "",

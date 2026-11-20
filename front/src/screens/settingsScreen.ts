@@ -1,7 +1,7 @@
 // Settings screen: editors for rules, splits, fixes, targets, owners, profiles and user scripts.
 // Edits are a draft; "Preview changes" shows what the open months would get, then "Save" applies.
 // Locked months never change here.
-import { ask } from "../ui/dialog";
+import { ask, askText } from "../ui/dialog";
 import {
   AMOUNT_MATCH,
   CLASSES,
@@ -25,10 +25,10 @@ import {
 import { fixChanges, infoPop, reservedNames } from "./settings/parts";
 import type { ReportState } from "../app/reportState";
 import type { Session } from "../app/session";
-import { compileRules, ruleFromRow, ruleMatches } from "../engine/categorize";
+import { compileRules, ruleFromRow, ruleMatches, type Categorizable } from "../engine/categorize";
 import { isEmptyDiff, type LedgerDiff } from "../engine/diff";
 import { PREPROCESSORS } from "../engine/preprocessors";
-import type { Rule, SourceRow } from "../engine/types";
+import type { AmountMatch, Rule, SourceRow } from "../engine/types";
 import {
   compiledRules,
   deletedTransactions,
@@ -41,7 +41,26 @@ import {
 import type { Project } from "../storage/project";
 import { renderDiff } from "../ui/diffView";
 import { formatAmount, formatCount, formatDate } from "../ui/format";
-import { bindCombos, combo } from "../ui/combo";
+import { bindCombos, combo, type ComboOption } from "../ui/combo";
+import { categoryOptions } from "../ui/reserved";
+import { RESERVED_PATHS, reservedNode } from "../engine/reserved";
+import { hasNode, withPaths, type CategoryEntry, type CategoryPath } from "../engine/categories";
+import {
+  addCategory,
+  categoryUse,
+  deleteCategory,
+  inUse,
+  listOrMigration,
+  migrationList,
+  nodeKey,
+  pathOf,
+  renameCategory,
+  renameRefusal,
+  rowCounts,
+  usedPaths,
+} from "../project/categories";
+import { categoryTree, inUseBody, migrationStep, useMessage } from "./settings/categories";
+import { showToast } from "../ui/toast";
 import { dateField, parseDateField } from "../ui/dateField";
 import { drawer } from "../ui/drawer";
 import { html, raw } from "../ui/html";
@@ -49,6 +68,16 @@ import { icon } from "../ui/icons";
 import { periodName } from "../ui/periodPicker";
 import { PRE_WHAT } from "../ui/preprocessors";
 import { fmt, plural, t, type TextKey } from "../ui/texts";
+
+/** Where a rule drafted by startRule comes from (Luokittelu), beyond the address to go back to. */
+export interface RuleOrigin {
+  /** The groups waiting for a class: the editor says how many the rule leaves and lists their rows first. */
+  waiting?: { key: string; rows: SourceRow[] }[];
+  /** Only the drawer is drawn, over the page that asked (main.ts shows this screen's root with it). */
+  overlay?: boolean;
+  /** Called after Tallenna saved the rule to the project. */
+  onSaved?: (rule: Rule) => void;
+}
 
 /**
  * A group of fields in an item's editor: an optional title, then the fields side by side, or one
@@ -63,7 +92,11 @@ interface Group {
 export class SettingsScreen {
   private tab: Tab = "rules";
   private draft: Draft | null = null;
+  /** The project the draft was made from. */
+  private draftOf: Project | null = null;
   private preview: LedgerDiff | null = null;
+  /** The address of the last render (#/settings/<tab>[/<item>]), to come back to it. */
+  private address = "#/settings";
   private ruleFilter = "";
   private fixSearch = "";
   /** Filter text per settings tab (Luokittelusäännöt has its own, it also finds rule ids). */
@@ -74,6 +107,8 @@ export class SettingsScreen {
   private ruleCountText = new Map<string, { text: string; title: string; cls: string }>();
   /** The account open in the editor on Tilit. */
   private openAcct: string | null = null;
+  /** Luokat: the nodes opened or closed by the user (see categoryTree). */
+  private catToggled = new Set<string>();
   /** "Uusi korjaus" is open (collapsed by default; stays as the user left it). */
   private newFixOpen = false;
   private countTimer: ReturnType<typeof setTimeout> | null = null;
@@ -82,6 +117,8 @@ export class SettingsScreen {
     private readonly root: HTMLElement,
     private readonly session: Session,
     private readonly reports: ReportState,
+    /** The rule editor drawn over another page closed: that page redraws (and hides this screen). */
+    private readonly onOverlayClose: () => void = () => {},
   ) {
     root.addEventListener("click", (e) => this.onClick(e));
     root.addEventListener("input", (e) => this.onEdit(e));
@@ -91,6 +128,12 @@ export class SettingsScreen {
       (e) => {
         const el = e.target as HTMLDetailsElement;
         if (el.matches?.("[data-newfix]")) this.newFixOpen = el.open;
+        // Luokat: a class starts open, a category closed; keep what differs (also fires for a node drawn open)
+        const key = el.dataset?.catKey;
+        if (key !== undefined) {
+          if (el.open === el.classList.contains("cat-class")) this.catToggled.delete(key);
+          else this.catToggled.add(key);
+        }
       },
       true,
     );
@@ -120,6 +163,26 @@ export class SettingsScreen {
     return this.rowsCache.rows;
   }
 
+  /** The stored rows plus every staged row (startRule), for the hit lists and counts. */
+  private matchRows(p: Project): SourceRow[] {
+    const rows = this.sourceRows(p);
+    if (this.extraRows.length === 0) return rows;
+    if (this.matchCache?.base !== rows || this.matchCache.extra !== this.extraRows)
+      this.matchCache = { base: rows, extra: this.extraRows, rows: [...rows, ...this.extraRows] };
+    return this.matchCache.rows;
+  }
+  private matchCache: { base: SourceRow[]; extra: SourceRow[]; rows: SourceRow[] } | null = null;
+
+  /** The warning for a dialog that drops the project (close, leave the sample): set when Asetukset has unsaved edits. */
+  unsavedNote(): string | undefined {
+    return this.dirty() ? t("closeLosesSettings") : undefined;
+  }
+
+  /** After such a dialog was cancelled: shows Asetukset again where the user left it, edits intact. */
+  showEdits(): void {
+    if (this.dirty()) location.hash = this.address;
+  }
+
   /** The tab shown now (the sidebar marks it). */
   get currentTab(): string {
     return this.tab;
@@ -143,7 +206,7 @@ export class SettingsScreen {
   }
 
   /** True when the draft differs from the stored settings. */
-  private dirty(): boolean {
+  dirty(): boolean {
     const p = this.project;
     if (!p || !this.draft) return false;
     const stored = this.load(p);
@@ -152,8 +215,24 @@ export class SettingsScreen {
     return JSON.stringify(a) !== JSON.stringify(b);
   }
 
-  /** The draft, reloaded from the project when it has no unsaved edits and the project changed. */
+  /**
+   * The draft, reloaded from the project when it has no unsaved edits and the project changed.
+   * Another project object always starts a new draft: edits of the old project never carry over
+   * (a draft left from the sample would look like unsaved edits to the next project).
+   */
   private current(p: Project): Draft {
+    if (this.draftOf !== p) {
+      this.draftOf = p;
+      this.draft = null;
+      this.closeEditor();
+      this.ruleCountText.clear();
+      this.newFixOpen = false;
+      this.catToggled.clear();
+      this.focused = "";
+      this.ruleFilter = "";
+      this.fixSearch = "";
+      this.tabFilter = {};
+    }
     if (!this.draft || (this.draft.revision !== this.session.state.revision && !this.dirty())) {
       this.draft = this.load(p);
       this.preview = null;
@@ -162,19 +241,24 @@ export class SettingsScreen {
   }
 
   /** Renders the screen: `tab` from the address (#/settings/<tab>), `focus` a rule id to show (#/settings/rules/<id>). */
-  render(tab = "", focus = ""): void {
+  render(tab?: string, focus = ""): void {
     const p = this.project;
     if (!p) {
       this.draft = null;
       this.root.innerHTML = "";
       return;
     }
+    // Asetukset itself shown (a render from the address): the open rule editor stays, on this page now
+    if (tab !== undefined) this.overlay = false;
+    if (this.overlay) return this.renderOverlay(p);
     if (TABS.some(([id]) => id === tab) && tab !== this.tab) {
       this.tab = tab as Tab;
       this.preview = null;
       // leaving the tab closes its editor; what was typed stays in the draft (the save bar shows it)
       this.closeEditor();
     }
+    // only a render from the address sets it: the screen redraws itself with no argument after each edit
+    if (tab !== undefined) this.address = `#/settings/${this.tab}${focus ? `/${encodeURIComponent(focus)}` : ""}`;
     const d = this.current(p);
     this.drawerHtml = "";
     const count: Partial<Record<Tab, number>> = {
@@ -183,6 +267,7 @@ export class SettingsScreen {
       fixes: d.fixes.length,
       targets: d.targets.length,
       profiles: p.getProfiles().length,
+      categories: p.getSettings().categories?.length,
     };
     const tabs = TABS.map(
       ([id, label]) =>
@@ -200,6 +285,9 @@ export class SettingsScreen {
     switch (this.tab) {
       case "rules":
         body = this.rulesTab(p, d);
+        break;
+      case "categories":
+        body = this.categoriesTab(p);
         break;
       case "fixes":
         body = this.fixesTab(p, d);
@@ -237,10 +325,19 @@ export class SettingsScreen {
     }
     this.focused = focus;
     this.restoreFocus();
+    if (this.focusDrawer) {
+      this.focusDrawer = false;
+      this.root.querySelector<HTMLElement>(".drawer")?.focus();
+    }
   }
 
-  /** Opens the Rules tab with a new rule drafted from a row (from Tapahtumat). */
-  startRule(input: { account: string; description: string; info: string; amount: number }): void {
+  /**
+   * Opens the Rules tab's editor with a new rule drafted from a row (Luokittelu, a group). Peruuta
+   * and Tallenna go on to `back`, the page that asked. With `origin.overlay` the drawer is drawn over
+   * that page (main.ts); without, the caller shows #/settings/rules.
+   * `extraRows` (every staged row, not in the project yet) join the rows the editor counts.
+   */
+  startRule(input: Categorizable & { amountMatch?: AmountMatch }, back = "", extraRows: SourceRow[] = [], origin: RuleOrigin = {}): void {
     const p = this.project;
     if (!p) return;
     this.current(p);
@@ -255,6 +352,70 @@ export class SettingsScreen {
     this.openEdit.rules = d.rules.length - 1;
     this.editSnap = { restore, start: JSON.stringify(d) };
     this.preview = null;
+    this.drawerError = "";
+    this.beginRule(back, extraRows, origin);
+  }
+
+  /** Opens a saved rule in the editor, from another page (Luokittelu), as startRule does for a new one. */
+  editRule(id: string, back = "", extraRows: SourceRow[] = [], origin: RuleOrigin = {}): void {
+    const p = this.project;
+    if (!p) return;
+    const d = this.current(p);
+    const at = d.rules.findIndex((r) => r.id === id);
+    if (at < 0) return;
+    this.tab = "rules";
+    this.ruleFilter = "";
+    this.closeEditor();
+    this.openEdit.rules = at;
+    const snap = JSON.stringify(d);
+    this.editSnap = { restore: snap, start: snap };
+    this.preview = null;
+    this.drawerError = "";
+    this.beginRule(back, extraRows, origin);
+  }
+
+  /** The rule editor opened from another page: where it goes back to, the rows it counts, how it shows. */
+  private beginRule(back: string, extraRows: SourceRow[], origin: RuleOrigin): void {
+    this.hitLimit = { waiting: HIT_ROWS, wins: HIT_ROWS, lost: HIT_ROWS };
+    this.returnTo = back;
+    this.extraRows = extraRows;
+    this.origin = origin;
+    this.waitingKey = new Map((origin.waiting ?? []).flatMap((g) => g.rows.map((r) => [r.txId, g.key] as const)));
+    this.overlay = origin.overlay === true;
+    this.focusDrawer = true;
+  }
+
+  /** The rule editor alone (its drawer), over the page that opened it. */
+  private renderOverlay(p: Project): void {
+    const d = this.current(p);
+    this.drawerHtml = "";
+    // the rules tab builds the open rule's drawer
+    this.rulesTab(p, d);
+    this.root.innerHTML = this.drawerHtml;
+    if (this.focusDrawer) {
+      this.focusDrawer = false;
+      this.root.querySelector<HTMLElement>(".drawer")?.focus();
+    }
+  }
+
+  /** The page to go back to when the editor closes (set by startRule), and the editor's focus on the next render. */
+  private returnTo = "";
+  private extraRows: SourceRow[] = [];
+  private focusDrawer = false;
+  /** The rule editor's origin (startRule), and its waiting rows: transaction id to group key. */
+  private origin: RuleOrigin = {};
+  private waitingKey = new Map<string, string>();
+  /** The rule editor is drawn alone, over the page that opened it (see RuleOrigin.overlay). */
+  private overlay = false;
+
+  /** True while the rule editor is open over another page: main.ts then shows this screen's root and calls render(). */
+  get ruleOverlay(): boolean {
+    return this.overlay && this.openEdit.rules !== undefined;
+  }
+
+  /** After the editor closed: back to the page that opened it (closeEditor handed over its address), if one did. */
+  private goBack(to: string): void {
+    if (to && location.hash.startsWith("#/settings")) location.hash = to;
   }
 
   private footer(): string {
@@ -288,10 +449,10 @@ export class SettingsScreen {
   }
 
   /**
-   * The category and sub-category choices for the row being edited: categories seen with the row's
-   * class, sub-categories seen with the row's category.
+   * The choices for the item being edited: accounts and owners in use; from the category list, the
+   * categories of the item's class and the subcategories of its category.
    */
-  private choices(key: string, el: HTMLInputElement): string[] {
+  private choices(key: string, el: HTMLInputElement): (string | ComboOption)[] {
     const p = this.project;
     if (!p || el.dataset.i === undefined || !(this.tab in COLS)) return [];
     if (key === "account")
@@ -308,13 +469,12 @@ export class SettingsScreen {
     if (key === "owner") return this.owners(p, this.draft!, item);
     if (!item) return [];
     const d = this.draft!;
-    const known = [...d.rules, ...d.targets, ...p.getLedger()].filter((r) => r !== (item as unknown));
-    const same = (a: unknown, b: string) => String(a ?? "").toLowerCase() === b.toLowerCase();
-    const values =
-      key === "category"
-        ? known.filter((r) => !item.class || same(item.class, r.class)).map((r) => r.category)
-        : known.filter((r) => !item.category || same(item.category, r.category)).map((r) => r.subCategory);
-    return [...new Set(values.filter(Boolean).map((x) => x.toLowerCase()))].sort();
+    // the list, plus the names other items of this draft use before it is saved
+    const others = [...d.rules, ...d.targets, ...d.fixes].filter((r) => r !== (item as unknown));
+    const list = withPaths(listOrMigration(p, RESERVED_PATHS), others.map(pathOf));
+    if (key === "category") return categoryOptions(list, "category", String(item.class ?? ""));
+    if (key === "subCategory") return categoryOptions(list, "subCategory", String(item.class ?? ""), String(item.category ?? ""));
+    return [];
   }
 
   /**
@@ -413,7 +573,7 @@ export class SettingsScreen {
     open();
     this.editSnap = { restore, start: JSON.stringify(d) };
     this.drawerError = "";
-    this.hitLimit = { wins: HIT_ROWS, lost: HIT_ROWS };
+    this.hitLimit = { waiting: HIT_ROWS, wins: HIT_ROWS, lost: HIT_ROWS };
     this.focusBack = back;
     this.render();
     this.root.querySelector<HTMLElement>(".drawer")?.focus();
@@ -423,7 +583,18 @@ export class SettingsScreen {
   private focusBack = "";
   private focusPending = "";
 
-  private closeEditor(): void {
+  /** Closes the editor; returns the page to go back to when the rule editor was opened from another page. */
+  private closeEditor(): string {
+    const back = this.returnTo;
+    this.returnTo = "";
+    this.extraRows = [];
+    this.origin = {};
+    this.waitingKey = new Map();
+    if (this.overlay) {
+      this.overlay = false;
+      // after the caller's own steps (a save, a render): the page under the drawer redraws
+      queueMicrotask(() => this.onOverlayClose());
+    }
     this.openEdit = {};
     this.openAcct = null;
     this.editSnap = null;
@@ -431,6 +602,7 @@ export class SettingsScreen {
     // a second close (nothing open any more) keeps the opener found by the first
     if (this.focusBack) this.focusPending = this.focusBack;
     this.focusBack = "";
+    return back;
   }
 
   /** After a render: the closed editor's opener gets the focus (the add button when it is gone, say after Poista). */
@@ -451,8 +623,9 @@ export class SettingsScreen {
     }
     const undo = () => {
       this.draft = JSON.parse(snap.restore) as Draft;
-      this.closeEditor();
+      const back = this.closeEditor();
       this.render();
+      this.goBack(back);
     };
     if (JSON.stringify(this.draft) === snap.start) return undo();
     void ask(t("confirmDiscardItem"), { danger: true, ok: t("discardShort") }).then((yes) => {
@@ -480,10 +653,31 @@ export class SettingsScreen {
       return;
     }
     const draft = withRenames(d);
-    this.closeEditor();
+    // a rule made or edited from another page: other unsaved edits go with it, so say so (as Poista
+    // does). The draft as it was when the editor opened holds those other edits, and only them.
+    if (this.returnTo && this.editSnap) {
+      const before = JSON.parse(this.editSnap.restore) as Draft;
+      const others = JSON.stringify(withRenames(before)) !== JSON.stringify(withRenames(this.load(p)));
+      if (others) {
+        void ask(t("confirmSaveRule"), { ok: t("save"), note: t("confirmDeleteOthers") }).then((yes) => {
+          if (yes) this.commitEditor(draft);
+        });
+        return;
+      }
+    }
+    this.commitEditor(draft);
+  }
+
+  private commitEditor(draft: ReturnType<typeof withRenames>): void {
+    const at = this.openEdit.rules;
+    const rule = at === undefined ? undefined : this.draft?.rules[at];
+    const onSaved = this.origin.onSaved;
+    const back = this.closeEditor();
     this.draft = null;
     this.preview = null;
     this.session.change((proj) => saveDraft(proj, draft));
+    if (rule && onSaved) onSaved(rule);
+    this.goBack(back);
   }
 
   /** The line cells of the list shown now, by item: to redraw a line while its item is edited. */
@@ -688,7 +882,7 @@ export class SettingsScreen {
 
   private rulesTab(p: Project, d: Draft): string {
     const filter = (i: number) => this.ruleShown(d.rules[i]!);
-    const rows = this.sourceRows(p);
+    const rows = this.matchRows(p);
     return html`
       <p class="muted">${t("rulesBody")}</p>
       ${raw(reservedNames(p))}
@@ -755,7 +949,9 @@ export class SettingsScreen {
               </div>
             </div>`;
             const hits = html`<div class="rule-hits" data-rule-hits>${raw(this.ruleRows(r, d.rules, rows))}</div>`;
-            return { title: fmt("ruleTitle", { id: r.id }), body: fields + order + hits };
+            // a rule made in Luokittelu: how many of its waiting rows and groups this rule leaves, live
+            const waiting = this.waitingKey.size > 0 ? html`<div data-rule-waiting>${raw(this.waitingNote(r))}</div>` : "";
+            return { title: fmt("ruleTitle", { id: r.id }), body: waiting + fields + order + hits };
           },
           order: true,
           filter,
@@ -779,6 +975,8 @@ export class SettingsScreen {
     const own = compiled[idx]!;
     const wins: SourceRow[] = [];
     const lost: { row: SourceRow; by: string }[] = [];
+    // rows of the Luokittelu groups waiting for a class (a rule made there): listed first, on their own
+    const waiting: SourceRow[] = [];
     for (const row of rows) {
       if (row.fields.amount === null) continue;
       const input = { account: row.fields.account, description: row.fields.description, info: row.fields.info, amount: row.fields.amount };
@@ -789,13 +987,15 @@ export class SettingsScreen {
           by = j;
           break;
         }
-      if (by < 0) wins.push(row);
-      else lost.push({ row, by: rules[by]!.id });
+      if (by >= 0) lost.push({ row, by: rules[by]!.id });
+      else if (this.waitingKey.has(row.txId)) waiting.push(row);
+      else wins.push(row);
     }
-    if (wins.length + lost.length === 0) return html`<p class="muted">${t("ruleNoRows")}</p>`;
+    if (waiting.length + wins.length + lost.length === 0) return html`<p class="muted">${t("ruleNoRows")}</p>`;
     // newest first: the rows to check after an edit are the recent ones
     const newest = (a: SourceRow, b: SourceRow) => (b.fields.date ?? "").localeCompare(a.fields.date ?? "");
     wins.sort(newest);
+    waiting.sort(newest);
     lost.sort((a, b) => newest(a.row, b.row));
     // two lines per row, so the list fits the editor's width: what and how much, then when and where
     const item = (row: SourceRow, note: string) =>
@@ -805,7 +1005,7 @@ export class SettingsScreen {
         <span class="small muted">${formatDate(row.fields.date)} · ${row.fields.account}</span>
         <span class="small muted">${note}</span>
       </li>`;
-    const section = (key: "wins" | "lost", title: string, items: string[], link = "", cls = "") => {
+    const section = (key: "waiting" | "wins" | "lost", title: string, items: string[], link = "", cls = "") => {
       const n = items.length;
       if (n === 0) return "";
       const shown = this.hitLimit[key];
@@ -836,10 +1036,17 @@ export class SettingsScreen {
             ${t("showInRows")}
           </button>`
         : "";
+    // a saved rule as it is "is in force"; a new or edited one "will be", on rows that may have a class already
+    const winsTitle = saved ? "ruleHitsWins" : this.waitingKey.size > 0 ? "ruleHitsOthers" : "ruleHitsNew";
     return (
       section(
+        "waiting",
+        t("ruleHitsWaiting"),
+        waiting.map((row) => item(row, "")),
+      ) +
+      section(
         "wins",
-        t("ruleHitsWins"),
+        t(winsTitle),
         wins.map((row) => item(row, "")),
         link,
       ) +
@@ -853,8 +1060,39 @@ export class SettingsScreen {
     );
   }
 
+  /** Luokittelu's waiting rows and groups now, and how many of them are left without a class with this rule. */
+  private waitingNote(rule: Rule): string {
+    const groups = this.origin.waiting ?? [];
+    let own: ReturnType<typeof compileRules>[number] | null;
+    try {
+      own = compileRules([rule])[0]!;
+    } catch {
+      own = null;
+    }
+    let rows = 0;
+    let left = 0;
+    let leftGroups = 0;
+    for (const g of groups) {
+      let gLeft = 0;
+      for (const { fields: f } of g.rows) {
+        const hit =
+          own !== null &&
+          f.amount !== null &&
+          ruleMatches(own, { account: f.account, description: f.description, info: f.info, amount: f.amount });
+        if (!hit) gLeft++;
+      }
+      rows += g.rows.length;
+      left += gLeft;
+      if (gLeft > 0) leftGroups++;
+    }
+    return html`<div class="note rule-waiting small">
+      <div>${fmt("ruleWaitingNow", { r: formatCount(rows), g: formatCount(groups.length) })}</div>
+      <div><b>${fmt("ruleWaitingAfter", { r: formatCount(left), g: formatCount(leftGroups) })}</b></div>
+    </div>`;
+  }
+
   /** How many rows each section of the open rule's matches shows ("Näytä lisää" adds more). */
-  private hitLimit = { wins: HIT_ROWS, lost: HIT_ROWS };
+  private hitLimit = { waiting: HIT_ROWS, wins: HIT_ROWS, lost: HIT_ROWS };
 
   /** Fills the match column: rows the rule decides / rows it matches, or the regex error. */
   private countRun = 0;
@@ -868,7 +1106,11 @@ export class SettingsScreen {
     const d = this.draft;
     if (!p || !d) return;
     const run = ++this.countRun;
-    const rows = this.sourceRows(p).filter((r) => r.fields.amount !== null);
+    // what the open rule leaves of the waiting rows follows each edit at once: one pass over them, about 15 ms at 100 000 rows
+    const note = this.root.querySelector("[data-rule-waiting]");
+    const open = this.openEdit.rules === undefined ? undefined : d.rules[this.openEdit.rules];
+    if (note && open) note.innerHTML = this.waitingNote(open);
+    const rows = this.matchRows(p).filter((r) => r.fields.amount !== null);
     const ids = d.rules.map((r) => r.id);
     const compiled = d.rules.map((r) => {
       try {
@@ -942,7 +1184,7 @@ export class SettingsScreen {
     const at = this.openEdit.rules;
     const p = this.project;
     if (box && at !== undefined && this.draft?.rules[at] && p)
-      box.innerHTML = this.ruleRows(this.draft.rules[at], this.draft.rules, this.sourceRows(p));
+      box.innerHTML = this.ruleRows(this.draft.rules[at], this.draft.rules, this.matchRows(p));
   }
 
   // ---- targets
@@ -1376,6 +1618,75 @@ export class SettingsScreen {
       </div>`;
   }
 
+  // ---- categories
+
+  private categoriesTab(p: Project): string {
+    const list = p.getSettings().categories;
+    const counts = rowCounts(p);
+    if (!list) {
+      const size = (l: CategoryEntry[]) => l.reduce((n, e) => n + 1 + e.subCategories.length, 0);
+      const next = migrationList(p, RESERVED_PATHS);
+      return migrationStep(next, size(next) - size(withPaths([], usedPaths(p))), counts, this.catToggled);
+    }
+    return html`<p class="muted">${t("catBody")}</p>
+      <div class="cat-tree">${raw(categoryTree(list, counts, this.catToggled, true))}</div>`;
+  }
+
+  /** Luokat's buttons: save the migrated list, add, rename or delete a node. */
+  private categoryAction(act: string, btn: HTMLButtonElement): void {
+    const p = this.project;
+    if (!p) return;
+    if (act === "catMigrate") {
+      const list = migrationList(p, RESERVED_PATHS);
+      this.session.change((proj) => proj.setSettings({ categories: list }));
+      return;
+    }
+    const node = JSON.parse(btn.dataset.node ?? "{}") as CategoryPath;
+    const list = p.getSettings().categories ?? [];
+    const warn = (title: string, body = "") => showToast(title, body, undefined, 8000, "warn");
+    if (act === "catAdd") {
+      const sub = node.category !== "";
+      void askText(t(sub ? "catAddSub" : "catAddCategory")).then((name) => {
+        if (!name) return;
+        const added = sub ? { ...node, subCategory: name } : { ...node, category: name };
+        if (reservedNode(added)) return warn(fmt("catReservedName", { name }));
+        if (hasNode(list, added)) return warn(fmt("catExists", { name }));
+        if (sub) this.catToggled.add(nodeKey(node));
+        this.session.change((proj) => addCategory(proj, added));
+      });
+      return;
+    }
+    const name = node.subCategory || node.category;
+    const use = categoryUse(p, node);
+    if (act === "catDelete") {
+      if (inUse(use)) return warn(fmt("catInUseTitle", { name }), inUseBody(use));
+      void ask(fmt("catDeleteAsk", { name }), { danger: true, ok: t("remove") }).then((yes) => {
+        if (yes) this.session.change((proj) => deleteCategory(proj, node));
+      });
+      return;
+    }
+    if (act === "catRename") {
+      // a rename rewrites rules, fixes and targets and saves them: unsaved edits of them would be lost
+      if (this.dirty()) return warn(t("catSaveFirst"));
+      void askText(t("catNewName"), name).then(async (typed) => {
+        if (typed === null) return;
+        const to = typed.trim();
+        if (to === name) return;
+        const refusal = renameRefusal(p, node, to);
+        if (refusal === "empty") return warn(t("needName"));
+        if (refusal === "reserved") return warn(fmt("catReservedName", { name: to }));
+        if (refusal) return warn(fmt("catExists", { name: to }));
+        const locked = p.getSettings().lockedThrough ? ` ${t("catRenameLocked")}` : "";
+        const note = inUse(use) ? fmt("catRenameNote", { use: useMessage(use) }) + locked : t("catRenameUnused");
+        if (!(await ask(fmt("catRenameAsk", { from: name, to }), { ok: t("catRename"), note }))) return;
+        // the draft holds the old names: read the renamed rules, fixes and targets again
+        this.draft = null;
+        this.preview = null;
+        this.session.change((proj) => renameCategory(proj, node, to));
+      });
+    }
+  }
+
   // ---- profiles and scripts
 
   private profilesTab(p: Project): string {
@@ -1517,10 +1828,11 @@ export class SettingsScreen {
           return;
         }
         const draft = withRenames(next);
-        this.closeEditor();
+        const back = this.closeEditor();
         this.draft = null;
         this.preview = null;
         this.session.change((proj) => saveDraft(proj, draft));
+        this.goBack(back);
       },
     );
   }
@@ -1765,11 +2077,11 @@ export class SettingsScreen {
       }
       case "moreHits": {
         // more rows in one section of the open rule's matches; only that box is redrawn
-        const sec = btn.dataset.sec === "lost" ? "lost" : "wins";
+        const sec = btn.dataset.sec === "lost" ? "lost" : btn.dataset.sec === "waiting" ? "waiting" : "wins";
         this.hitLimit[sec] += HIT_MORE;
         const at = this.openEdit.rules;
         const box = this.root.querySelector("[data-rule-hits]");
-        if (box && at !== undefined && d.rules[at]) box.innerHTML = this.ruleRows(d.rules[at], d.rules, this.sourceRows(p));
+        if (box && at !== undefined && d.rules[at]) box.innerHTML = this.ruleRows(d.rules[at], d.rules, this.matchRows(p));
         break;
       }
       case "ruleRows":
@@ -1812,7 +2124,7 @@ export class SettingsScreen {
         this.render();
         break;
       case "discard":
-        void ask(t("confirmDiscardEdits"), { danger: true }).then((yes) => {
+        void ask(t("confirmDiscardEdits"), { danger: true, ok: t("discardShort") }).then((yes) => {
           if (!yes) return;
           this.draft = this.load(p);
           this.preview = null;
@@ -1833,6 +2145,14 @@ export class SettingsScreen {
         this.session.change((proj) => saveDraft(proj, draft));
         break;
       }
+      case "catMigrate":
+      case "catAdd":
+      case "catRename":
+      case "catDelete":
+        // the buttons sit in a details summary: the click must not open or close it
+        e.preventDefault();
+        this.categoryAction(btn.dataset.act, btn);
+        break;
       case "delProfile": {
         const id = btn.dataset.id ?? "";
         this.session.change((proj) => proj.setProfiles(proj.getProfiles().filter((x) => x.id !== id)));

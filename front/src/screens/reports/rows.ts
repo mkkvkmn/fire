@@ -18,7 +18,10 @@ import {
   setTransactionFix,
   type FixValues,
 } from "../../project/service";
-import { bindCombos, combo } from "../../ui/combo";
+import { bindCombos, combo, type ComboOption } from "../../ui/combo";
+import { categoryOptions } from "../../ui/reserved";
+import { RESERVED_PATHS } from "../../engine/reserved";
+import { listOrMigration } from "../../project/categories";
 import { dateField, parseDateField } from "../../ui/dateField";
 import { ask } from "../../ui/dialog";
 import { downloadFile } from "../../storage/projectFile";
@@ -28,6 +31,7 @@ import { html, raw } from "../../ui/html";
 import { parseNumber } from "../../ui/numberField";
 import { icon } from "../../ui/icons";
 import { PeriodPicker } from "../../ui/periodPicker";
+import { refocusShowMore, showMoreFoot } from "../../ui/showMore";
 import { fmt, t } from "../../ui/texts";
 import { bindFilterBar, reportBar } from "./common";
 
@@ -89,17 +93,16 @@ export class RowsScreen {
     });
   }
 
-  /** Categories seen with the editor's class, sub-categories seen with its category. */
-  private fixChoices(name: string, el: HTMLElement): string[] {
+  /** From the category list: the categories of the editor's class, the subcategories of its category. */
+  private fixChoices(name: string, el: HTMLElement): ComboOption[] {
+    const p = this.session.state.project;
+    if (!p) return [];
     const form = el.closest<HTMLElement>(".fix-editor");
-    const rows = this.state.model()?.rows ?? [];
-    const val = (k: string) =>
-      (form?.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-fixv="${k}"]`)?.value ?? "").trim().toLowerCase();
-    const pick =
-      name === "category"
-        ? rows.filter((r) => !val("class") || r.class.toLowerCase() === val("class")).map((r) => r.category)
-        : rows.filter((r) => r.category.toLowerCase() === val("category")).map((r) => r.subCategory);
-    return [...new Set(pick.map((x) => x.toLowerCase()).filter(Boolean))].sort();
+    const val = (k: string) => form?.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-fixv="${k}"]`)?.value ?? "";
+    const list = listOrMigration(p, RESERVED_PATHS);
+    return name === "category"
+      ? categoryOptions(list, "category", val("class"))
+      : categoryOptions(list, "subCategory", val("class"), val("category"));
   }
 
   /** Every source column of each transaction as one lower-case string, for search. */
@@ -348,12 +351,7 @@ export class RowsScreen {
             </tbody>
           </table>
         </div>
-        <div class="actions card-foot">
-          <span class="small muted"
-            >${fmt("showingRows", { a: formatCount(Math.min(this.limit, rows.length)), n: formatCount(rows.length) })}</span
-          ><span class="grow"></span>
-          ${raw(rows.length > this.limit ? html`<button type="button" class="sm" data-rowact="more">${t("showMoreRows")}</button>` : "")}
-        </div>
+        ${raw(showMoreFoot(Math.min(this.limit, rows.length), rows.length, "showingRows", ["rowact", "more"]))}
       </section>`;
     this.picker.mount(this.root.querySelector<HTMLElement>("[data-period]"));
   }
@@ -402,10 +400,13 @@ export class RowsScreen {
         this.query = "";
         this.endDrill();
         break;
-      case "more":
+      case "more": {
+        const before = this.root.querySelectorAll("table.rows-table tbody > tr").length;
         this.limit += PAGE;
         this.render();
+        refocusShowMore(this.root, '[data-rowact="more"]', "table.rows-table", before);
         break;
+      }
       case "csv": {
         const res = this.shown();
         if (res) downloadFile(new TextEncoder().encode(ledgerToCsv(res.rows)), "final_data.csv", "text/csv;charset=utf-8");

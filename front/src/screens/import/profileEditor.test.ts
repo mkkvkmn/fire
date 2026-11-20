@@ -1,7 +1,7 @@
 // The file profile editor's column roles and date examples (no DOM).
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { Project } from "../../storage/project";
-import { fmt } from "../../ui/texts";
+import { fmt, setLang } from "../../ui/texts";
 import { dateExample, ProfileEditor } from "./profileEditor";
 
 const FILE = new TextEncoder().encode("Päivä;Summa;Saaja;Viesti;Tili\r\n1.2.2024;-12,50;Prisma;KORTTIOSTO;FI00\r\n");
@@ -111,5 +111,28 @@ describe("profile editor", () => {
     expect(ed.readingChanged()).toBe(false);
     ed.cancelReading();
     expect(ed.draft.dateFormats).toBe("%d/%m/%Y");
+  });
+
+  it("shows the row-limit warning in the preview of a cut file, and none for an uncut one", () => {
+    const ed = new ProfileEditor(project, "bank.csv", FILE, "");
+    const card = (): string => ed["mapCard"]();
+    expect(card()).not.toContain("warn-text");
+    expect(card()).not.toContain(fmt("rowLimitCut", { kept: "1", dropped: "2" }));
+    ed["table"]!.cut = { kept: 1, dropped: 2 };
+    expect(card()).toContain(`<div class="small warn-text">`);
+    expect(card()).toContain(fmt("rowLimitCut", { kept: "1", dropped: "2" }));
+  });
+
+  it("says the dropped count is an upper bound", () => {
+    expect(fmt("rowLimitCut", { kept: "1", dropped: "2" })).toContain("enintään 2");
+  });
+
+  describe("in English", () => {
+    beforeAll(() => setLang("en"));
+    afterAll(() => setLang("fi"));
+
+    it("says the dropped count is an upper bound", () => {
+      expect(fmt("rowLimitCut", { kept: "1", dropped: "2" })).toContain("up to 2");
+    });
   });
 });

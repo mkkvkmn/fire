@@ -20,7 +20,8 @@ export function monthEnds(start: string, end: string): string[] {
   return out;
 }
 
-export function targetRowId(t: Target, month: string): string {
+/** A target row's id. A rename of its category rebuilds it (project/categories.ts renamedRow). */
+export function targetRowId(t: Pick<Target, "name" | "owner" | "class" | "category" | "subCategory">, month: string): string {
   return ["target", t.name, t.owner, t.class, t.category, t.subCategory, month].join(":");
 }
 

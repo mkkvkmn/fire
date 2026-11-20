@@ -2,6 +2,7 @@
 // column, the processed ledger and all settings. Pure data access; no DOM and no file handling.
 import type { Database, SqlJsStatic, SqlValue } from "sql.js";
 import { sha256Bytes } from "../engine/sha256";
+import type { CategoryEntry } from "../engine/categories";
 import type { Fix, LedgerRow, Rule, SourceProfile, SourceRow, Split, Target } from "../engine/types";
 import { normalizeAmountMatch } from "../engine/categorize";
 import { normalizeRow } from "../engine/profiles";
@@ -30,6 +31,11 @@ export interface ProjectSettings {
   fire: FireSettings | null;
   /** Owner of each account's rows that no split covers. The default owner is only a suggestion for new accounts. */
   accountOwners: Record<string, string>;
+  /**
+   * The category list (Asetukset > Luokat). null in a project from before the list: the user sees
+   * what migration would save before it is stored (project/categories.ts).
+   */
+  categories: CategoryEntry[] | null;
 }
 
 export interface FireSettings {
@@ -50,6 +56,7 @@ const DEFAULT_SETTINGS: ProjectSettings = {
   members: [],
   fire: null,
   accountOwners: {},
+  categories: null,
 };
 
 export interface SourceFileInfo {
@@ -138,9 +145,27 @@ export class Project {
    * and rows are frozen, so a caller cannot change the shared copy by mistake.
    */
   private cache: { sourceRows?: readonly SourceRow[]; ledger?: readonly LedgerRow[] } = {};
+  /**
+   * Increases whenever the source rows must be read again (a file profile, a source file or raw rows
+   * changed). The staged import re-reads its files only then: ImportFlow.restage.
+   */
+  rowsVersion = 0;
 
   private forgetRows(): void {
     this.cache.sourceRows = undefined;
+    this.rowsVersion++;
+  }
+
+  private derived = new Map<string, unknown>();
+
+  /**
+   * A value computed from the stored data, kept until a write or a rollback. Inside a transaction it
+   * is computed again, so it never shows data from before a write of the same transaction.
+   */
+  memo<T>(key: string, compute: () => T): T {
+    if (this.depth > 0) return compute();
+    if (!this.derived.has(key)) this.derived.set(key, compute());
+    return this.derived.get(key) as T;
   }
 
   private forgetLedger(): void {
@@ -150,16 +175,20 @@ export class Project {
   /** Runs fn atomically. Nested calls use savepoints, so helpers can be combined freely. */
   transaction<T>(fn: () => T): T {
     const name = `sp${this.depth}`;
+    this.derived.clear();
     this.db.run(`SAVEPOINT ${name}`);
     this.depth++;
     try {
       const out = fn();
       this.depth--;
+      this.derived.clear();
       this.db.run(`RELEASE ${name}`);
       return out;
     } catch (e) {
       this.depth--;
+      this.derived.clear();
       this.cache = {};
+      this.rowsVersion++;
       this.db.run(`ROLLBACK TO ${name}`);
       this.db.run(`RELEASE ${name}`);
       throw e;
@@ -464,6 +493,7 @@ export class Project {
 
   /** Replaces the ledger rows of the given months (all months when `months` is undefined). */
   replaceLedger(rows: LedgerRow[], months?: ReadonlySet<string>): void {
+    const before = this.cache.ledger;
     this.forgetLedger();
     this.transaction(() => {
       if (months === undefined) {
@@ -503,6 +533,14 @@ export class Project {
         ]),
       );
     });
+    // The cache becomes the rows now stored, in readLedger's order: reading 100k rows back takes
+    // over a second, and a save reads the ledger again right after (rebuild, category sync). A
+    // rollback clears the cache (transaction).
+    if (before) {
+      const keep =
+        months === undefined ? rows : [...before.filter((r) => !months.has(r.month)), ...rows.filter((r) => months.has(r.month))];
+      this.cache.ledger = freezeRows(keep.map((r) => ({ ...r })).sort(ledgerOrder), []);
+    }
   }
 
   counts(): ProjectCounts {
@@ -514,6 +552,28 @@ export class Project {
       rules: one("SELECT count(*) FROM rules"),
     };
   }
+}
+
+/** Text order by code point: SQLite compares text by its UTF-8 bytes, which is code point order, never locale order and not UTF-16 unit order (< differs for astral characters). */
+function byCodePoint(a: string, b: string): number {
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i++) {
+    let x = a.charCodeAt(i);
+    let y = b.charCodeAt(i);
+    if (x === y) continue;
+    // UTF-16 order is code point order except that a surrogate (an astral character) sorts below U+E000..U+FFFF: move the surrogates above them
+    if (x >= 0xd800 && y >= 0xd800) {
+      x += x >= 0xe000 ? -0x800 : 0x2000;
+      y += y >= 0xe000 ? -0x800 : 0x2000;
+    }
+    return x - y;
+  }
+  return a.length - b.length;
+}
+
+/** readLedger's order: ORDER BY date DESC, row_id. */
+export function ledgerOrder(a: LedgerRow, b: LedgerRow): number {
+  return byCodePoint(b.date, a.date) || byCodePoint(a.rowId, b.rowId);
 }
 
 /** Freezes an array, its rows and the given nested objects of each row (the cached copies are shared). */
