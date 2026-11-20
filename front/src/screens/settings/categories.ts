@@ -147,6 +147,6 @@ export function migrationStep(
         <div>${fmt("catMigrateCounts", { cats: list.length, subs })}${added ? ` ${fmt("catMigrateAdded", { n: added })}` : ""}</div>
       </div>
     </div>
-    <div class="actions"><button type="button" class="primary" data-act="catMigrate">${t("catMigrateSave")}</button></div>
+    <div class="actions cat-migrate"><button type="button" class="primary" data-act="catMigrate">${t("catMigrateSave")}</button></div>
     <div class="cat-tree">${raw(categoryTree(list, counts, toggled, false))}</div>`;
 }
